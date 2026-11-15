@@ -17,6 +17,7 @@ type Cmd = {
   label: string
   keywords?: string[]
   disabled?: boolean
+  page?: string
   shortcut?: string
 }
 
@@ -82,7 +83,7 @@ class DataCommands extends Component<{
 export default class CommandFixture extends Component<{
   Args: { data?: boolean }
 }> {
-  f = f
+  f: { groups: { label: string; items: Cmd[] }[] } & Omit<typeof f, "groups"> = f
   options = commandOptions()
   hasShortcut = hasShortcut
   @tracked action = ""
@@ -140,7 +141,7 @@ export default class CommandFixture extends Component<{
         {{else}}
           <c.List class="command-list">
             <c.Page as |p|>
-              {{#each f.groups key="label" as |group index|}}
+              {{#each this.f.groups key="label" as |group index|}}
                 {{#if index}}<p.Separator class="separator" />{{/if}}
                 <p.Group as |g|>
                   <g.Label class="label">{{group.label}}</g.Label>
