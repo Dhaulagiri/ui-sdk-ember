@@ -1,0 +1,292 @@
+# ui-sdk for Ember
+
+> ember-ui-sdk renders ui-sdk's framework-free TypeScript core in Ember. How an interface behaves lives in the core; ember-ui-sdk turns each primitive into parts. No styles, no dependencies, no providers, no portals.
+
+This file is the context an agent needs to build with ember-ui-sdk: how Ember renders a primitive and the conventions every part shares, then every component with a link to its page. Read the pages of the components you use. It's generated from the docs, for this release.
+
+- [Core](./core.md): build a component, compose behaviors, and explore the foundations, from defining a primitive to working with state, the browser and text.
+- [Agents](./agents.md): letting an agent operate a page, and WebMCP.
+
+## Introduction
+
+These docs cover ui-sdk in Ember. Using another framework? See React, Vue, Svelte, Solid or Web Components. To build your own components from behaviors, see [Core](./core.md).
+
+`ember-ui-sdk` gives you Glimmer components such as Tabs, Popover, and Select, built on ui-sdk's behaviors. They handle interactions, focus, and ARIA attributes. You choose their markup and styles.
+
+Import a component's root, use the parts it yields, and style them with your own CSS.
+
+### Quick Start
+
+Copy this prompt into your agent:
+
+```text prompt
+Set up ui-sdk in this Ember project. It needs Ember 7 or newer, with template tag (.gts) components.
+
+1. Install ember-ui-sdk and @ui-sdk/core with the project's package manager.
+2. Add a note to AGENTS.md, creating it if needed: before using ui-sdk, follow the ui-sdk skill if it's installed, and read node_modules/ember-ui-sdk/docs/llms.txt. To build a new component, also search node_modules/ember-ui-sdk/docs/core.md by heading, and read rendering.md next to it.
+3. If you support skills, run: npx skills add vercel-labs/ui --skill ui-sdk
+```
+
+It installs ui-sdk and points your `AGENTS.md` at the docs that ship with the packages.
+
+### Set It Up Yourself
+
+- [Installation](./installation.md): Install the packages in your Ember app.
+- [Components](./README.md): Browse the components with live examples.
+
+## Installation
+
+Start with an app using Ember 7 or newer, with template tag components in `.gts` files.
+
+### Install the Packages
+
+```bash
+npm install ember-ui-sdk @ui-sdk/core
+```
+
+`ember-ui-sdk` provides the Glimmer components. `@ui-sdk/core` provides their behavior and is a peer dependency. Install both so the components and any helpers you use share one copy of the core.
+
+### Use a Component
+
+Import each component's root from its own entry. The root yields its parts, so a template needs only the one import:
+
+```gts
+import { Tabs } from "ember-ui-sdk/tabs"
+
+<template>
+  <Tabs @defaultValue="account" as |t|>
+    <t.List aria-label="Settings">
+      <t.Tab @value="account">Account</t.Tab>
+      <t.Tab @value="password">Password</t.Tab>
+    </t.List>
+    <t.Panel @value="account">Manage your profile.</t.Panel>
+    <t.Panel @value="password">Choose a new password.</t.Panel>
+  </Tabs>
+</template>
+```
+
+Options are arguments, like `@defaultValue`, and callbacks are arguments too, like `@onValueChange`. HTML attributes, like `aria-label`, go to the part's element. Each entry also exports every part by name, like `TabsList`, for templates that import them directly.
+
+Each [component page](./README.md) lists the parts a root yields.
+
+### Add Your Styles
+
+Components are unstyled, so you style them with your app's CSS or with Tailwind CSS. Every part sets a `data-slot`, such as `tabs-tab`, and its state as data attributes, such as `data-selected`.
+
+For a default look to start from, import `@ui-sdk/core/web.css` once, at the top of your app's entry:
+
+```ts
+import "@ui-sdk/core/web.css"
+```
+
+With Tailwind CSS, import it in your global stylesheet instead, after Tailwind. `layer(components)` puts it above Tailwind's base styles, so they don't reset it, and below its utilities, so a class still wins:
+
+```css
+@layer ui-sdk;
+
+@import "tailwindcss";
+@import "@ui-sdk/core/web.css" layer(components);
+```
+
+You can render your first component without setting up a provider or adding a portal root.
+
+### Right to Left
+
+Set `dir="rtl"` on the page or a container. Arrow keys and popup placement follow that direction without a provider. Use logical CSS properties, such as `padding-inline-start`, for your styles.
+
+## Components
+
+Each page has the component's composition, examples, styling hooks and every prop.
+
+- [Accordion](./components/accordion.md): Show and hide sections of content from their headings. Import from `ember-ui-sdk/accordion`.
+- [Alert Dialog](./components/alert-dialog.md): Ask someone to confirm an action before you continue. Import from `ember-ui-sdk/alert-dialog`.
+- [Autocomplete](./components/autocomplete.md): Suggest text while someone types, without limiting what they can enter. Import from `ember-ui-sdk/autocomplete`.
+- [Avatar](./components/avatar.md): Show an image with a fallback while it loads or if it fails. Import from `ember-ui-sdk/avatar`.
+- [Button](./components/button.md): Run an action, show that it's working, and keep it reachable when disabled. Import from `ember-ui-sdk/button`.
+- [Calendar](./components/calendar.md): Choose one date, several dates, or a range from a month grid. Import from `ember-ui-sdk/calendar`.
+- [Carousel](./components/carousel.md): Page through slides with native scrolling, keyboard controls, and optional rotation. Import from `ember-ui-sdk/carousel`.
+- [Checkbox](./components/checkbox.md): Choose one or more options, individually or as a group. Import from `ember-ui-sdk/checkbox`.
+- [Collapsible](./components/collapsible.md): Show and hide a panel, preserve its contents, and animate its height. Import from `ember-ui-sdk/collapsible`.
+- [Color Picker](./components/color-picker.md): Choose a color by dragging across an area and along sliders, typing any CSS color, or picking a preset. Import from `ember-ui-sdk/color-picker`.
+- [Combobox](./components/combobox.md): Search a list of options and choose one or several values. Import from `ember-ui-sdk/combobox`.
+- [Command](./components/command.md): Search commands, run actions, and open pages of more choices. Import from `ember-ui-sdk/command`.
+- [Date Input](./components/date-input.md): Type a date one part at a time, in the order your user's language writes it. Import from `ember-ui-sdk/date-input`.
+- [Date Picker](./components/date-picker.md): Type a date or choose one from a calendar, with support for ranges and forms. Import from `ember-ui-sdk/date-picker`.
+- [Dialog](./components/dialog.md): Open a focused task over the page. Import from `ember-ui-sdk/dialog`.
+- [Drawer](./components/drawer.md): A sheet you can open, drag, and resize from an edge of the screen. Import from `ember-ui-sdk/drawer`.
+- [Field](./components/field.md): Connect a form control to its label, description, and validation errors. Import from `ember-ui-sdk/field`.
+- [File Input](./components/file-input.md): Choose, drop, or paste files, validate them, and submit them with a form. Import from `ember-ui-sdk/file-input`.
+- [Hover Card](./components/hover-card.md): Preview a link on hover or keyboard focus while keeping its normal navigation. Import from `ember-ui-sdk/hover-card`.
+- [Image Cropper](./components/image-cropper.md): Choose the part of an image to keep by moving and resizing a selection, or by panning and zooming the image under it. Import from `ember-ui-sdk/image-cropper`.
+- [Input](./components/input.md): Enter text, add a clear button, and connect the value to your form or state. Import from `ember-ui-sdk/input`.
+- [Label](./components/label.md): Name any control with a label, and let a press on the label reach it. Import from `ember-ui-sdk/label`.
+- [Listbox](./components/listbox.md): Choose one or several options from an always-visible list. Import from `ember-ui-sdk/listbox`.
+- [Menu](./components/menu.md): Choose actions and settings from a button or a context menu. Import from `ember-ui-sdk/menu`.
+- [Menubar](./components/menubar.md): Move between an application’s menus with one tab stop. Import from `ember-ui-sdk/menubar`.
+- [Meter](./components/meter.md): Show a measurement within a known range, such as storage used or an account quota. Import from `ember-ui-sdk/meter`.
+- [Navigation Menu](./components/navigation-menu.md): Groups site links into panels that open from a row of triggers. Import from `ember-ui-sdk/navigation-menu`.
+- [Number Input](./components/number-input.md): Enter numbers, step through values, and format them for a locale. Import from `ember-ui-sdk/number-input`.
+- [OTP Input](./components/otp-input.md): Enter a one-time code with support for pasting, autofill, and native form validation. Import from `ember-ui-sdk/otp-input`.
+- [Pagination](./components/pagination.md): Navigate pages with buttons, links, or your router. Import from `ember-ui-sdk/pagination`.
+- [Password Input](./components/password-input.md): Enter a password, show or hide it, and use it in a native form. Import from `ember-ui-sdk/password-input`.
+- [Popover](./components/popover.md): Edit or explore something beside its trigger. Import from `ember-ui-sdk/popover`.
+- [Progress](./components/progress.md): Show a task’s progress, or an indeterminate state while its progress is unknown. Import from `ember-ui-sdk/progress`.
+- [Radio](./components/radio.md): Choose one option, move the selection with arrow keys, and submit it with a form. Import from `ember-ui-sdk/radio`.
+- [Rating](./components/rating.md): Pick a score from a row of stars, whole or half, with a preview as the pointer moves over them. Import from `ember-ui-sdk/rating`.
+- [Resizable](./components/resizable.md): Resize, collapse, and save panel layouts with pointer and keyboard controls. Import from `ember-ui-sdk/resizable`.
+- [Scroll Area](./components/scroll-area.md): Add styled scrollbars, edge indicators, and follow-to-end behavior to native scrolling. Import from `ember-ui-sdk/scroll-area`.
+- [Segmented Control](./components/segmented-control.md): Pick one of a few options from a row of buttons, with an indicator that slides to the choice. Import from `ember-ui-sdk/segmented-control`.
+- [Select](./components/select.md): Choose one value or several from a popup list. Import from `ember-ui-sdk/select`.
+- [Separator](./components/separator.md): Divide groups of content with a horizontal or vertical line. Import from `ember-ui-sdk/separator`.
+- [Slider](./components/slider.md): Adjust a number or a range with draggable thumbs and keyboard controls. Import from `ember-ui-sdk/slider`.
+- [Switch](./components/switch.md): Turn a setting on or off. Import from `ember-ui-sdk/switch`.
+- [Tabs](./components/tabs.md): Switch between related panels with one tab selected at a time. Import from `ember-ui-sdk/tabs`.
+- [Textarea](./components/textarea.md): Enter multiple lines of text, grow the field as you type, and connect it to a form. Import from `ember-ui-sdk/textarea`.
+- [Timeline](./components/timeline.md): Show dated events in order, like an activity feed, a changelog or an order's progress, with arrow keys between them. Import from `ember-ui-sdk/timeline`.
+- [Toast](./components/toast.md): Show notifications with actions, timed dismissal, and screen reader announcements. Import from `ember-ui-sdk/toast`.
+- [Toggle](./components/toggle.md): Keep a button pressed, or group toggles with a shared value and arrow-key navigation. Import from `ember-ui-sdk/toggle`.
+- [Token Input](./components/token-input.md): Mix editable text with tokens for files, people, tags, and other references. Import from `ember-ui-sdk/token-input`.
+- [Toolbar](./components/toolbar.md): Give buttons, toggles, menus and fields one tab stop with arrow-key navigation. Import from `ember-ui-sdk/toolbar`.
+- [Tooltip](./components/tooltip.md): Name a control or add a short hint on hover and keyboard focus. Import from `ember-ui-sdk/tooltip`.
+- [Tree](./components/tree.md): Browse a hierarchy of files, pages, or choices with expandable branches. Import from `ember-ui-sdk/tree`.
+- [Trigger Menu](./components/trigger-menu.md): "Opens suggestions at the caret when you type a trigger such as @, /, or #." Import from `ember-ui-sdk/trigger-menu`.
+- [Waterfall](./components/waterfall.md): Show a trace or a page's requests as bars on a shared time axis, with spans that expand to show what they started. Import from `ember-ui-sdk/waterfall`.
+
+## Utilities
+
+### Async Options
+
+`useAsyncOptions` loads items as someone types. It waits for typing to pause, cancels requests that are replaced, and keeps the previous results visible while loading.
+
+Change the movie search and wait for the results. Use the arrow keys to choose a movie, then press Enter.
+
+#### Load Results
+
+Call the helper in a component class, passing the component as its owner and a loader. This example expects `/api/movies` to return an array of movie titles:
+
+```gts
+import Component from "@glimmer/component"
+import { useAsyncOptions } from "ember-ui-sdk/async-options"
+import { Combobox } from "ember-ui-sdk/combobox"
+
+export default class Movies extends Component {
+  movies = useAsyncOptions(this, async (query, { signal }) => {
+    const response = await fetch(`/api/movies?q=${encodeURIComponent(query)}`, {
+      signal,
+    })
+    if (!response.ok) throw new Error("Couldn't load movies")
+    return response.json()
+  })
+
+  onQueryChange = (query: string) => {
+    this.movies.setQuery(query)
+  }
+
+  <template>
+    <Combobox
+      @items={{this.movies.state.items}}
+      @filter={{false}}
+      @status={{this.movies.state.status}}
+      @onQueryChange={{this.onQueryChange}}
+      as |c|
+    >
+      <c.Label>Movie</c.Label>
+      <c.Input placeholder="Search movies…" />
+      <c.Content>
+        <c.Status as |s|>{{s.state.status}}</c.Status>
+        <c.Empty>No movies match.</c.Empty>
+        <c.List as |list|>
+          {{#each list.state.items key="@identity" as |movie|}}
+            <c.Item @value={{movie}} @label={{movie}}>{{movie}}</c.Item>
+          {{/each}}
+        </c.List>
+      </c.Content>
+    </Combobox>
+  </template>
+}
+```
+
+Read `this.movies.state` in the template so Glimmer tracks it. Copying the state into a plain variable keeps only its value at that moment.
+
+Pass `signal` to `fetch` so a newer search can cancel the request. The helper cancels on destroy. `@filter={{false}}` leaves matching and ordering to the server.
+
+Use `c.Status` and `c.Empty` to show loading, error, and empty messages, as in the demo. The same pattern works with [Select](./components/select.md#async-search), [Autocomplete](./components/autocomplete.md#async-suggestions), and [Command](./components/command.md#async-results).
+
+#### Choose When to Load
+
+The third argument sets the starting behavior:
+
+| Option      | What It Does                                            | Default |
+| ----------- | ------------------------------------------------------- | ------- |
+| `debounce`  | Milliseconds typing must pause before a request starts. | `200`   |
+| `query`     | The starting search text.                               | `""`    |
+| `immediate` | Loads that text as soon as the component mounts.        | `false` |
+
+```ts
+movies = useAsyncOptions(this, searchMovies, { immediate: true, debounce: 300 })
+```
+
+For initial choices, use `immediate: true`. Until that first load starts, `status` is already `"loading"`, so the list never flashes an empty state. If you set `query`, use the same starting text for the combobox's `@defaultQuery`.
+
+#### Load More
+
+For paged results, the loader receives `page`, starting at `0`. Return `{ items, hasMore }`:
+
+```ts
+import type { AsyncOptionsContext } from "ember-ui-sdk/async-options"
+
+async function loadMoviePages(
+  query: string,
+  { signal, page }: AsyncOptionsContext
+) {
+  const response = await fetch(
+    `/api/movies?q=${encodeURIComponent(query)}&page=${page}`,
+    { signal }
+  )
+  if (!response.ok) throw new Error("Couldn't load movies")
+  const data: { titles: string[]; next: number | null } = await response.json()
+  return { items: data.titles, hasMore: data.next !== null }
+}
+
+export { loadMoviePages }
+```
+
+Pass `loadMoviePages` to `useAsyncOptions` in place of the inline loader above.
+
+Pass `@onLoadMore` to Combobox, with a method that calls `this.movies.loadMore()`. Combobox asks for another page when scrolling or keyboard navigation reaches the last item. The helper appends the new items.
+
+Open the movie list and scroll down, or use Arrow Down to reach the last result. The next page is added to the list.
+
+#### Retry a Search
+
+`status` is `"loading"` during a request, `"error"` after a failure, and `"idle"` otherwise. `error` holds the failure, and the previous items stay available.
+
+Call `this.movies.reload()` from a retry button to load the current query again, starting at page `0`. `this.movies.state.hasMore` tells you whether another page is available.
+
+### Custom Parts
+
+The generated components are enough until one needs its own logic. You can write a root that creates a primitive's instance and a part that binds one slot of it, using the `rating.ts` definition from [Compose Behaviors](./core.md#complete-primitive).
+
+#### Write a Root
+
+`usePrimitive` creates the instance from the component's arguments for the life of the component. `usePart` binds the `root` slot, and `syncOptions` hands the arguments to the instance whenever they change. Put it first in the template:
+
+```gts title="rating-root.gts"
+import Component from "@glimmer/component"
+import { syncOptions, usePart, usePrimitive } from "ember-ui-sdk/primitive"
+import { rating } from "./rating"
+
+export default class RatingRoot extends Component {
+  handle = usePrimitive(this, rating)
+  root = usePart(this, () => this.handle, "root")
+
+  <template>
+    {{syncOptions this.handle}}
+    <div ...attributes {{this.root.modifier}}>{{yield}}</div>
+  </template>
+}
+```
+
+Controlled options follow data down and actions up: `@value` with `@onValueChange`. Pass a third argument to `usePrimitive` for options the arguments don't hold.
+
+A child part takes the root's `handle` as an argument and calls `usePart` with its own slot. A part's `present`, `attrs`, `state` and `modifier` track what they read.
