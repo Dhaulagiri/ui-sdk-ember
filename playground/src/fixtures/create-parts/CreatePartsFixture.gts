@@ -8,7 +8,7 @@ import { listbox } from "@ui-sdk/core/listbox"
 import { Preferences, usePreference } from "ember-ui-sdk/preferences"
 import { attach, createParts } from "ember-ui-sdk/primitive"
 import { useShortcut, useShortcutHint } from "ember-ui-sdk/shortcuts"
-import { rating } from "../../../../../examples/core/rating-stages/keyboard.ts"
+import { rating } from "../../../../vendor/ui/examples/core/rating-stages/keyboard.ts"
 
 const muteButton = definePrimitive({
   name: "mute-button",

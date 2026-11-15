@@ -4,7 +4,7 @@ import { tracked } from "@glimmer/tracking"
 import { createMenuController } from "@ui-sdk/core/menu"
 import { Menu } from "ember-ui-sdk/menu"
 import { menuOptions } from "tests/fixtures/page.ts"
-import { menuData } from "./data"
+import { menuData } from "../../../../vendor/ui/apps/playground/src/fixtures/menu/data.ts"
 
 export default class MenuFixture extends Component<{
   Args: { data?: boolean }

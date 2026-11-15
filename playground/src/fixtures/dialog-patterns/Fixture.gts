@@ -10,7 +10,7 @@ import { createDialogController, Dialog } from "ember-ui-sdk/dialog"
 import { Menu } from "ember-ui-sdk/menu"
 import { Popover } from "ember-ui-sdk/popover"
 import { dialogPatternsFixture } from "tests/fixtures/dialog.ts"
-import { pendingAction, recordOpenChange } from "./shared"
+import { pendingAction, recordOpenChange } from "../../../../vendor/ui/apps/playground/src/fixtures/dialog-patterns/shared.ts"
 
 export default class Fixture extends Component {
   f = dialogPatternsFixture

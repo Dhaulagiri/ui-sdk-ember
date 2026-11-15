@@ -6,7 +6,7 @@ import { Dialog } from "ember-ui-sdk/dialog"
 import { OverlayHost } from "ember-ui-sdk/overlays"
 import { ToastRegion, type ToastContent } from "ember-ui-sdk/toast"
 import { toastFixture, toastOptions, usesHost } from "tests/fixtures/toast.ts"
-import { createFixtureToasts } from "./shared"
+import { createFixtureToasts } from "../../../../vendor/ui/apps/playground/src/fixtures/toast/shared.ts"
 
 export default class ToastFixture extends Component {
   f = toastFixture
