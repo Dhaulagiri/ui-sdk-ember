@@ -1,0 +1,10 @@
+{
+  "extends": "../tsconfig.base.json",
+  "include": ["src/**/*.ts", "src/**/*.gts"],
+  "compilerOptions": {
+    "noUnusedLocals": false,
+    "experimentalDecorators": true,
+    "types": ["ember-source/types", "vite/client"],
+    "paths": { "tests/*": ["../vendor/ui/tests/*"] }
+  }
+}

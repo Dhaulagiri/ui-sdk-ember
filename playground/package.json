@@ -1,0 +1,31 @@
+{
+  "name": "playground",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "vite --port ${PLAYGROUND_PORT:-5330} --strictPort",
+    "build": "vite build",
+    "preview": "vite preview --port ${PLAYGROUND_PORT:-5330} --strictPort",
+    "typecheck": "ember-tsc --noEmit"
+  },
+  "dependencies": {
+    "@glimmer/component": "^2.2.1",
+    "@glimmer/tracking": "^1.1.2",
+    "@guidepup/virtual-screen-reader": "^0.33.0",
+    "@ui-sdk/core": "^0.1.0-beta.5",
+    "ember-source": "~7.4.0",
+    "ember-ui-sdk": "workspace:*"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.29.7",
+    "@babel/plugin-transform-typescript": "^7.29.9",
+    "@glint/ember-tsc": "^1.14.3",
+    "@glint/template": "^1.11.1",
+    "babel-plugin-ember-template-compilation": "^4.0.1",
+    "content-tag": "^4.2.1",
+    "decorator-transforms": "^2.4.0",
+    "es-module-lexer": "^2.3.2",
+    "typescript": "~5.9.3",
+    "vite": "^8.3.3"
+  }
+}
