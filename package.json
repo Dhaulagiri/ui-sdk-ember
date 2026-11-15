@@ -1,0 +1,24 @@
+{
+  "name": "ui-sdk-ember-monorepo",
+  "private": true,
+  "type": "module",
+  "packageManager": "pnpm@10.34.5",
+  "scripts": {
+    "dev": "pnpm --filter playground dev",
+    "test:upstream": "playwright test -c playwright.upstream.config.ts",
+    "typecheck": "pnpm -r typecheck",
+    "format": "prettier --check .",
+    "format:write": "prettier --write .",
+    "changeset": "changeset",
+    "release": "changeset publish"
+  },
+  "devDependencies": {
+    "@axe-core/playwright": "^4.13.0",
+    "@changesets/cli": "^2.29.0",
+    "@guidepup/virtual-screen-reader": "^0.33.0",
+    "@playwright/test": "1.63.0",
+    "@types/node": "^24.0.0",
+    "prettier": "^3.6.0",
+    "typescript": "~5.9.3"
+  }
+}
