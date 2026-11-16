@@ -10,13 +10,28 @@ const coreModules = import.meta.glob(
   "../node_modules/@ui-sdk/core/dist/foundation/*/*.js"
 )
 const loadCoreModule = (name: string) =>
-  Object.entries(coreModules).find(([file]) => file.endsWith(`/${name}.js`))![1]()
+  Object.entries(coreModules).find(([file]) =>
+    file.endsWith(`/${name}.js`)
+  )![1]()
 Object.assign(window, {
   loadCoreModule,
   loadTesting: () => import("@ui-sdk/core/testing"),
 })
 
 const params = applyFixtureOptions()
+const fixture = params.get("fixture")
+const framework = params.get("framework") ?? "ember"
+const path =
+  fixture &&
+  framework.startsWith("ember") &&
+  Object.keys(fixtures).find((key) =>
+    key.startsWith(`./fixtures/${fixture}/${framework}.`)
+  )
+const root = document.getElementById("root")!
+// Specs read this to skip right after load, so it is set before any await.
+if (fixture && !path) {
+  document.body.dataset.missingFixture = ""
+}
 // A popup loads its sheet code in idle time, and specs press as soon as the
 // page is up, so a page that presents popups as sheets loads it first.
 if (params.has("presentation") && !params.has("lazy")) {
@@ -27,15 +42,6 @@ if (params.has("agent")) {
     __agent: (await import("@ui-sdk/core/agent")).createAgent(),
   })
 }
-const fixture = params.get("fixture")
-const framework = params.get("framework") ?? "ember"
-const path =
-  fixture &&
-  framework.startsWith("ember") &&
-  Object.keys(fixtures).find((key) =>
-    key.startsWith(`./fixtures/${fixture}/${framework}.`)
-  )
-const root = document.getElementById("root")!
 
 if (!fixture) {
   root.innerHTML = `<h1>ember-ui-sdk fixtures</h1><ul>${Object.keys(fixtures)
@@ -46,7 +52,6 @@ if (!fixture) {
     )
     .join("")}</ul>`
 } else if (!path) {
-  document.body.dataset.missingFixture = ""
   document.body.textContent = `No fixture for ${fixture} in ${framework}.`
 } else {
   const module = (await fixtures[path]()) as {
