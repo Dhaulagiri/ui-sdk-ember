@@ -27,6 +27,8 @@ jobs:
         run: pnpm format
       - name: Typecheck
         run: pnpm typecheck
+      - name: Build the site
+        run: pnpm --filter site build
 
   upstream:
     name: Upstream specs (${{ matrix.shard }}/4)
