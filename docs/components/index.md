@@ -1,0 +1,60 @@
+---
+title: Components
+description: Unstyled Ember components, with behavior guides and examples you can build on.
+---
+
+To install the components and import them, see [Installation](../installation.md).
+
+- [Accordion](./accordion.md): Show and hide sections of content from their headings.
+- [Alert Dialog](./alert-dialog.md): Ask someone to confirm an action before you continue.
+- [Autocomplete](./autocomplete.md): Suggest text while someone types, without limiting what they can enter.
+- [Avatar](./avatar.md): Show an image with a fallback while it loads or if it fails.
+- [Button](./button.md): Run an action, show that it's working, and keep it reachable when disabled.
+- [Calendar](./calendar.md): Choose one date, several dates, or a range from a month grid.
+- [Carousel](./carousel.md): Page through slides with native scrolling, keyboard controls, and optional rotation.
+- [Checkbox](./checkbox.md): Choose one or more options, individually or as a group.
+- [Collapsible](./collapsible.md): Show and hide a panel, preserve its contents, and animate its height.
+- [Color Picker](./color-picker.md): Choose a color by dragging across an area and along sliders, typing any CSS color, or picking a preset.
+- [Combobox](./combobox.md): Search a list of options and choose one or several values.
+- [Command](./command.md): Search commands, run actions, and open pages of more choices.
+- [Date Input](./date-input.md): Type a date one part at a time, in the order your user's language writes it.
+- [Date Picker](./date-picker.md): Type a date or choose one from a calendar, with support for ranges and forms.
+- [Dialog](./dialog.md): Open a focused task over the page.
+- [Drawer](./drawer.md): A sheet you can open, drag, and resize from an edge of the screen.
+- [Field](./field.md): Connect a form control to its label, description, and validation errors.
+- [File Input](./file-input.md): Choose, drop, or paste files, validate them, and submit them with a form.
+- [Hover Card](./hover-card.md): Preview a link on hover or keyboard focus while keeping its normal navigation.
+- [Image Cropper](./image-cropper.md): Choose the part of an image to keep by moving and resizing a selection, or by panning and zooming the image under it.
+- [Input](./input.md): Enter text, add a clear button, and connect the value to your form or state.
+- [Label](./label.md): Name any control with a label, and let a press on the label reach it.
+- [Listbox](./listbox.md): Choose one or several options from an always-visible list.
+- [Menu](./menu.md): Choose actions and settings from a button or a context menu.
+- [Menubar](./menubar.md): Move between an application’s menus with one tab stop.
+- [Meter](./meter.md): Show a measurement within a known range, such as storage used or an account quota.
+- [Navigation Menu](./navigation-menu.md): Groups site links into panels that open from a row of triggers.
+- [Number Input](./number-input.md): Enter numbers, step through values, and format them for a locale.
+- [OTP Input](./otp-input.md): Enter a one-time code with support for pasting, autofill, and native form validation.
+- [Pagination](./pagination.md): Navigate pages with buttons, links, or your router.
+- [Password Input](./password-input.md): Enter a password, show or hide it, and use it in a native form.
+- [Popover](./popover.md): Edit or explore something beside its trigger.
+- [Progress](./progress.md): Show a task’s progress, or an indeterminate state while its progress is unknown.
+- [Radio](./radio.md): Choose one option, move the selection with arrow keys, and submit it with a form.
+- [Rating](./rating.md): Pick a score from a row of stars, whole or half, with a preview as the pointer moves over them.
+- [Resizable](./resizable.md): Resize, collapse, and save panel layouts with pointer and keyboard controls.
+- [Scroll Area](./scroll-area.md): Add styled scrollbars, edge indicators, and follow-to-end behavior to native scrolling.
+- [Segmented Control](./segmented-control.md): Pick one of a few options from a row of buttons, with an indicator that slides to the choice.
+- [Select](./select.md): Choose one value or several from a popup list.
+- [Separator](./separator.md): Divide groups of content with a horizontal or vertical line.
+- [Slider](./slider.md): Adjust a number or a range with draggable thumbs and keyboard controls.
+- [Switch](./switch.md): Turn a setting on or off.
+- [Tabs](./tabs.md): Switch between related panels with one tab selected at a time.
+- [Textarea](./textarea.md): Enter multiple lines of text, grow the field as you type, and connect it to a form.
+- [Timeline](./timeline.md): Show dated events in order, like an activity feed, a changelog or an order's progress, with arrow keys between them.
+- [Toast](./toast.md): Show notifications with actions, timed dismissal, and screen reader announcements.
+- [Toggle](./toggle.md): Keep a button pressed, or group toggles with a shared value and arrow-key navigation.
+- [Token Input](./token-input.md): Mix editable text with tokens for files, people, tags, and other references.
+- [Toolbar](./toolbar.md): Give buttons, toggles, menus and fields one tab stop with arrow-key navigation.
+- [Tooltip](./tooltip.md): Name a control or add a short hint on hover and keyboard focus.
+- [Tree](./tree.md): Browse a hierarchy of files, pages, or choices with expandable branches.
+- [Trigger Menu](./trigger-menu.md): "Opens suggestions at the caret when you type a trigger such as @, /, or #."
+- [Waterfall](./waterfall.md): Show a trace or a page's requests as bars on a shared time axis, with spans that expand to show what they started.

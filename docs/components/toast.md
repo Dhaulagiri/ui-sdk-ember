@@ -1,0 +1,242 @@
+---
+title: Toast
+description: Show notifications with actions, timed dismissal, and screen reader announcements.
+---
+
+A toast tells someone that something happened, like a saved change or a sent message, and goes away on its own. It can offer an action such as Undo, stacks with the toasts before it, and is announced to screen readers without taking focus.
+
+[toast/demo](../../examples/components/toast/ember/demo.gts)
+
+Press Create Event. Choose Undo, swipe the toast away, or wait for it to close. Undo logs Event removed.
+
+## Installation
+
+Add `ember-ui-sdk` to your app. See [Installation](../installation.md).
+
+## Composition
+
+Use the following composition to build a `ToastRegion`:
+
+```text
+ToastRegion as |t|
+├── t.Toast
+│   ├── t.Title
+│   ├── t.Description
+│   ├── t.Action
+│   └── t.Close
+└── t.Toast
+    ├── t.Title
+    └── t.Description
+```
+
+The region renders one `t.Toast` for each toast in its queue, newest first. A toast is named by its title and described by its description. Empty title, description and action parts show the text from the toast's data, so a region's renderer is usually the same few parts.
+
+## Usage
+
+Import the region and create a toaster, then call it from a handler when an action finishes, such as `notify("Event created", { description: "Friday at 10:00 AM" })`:
+
+```gts
+import { createToaster, ToastRegion } from "ember-ui-sdk/toast"
+
+const notify = createToaster()
+
+<template>
+  <button type="button" {{on "click" this.createEvent}}>Create Event</button>
+  <ToastRegion @toaster={{notify}} as |toast item t|>
+    <t.Toast>
+      <t.Title />
+      <t.Description />
+    </t.Toast>
+  </ToastRegion>
+</template>
+```
+
+The toaster works from anywhere, not only from components, and returns the toast's id. Place the region once, near your app's root. Without content of its own, it renders each toast's title, description, action and cancel button with unstyled parts.
+
+The examples each call `createToaster()` for a queue of their own and pass it to their region as `@toaster`, so their toasts don't mix.
+
+## Types
+
+`toast.success`, `.info`, `.warning`, `.error` and `.loading` set the toast's type, which the toast exposes as `data-type` for an icon or a color. Errors are announced right away and other types wait for a pause; set `priority` to change that. A loading toast stays until it's updated or dismissed.
+
+[toast/types](../../examples/components/toast/ember/types.gts)
+
+Choose a type. Each toast shows its type's icon, and Loading turns into Photos uploaded when it finishes.
+
+## Position
+
+Set the region's `@side` to `top` or `bottom`, and `@align` to `start`, `center` or `end`. Start and end follow the writing direction. A toast can be swiped toward the side and, unless it's centered, toward the end it's aligned to.
+
+[toast/position](../../examples/components/toast/ember/position.gts)
+
+Choose a side and an alignment, then press Create Event and look for the toast at that edge of the page.
+
+## Action and Cancel
+
+Add an `action`, like Undo, and a `cancel` button that dismisses the toast. Their callbacks can update your app. `onDismiss` tells you why the toast is closing, and `details.cancel()` keeps it open; a canceled timeout starts the countdown again.
+
+[toast/action](../../examples/components/toast/ember/action.gts)
+
+Press Archive Message, then choose Undo or Dismiss, swipe the toast away, or let it time out. The console logs why it closed.
+
+## Link
+
+Give an action an `href` to render it as a link. It keeps normal link behavior, including opening in a new tab.
+
+[toast/link](../../examples/components/toast/ember/link.gts)
+
+Press Send Invoice, then follow View in the toast.
+
+## Promise
+
+`toast.promise()` shows a loading toast, then updates the same toast when the promise resolves or rejects. Each message can be a string, options with a description or an action, or a function of the result. A toast dismissed while loading stays closed.
+
+[toast/promise](../../examples/components/toast/ember/promise.gts)
+
+Press Save Changes to see Saving changes become Changes saved. Press it again for the error, then choose Retry.
+
+## Stacking
+
+`@maxVisible` limits how many toasts show at once, three by default; the rest wait in the queue, and their timers start when they show. The stack expands while the pointer or focus is in it. Set `@expanded={{true}}` to keep it open. [Styling](#styling) shows the CSS that lays out the stack.
+
+[toast/stacking](../../examples/components/toast/ember/stacking.gts)
+
+Press Add Toast a few times, then hover the stack to expand it. Past four toasts, the rest wait their turn. Check Always expanded to keep it open.
+
+## Duration
+
+Set `duration` in milliseconds, on the toaster or on one toast, or `Infinity` for a toast that stays until it's dismissed. The default is five seconds. Timers pause while the pointer or focus is in the region, and while the page is hidden or its window is inactive.
+
+[toast/duration](../../examples/components/toast/ember/duration.gts)
+
+Press each button. Hover a toast to pause its timer. The session toast stays until you press Got It.
+
+## Update and Dismiss
+
+Keep the id the toaster returns to update or dismiss that toast, or pass your own `id`. `toast.update()` returns whether the toast was still there, and `toast.dismiss()` without an id closes every toast.
+
+[toast/update](../../examples/components/toast/ember/update.gts)
+
+Press Upload Report and watch one toast count up to Report uploaded. Cancel Upload closes it early, and Dismiss All clears every toast.
+
+## Async Action
+
+Return a promise from an action to keep the toast open while it runs. The action's state has `pending` while it runs and `error` if it fails, so the button can say Restoring… or offer a retry, and presses are ignored until it settles. See [Button](./button.md#changes-after-an-await) for changes made after an `await`.
+
+[toast/async-action](../../examples/components/toast/ember/async-action.gts)
+
+Press Delete File, then Undo. The button shows Restoring… until the restore finishes, then the toast closes.
+
+## Keyboard Shortcut
+
+F6 moves focus to the newest toast and back. Set the region's `@shortcut` to use another key, or `null` to turn it off. The region advertises it through `aria-keyshortcuts`.
+
+[toast/shortcut](../../examples/components/toast/ember/shortcut.gts)
+
+Press Send Message, then Alt+T (Option+T on a Mac) to focus the toast. Press Escape to dismiss it, or Alt+T again to go back.
+
+## Overlay Host and Confirm
+
+Instead of placing a region, render `OverlayHost` from `ember-ui-sdk/overlays` once near your app's root. It renders the toaster's region, and `confirm()` questions as alert dialogs. A region you place yourself takes over from the host for its toaster. [Alert Dialog](./alert-dialog.md#confirm-from-anywhere) covers `confirm()`.
+
+[toast/overlay-host](../../examples/components/toast/ember/overlay-host.gts)
+
+Press Delete on a project and confirm. The row goes away and a toast says so. Reset Projects brings them back.
+
+## Custom Rendering
+
+Pass anything else your toast needs in `data`, and read it from the toast the region's block receives. Every part also takes `@render={{true}}`, which yields `{ part, state }` so you can bind the part to your own element.
+
+[toast/custom](../../examples/components/toast/ember/custom.gts)
+
+Press New Message to show a toast with Hollis Grant's initials. Choose Reply or close it.
+
+## Styling
+
+Toasts are unstyled, and the region and its toasts carry what you need to animate a stack:
+
+- **The stack.** The region sets `--toast-front-height`, the newest toast's height, and `--toast-stack-height`, all of them added up. Each toast gets `--toast-index`, 0 for the newest, `--toast-offset`, the height of the toasts in front of it, and `--toast-height`, its own height. Position the toasts absolutely in the region and set `height: var(--toast-height)` so changes in height animate.
+- **Collapsed and expanded.** `data-front` marks the newest toast. While the stack is collapsed, clip the toasts behind it to `--toast-front-height` and peek them out by their index. While it's expanded, the region and its toasts get `data-expanded`; move each toast by its `--toast-offset`.
+- **Swiping.** While a toast is swiped it gets `data-swiping`, and `--toast-swipe-x` and `--toast-swipe-y` hold how far it moved. Translate it by them and turn off transitions. When a swipe dismisses it, `data-swipe-direction` says which way, so it can leave in that direction. A mouse drag that starts on selectable text selects it, so set `user-select: none` on toasts to swipe them from anywhere.
+- **Entering and leaving.** A toast has `data-starting-style` for its first frame and `data-ending-style` while it leaves, and stays mounted until its transitions finish.
+
+A stack at the bottom of the page, in plain CSS:
+
+```css
+[data-slot="toast-region"] {
+  width: 356px;
+  height: var(--toast-front-height);
+}
+
+[data-slot="toast-region"][data-expanded] {
+  height: calc(var(--toast-stack-height) + (var(--toast-count) - 1) * 12px);
+}
+
+[data-slot="toast"] {
+  --y: calc(var(--toast-index) * -12px);
+  position: absolute;
+  inset-inline: 0;
+  bottom: 0;
+  z-index: calc(100 - var(--toast-index));
+  overflow: hidden;
+  height: var(--toast-height);
+  translate: var(--toast-swipe-x, 0px)
+    calc(var(--y) + var(--toast-swipe-y, 0px));
+  scale: calc(1 - var(--toast-index) * 0.05);
+  transition-property: translate, scale, opacity, height;
+  transition-duration: 400ms;
+  user-select: none;
+}
+
+[data-slot="toast"]:not([data-front], [data-expanded]) {
+  height: var(--toast-front-height);
+}
+
+[data-slot="toast"][data-expanded] {
+  --y: calc(-1 * (var(--toast-offset) + var(--toast-index) * 12px));
+  scale: 1;
+}
+
+[data-slot="toast"][data-starting-style] {
+  transition: none;
+}
+
+[data-slot="toast"][data-starting-style][data-front] {
+  --y: 100%;
+}
+
+[data-slot="toast"]:is(
+  [data-starting-style]:not([data-front]),
+  [data-ending-style]
+) {
+  opacity: 0;
+}
+
+[data-slot="toast"][data-swiping] {
+  transition: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  [data-slot="toast"] {
+    transition-property: opacity;
+  }
+}
+```
+
+Each part has a `data-slot`, such as `toast`, and its state attributes are listed under [Data Attributes](https://ui-sdk.dev/docs/react/components/toast#data-attributes).
+
+## API Reference
+
+The tables of options, state, data attributes, CSS variables and tested behavior are the same in every framework, with options passed as `@arguments` in Ember. See the [toast reference](https://ui-sdk.dev/docs/react/components/toast) in the upstream docs.
+
+### Toast
+
+`toast(message, options)` and `toast(options)` return the toast's id. `toast.success`, `.info`, `.warning`, `.error` and `.loading` set the type. `toast.promise(promise, { loading, success, error })` returns the id too, and `toast.update(id, options)` returns whether the toast was still there. `toast.dismiss(id)` closes one, and `toast.dismiss()` every one.
+
+## Accessibility
+
+Toasts are announced through shared [live regions](https://developer.mozilla.org/en-US/docs/Web/Accessibility/ARIA/Guides/Live_regions), once each, without making the visible region live: politely by default and assertively for errors. While it has toasts, the region is a landmark named Notifications; set `aria-label` to name it in the page's language. Keep messages short, and use `duration: Infinity` for one that has to stay available.
+
+### Keyboard
+
+F6, or the region's `@shortcut`, moves focus to the newest toast, and pressing it again returns focus to where it came from. Tab moves through the toasts and their buttons, and Tab past the last one goes back too. Escape dismisses the focused toast; focus then moves to the next toast, or back where it came from after the last one. The region stays reachable while a modal dialog is open, and its timers pause while focus is inside.
