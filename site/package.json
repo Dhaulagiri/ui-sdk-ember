@@ -1,0 +1,24 @@
+{
+  "name": "site",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "vite --port ${SITE_PORT:-5340} --strictPort",
+    "build": "vite build",
+    "preview": "vite preview --port ${SITE_PORT:-5340} --strictPort",
+    "typecheck": "ember-tsc --noEmit"
+  },
+  "dependencies": {
+    "@glimmer/component": "^2.2.1",
+    "@glimmer/tracking": "^1.1.2",
+    "decorator-transforms": "^2.4.0",
+    "ember-source": "~7.4.0",
+    "marked": "^18.2.0"
+  },
+  "devDependencies": {
+    "@glint/ember-tsc": "^1.14.3",
+    "@glint/template": "^1.11.1",
+    "typescript": "~5.9.3",
+    "vite": "^8.3.3"
+  }
+}

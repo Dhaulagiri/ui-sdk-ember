@@ -144,6 +144,37 @@ importers:
         specifier: ^8.3.3
         version: 8.3.8(@types/node@24.19.2)
 
+  site:
+    dependencies:
+      '@glimmer/component':
+        specifier: ^2.2.1
+        version: 2.2.1
+      '@glimmer/tracking':
+        specifier: ^1.1.2
+        version: 1.1.2
+      decorator-transforms:
+        specifier: ^2.4.0
+        version: 2.4.0(@babel/core@7.29.13)
+      ember-source:
+        specifier: ~7.4.0
+        version: 7.4.0(@glimmer/component@2.2.1)
+      marked:
+        specifier: ^18.2.0
+        version: 18.2.0
+    devDependencies:
+      '@glint/ember-tsc':
+        specifier: ^1.14.3
+        version: 1.14.3(ember-source@7.4.0(@glimmer/component@2.2.1))(typescript@5.9.3)
+      '@glint/template':
+        specifier: ^1.11.1
+        version: 1.11.1
+      typescript:
+        specifier: ~5.9.3
+        version: 5.9.3
+      vite:
+        specifier: ^8.3.3
+        version: 8.3.8(@types/node@24.19.2)
+
 packages:
 
   '@axe-core/playwright@4.13.0':
@@ -1228,6 +1259,11 @@ packages:
 
   lz-string@1.5.0:
     resolution: {integrity: sha512-h5bgJWpxJNswbU7qCrV0tIKQCaS3blPDrqKWx+QxzuzL1zGUzij9XCWLrSLsJPu5t+eWA/ycetzYAO5IOMcWAQ==}
+    hasBin: true
+
+  marked@18.2.0:
+    resolution: {integrity: sha512-KaeL+tAbtvI930q7HE2PN5lYXYdT8EiSmxHlN6F3rsfb57wd5mp5W5TLazpdj4inTQBJdgjYwbs40W/0VUGU+Q==}
+    engines: {node: '>= 20'}
     hasBin: true
 
   merge2@1.4.1:
@@ -2819,6 +2855,8 @@ snapshots:
   lucide@1.54.0: {}
 
   lz-string@1.5.0: {}
+
+  marked@18.2.0: {}
 
   merge2@1.4.1: {}
 
