@@ -33,6 +33,40 @@ importers:
         specifier: ~5.9.3
         version: 5.9.3
 
+  examples:
+    dependencies:
+      '@glimmer/component':
+        specifier: ^2.2.1
+        version: 2.2.1
+      '@glimmer/tracking':
+        specifier: ^1.1.2
+        version: 1.1.2
+      '@ui-sdk/core':
+        specifier: ^0.1.0-beta.5
+        version: 0.1.0-beta.5
+      decorator-transforms:
+        specifier: ^2.4.0
+        version: 2.4.0(@babel/core@7.29.13)
+      ember-source:
+        specifier: ~7.4.0
+        version: 7.4.0(@glimmer/component@2.2.1)
+      ember-ui-sdk:
+        specifier: workspace:*
+        version: link:../packages/ember-ui-sdk
+      lucide:
+        specifier: 1.54.0
+        version: 1.54.0
+    devDependencies:
+      '@glint/ember-tsc':
+        specifier: ^1.14.3
+        version: 1.14.3(ember-source@7.4.0(@glimmer/component@2.2.1))(typescript@5.9.3)
+      '@glint/template':
+        specifier: ^1.11.1
+        version: 1.11.1
+      typescript:
+        specifier: ~5.9.3
+        version: 5.9.3
+
   packages/ember-ui-sdk:
     dependencies:
       '@ui-sdk/core':
@@ -1188,6 +1222,9 @@ packages:
 
   lru-cache@5.1.1:
     resolution: {integrity: sha512-KpNARQA3Iwv+jTA0utUVVbrh+Jlrr1Fv0e56GGzAFOXN7dk/FviaDW8LHmK52DlcH4WP2n6gI8vN1aesBFgo9w==}
+
+  lucide@1.54.0:
+    resolution: {integrity: sha512-2N2brA+7NYLDlxG2QNcmGej5Qhw3pYMPN9MLktTNkQfs7Sk/2g2e8s0CUWibLz5lPVKMYesxm+k/ndDB7E1JjQ==}
 
   lz-string@1.5.0:
     resolution: {integrity: sha512-h5bgJWpxJNswbU7qCrV0tIKQCaS3blPDrqKWx+QxzuzL1zGUzij9XCWLrSLsJPu5t+eWA/ycetzYAO5IOMcWAQ==}
@@ -2778,6 +2815,8 @@ snapshots:
   lru-cache@5.1.1:
     dependencies:
       yallist: 3.1.1
+
+  lucide@1.54.0: {}
 
   lz-string@1.5.0: {}
 

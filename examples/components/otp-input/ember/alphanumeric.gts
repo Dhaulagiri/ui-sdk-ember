@@ -1,0 +1,30 @@
+import { Field } from "ember-ui-sdk/field"
+import { OTPInput } from "ember-ui-sdk/otp-input"
+import { Minus } from "lucide"
+import { icon } from "../../../shared/ember/icon"
+
+<template>
+  <Field as |f|>
+    <f.Label>Recovery code</f.Label>
+    <OTPInput
+      @maxLength={{8}}
+      @pattern="alphanumeric"
+      @field={{f.field}}
+      as |o|
+    >
+      <o.Group>
+        <o.Slot @index={{0}} />
+        <o.Slot @index={{1}} />
+        <o.Slot @index={{2}} />
+        <o.Slot @index={{3}} />
+      </o.Group>
+      <o.Separator>{{icon Minus}}</o.Separator>
+      <o.Group>
+        <o.Slot @index={{4}} />
+        <o.Slot @index={{5}} />
+        <o.Slot @index={{6}} />
+        <o.Slot @index={{7}} />
+      </o.Group>
+    </OTPInput>
+  </Field>
+</template>
