@@ -24,7 +24,7 @@ import { Tabs } from "ember-ui-sdk/tabs"
 ## Requirements
 
 - `ember-source` 7, `@glimmer/component` and `@glimmer/tracking` as peers. `@ui-sdk/core` is a dependency.
-- The package ships `.gts` and `.ts` source with decorators, so the app's build compiles it: Embroider with Vite, with the template-tag and decorator transforms. `apps/playground/ember-plugin.ts` is a working setup.
+- The package ships `.gts` and `.ts` source with decorators, so the app's build compiles it: Embroider with Vite, with the template-tag and decorator transforms. `playground/ember-plugin.ts` is a working setup.
 
 ## How it maps to the other frameworks
 
