@@ -7,7 +7,10 @@ const port = process.env["PLAYGROUND_PORT"] ?? "5340"
 const specRoot = "vendor/ui/tests/specs"
 
 // Specs that fail for a reason that isn't a bug, by title, each with why.
-const knownGaps: Record<string, string> = {}
+const knownGaps: Record<string, string> = {
+  "hiding native scrollbars injects no style element":
+    "The Vite dev server delivers the shared fixture stylesheet as a style element, and that sheet holds a scrollbar-width rule.",
+}
 
 const fixtures = new Set(
   readdirSync("playground/src/fixtures").flatMap((name) =>
