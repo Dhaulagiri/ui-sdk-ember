@@ -86,7 +86,7 @@ Releases use [changesets](https://github.com/changesets/changesets). A pull requ
 pnpm changeset
 ```
 
-When a changeset lands on main, the release workflow opens or updates a "Version packages" pull request. Merging it publishes `ember-ui-sdk` to npm with provenance. Publishing needs an `NPM_TOKEN` secret in the repo.
+When a changeset lands on main, the release workflow opens or updates a "Version packages" pull request. Merging it publishes `ember-ui-sdk` to npm with provenance. Publishing uses npm trusted publishing, so the repo holds no npm token.
 
 ## License
 
