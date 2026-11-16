@@ -6,6 +6,7 @@ import pages from "virtual:docs-nav"
 import { enhance } from "./enhance.ts"
 import { fill } from "./fill.ts"
 import { parse } from "./markdown.ts"
+import { isDark, toggle } from "./theme.ts"
 
 const docs = import.meta.glob("../../docs/**/*.md", {
   query: "?raw",
@@ -48,6 +49,7 @@ export class App extends Component {
   @tracked title = ""
   @tracked description = ""
   @tracked missing = false
+  @tracked dark = isDark()
 
   constructor(owner: Owner, args: object) {
     super(owner, args)
@@ -103,6 +105,10 @@ export class App extends Component {
     }
   }
 
+  toggleTheme = () => {
+    this.dark = toggle()
+  }
+
   isCurrent = (path: string) => path === this.route.path
 
   <template>
@@ -113,6 +119,12 @@ export class App extends Component {
         <a href="https://github.com/Dhaulagiri/ui-sdk-ember">GitHub</a>
         <a href="https://www.npmjs.com/package/ember-ui-sdk">npm</a>
         <a href="https://ui-sdk.dev/docs">ui-sdk</a>
+        <button
+          type="button"
+          class="theme"
+          aria-label={{if this.dark "Light theme" "Dark theme"}}
+          {{on "click" this.toggleTheme}}
+        >{{if this.dark "☀" "☾"}}</button>
       </nav>
     </header>
     <div class="layout">
