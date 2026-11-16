@@ -37,8 +37,8 @@ import { Tabs } from "ember-ui-sdk/tabs"
 | `render` (any element)   | `@render={{true}}` yields `{ part, state }`; put `{{x.part}}` on your tag |
 | Context                  | None in Ember: parts get their root through the yield or `@handle`        |
 | Fields                   | Controls inside a Field take `@field={{f.field}}`                         |
-| Element refs and actions | The `attach` modifier from `ember-ui-sdk/primitive`                      |
-| Your own components      | `createParts`, `usePrimitive`, `usePart` from `ember-ui-sdk/primitive`   |
+| Element refs and actions | The `attach` modifier from `ember-ui-sdk/primitive`                       |
+| Your own components      | `createParts`, `usePrimitive`, `usePart` from `ember-ui-sdk/primitive`    |
 
 Every component in `@ui-sdk/core` is ported (51), with Shortcuts, Preferences and the overlay host for `toast()` and `confirm()`. Server rendering isn't supported.
 

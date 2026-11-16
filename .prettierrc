@@ -5,7 +5,5 @@
   "tabWidth": 2,
   "trailingComma": "es5",
   "printWidth": 80,
-  "plugins": [
-    "prettier-plugin-ember-template-tag"
-  ]
+  "plugins": ["prettier-plugin-ember-template-tag"]
 }

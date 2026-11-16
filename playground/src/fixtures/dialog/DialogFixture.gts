@@ -17,7 +17,10 @@ import {
   dialogOptions,
   dialogParts,
 } from "tests/fixtures/dialog.ts"
-import { exposeDialogFixture, recordOpenChange } from "../../../../vendor/ui/apps/playground/src/fixtures/dialog/shared.ts"
+import {
+  exposeDialogFixture,
+  recordOpenChange,
+} from "../../../../vendor/ui/apps/playground/src/fixtures/dialog/shared.ts"
 
 export default class DialogFixture extends Component {
   controller = createDialogController()

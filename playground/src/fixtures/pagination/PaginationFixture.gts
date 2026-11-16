@@ -2,10 +2,7 @@ import { on } from "@ember/modifier"
 import Component from "@glimmer/component"
 import { tracked } from "@glimmer/tracking"
 import type { ChangeDetails } from "@ui-sdk/core"
-import {
-  createPaginationController,
-  Pagination,
-} from "ember-ui-sdk/pagination"
+import { createPaginationController, Pagination } from "ember-ui-sdk/pagination"
 import {
   paginationAction,
   paginationFixture as f,

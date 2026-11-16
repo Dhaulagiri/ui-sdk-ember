@@ -83,7 +83,8 @@ class DataCommands extends Component<{
 export default class CommandFixture extends Component<{
   Args: { data?: boolean }
 }> {
-  f: { groups: { label: string; items: Cmd[] }[] } & Omit<typeof f, "groups"> = f
+  f: { groups: { label: string; items: Cmd[] }[] } & Omit<typeof f, "groups"> =
+    f
   options = commandOptions()
   hasShortcut = hasShortcut
   @tracked action = ""

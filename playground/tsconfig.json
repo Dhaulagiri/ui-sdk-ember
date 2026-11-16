@@ -8,8 +8,12 @@
     "paths": {
       "tests/*": ["../vendor/ui/tests/*"],
       "@ui-sdk/core": ["./node_modules/@ui-sdk/core"],
-      "@ui-sdk/core/menu": ["./node_modules/@ui-sdk/core/dist/components/menu/menu.d.ts"],
-      "@ui-sdk/core/toast": ["./node_modules/@ui-sdk/core/dist/components/toast/toast.d.ts"]
+      "@ui-sdk/core/menu": [
+        "./node_modules/@ui-sdk/core/dist/components/menu/menu.d.ts"
+      ],
+      "@ui-sdk/core/toast": [
+        "./node_modules/@ui-sdk/core/dist/components/toast/toast.d.ts"
+      ]
     }
   }
 }
