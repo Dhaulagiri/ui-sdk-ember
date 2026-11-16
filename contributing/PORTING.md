@@ -1,23 +1,23 @@
-# Porting a component to @ui-sdk/ember
+# Porting a component to ember-ui-sdk
 
 Each component is a root plus one `.gts` file per part, all thin wrappers over
 `usePrimitive` and `usePart`. Behavior stays in `@ui-sdk/core`. Tabs is the
 worked example: `src/tabs.ts`, `src/tabs/*.gts`,
-`apps/playground/src/fixtures/tabs/{ember.ts,TabsFixture.gts}`.
+`playground/src/fixtures/tabs/{ember.ts,TabsFixture.gts}`.
 
 ## Files
 
 For a component `foo` (core primitive `foo` from `@ui-sdk/core/foo`):
 
-1. `packages/ember/src/foo.ts`: the entry. Re-exports each part's default
+1. `packages/ember-ui-sdk/src/foo.ts`: the entry. Re-exports each part's default
    export by its React name and the same types the Svelte entry re-exports
    (copy `packages/svelte/src/foo.ts`, change `.svelte` to `.gts`).
-2. `packages/ember/src/foo/foo.gts`: the root.
-3. `packages/ember/src/foo/foo-<part>.gts`: one per part.
-4. `apps/playground/src/fixtures/<fixture>/ember.ts` plus a `.gts` fixture
+2. `packages/ember-ui-sdk/src/foo/foo.gts`: the root.
+3. `packages/ember-ui-sdk/src/foo/foo-<part>.gts`: one per part.
+4. `playground/src/fixtures/<fixture>/ember.ts` plus a `.gts` fixture
    component, for each fixture the Svelte port has (`foo`, `foo-render`, ...).
 5. The one shared line, which the coordinator adds: `"./foo": "./src/foo.ts"`
-   in `packages/ember/package.json` `exports`. Nothing else shared changes.
+   in `packages/ember-ui-sdk/package.json` `exports`. Nothing else shared changes.
 
 ## Root
 
@@ -145,7 +145,7 @@ from context needs them in `usePart`'s fourth argument.
 
 ## Fixture
 
-`apps/playground/src/fixtures/foo/ember.ts`:
+`playground/src/fixtures/foo/ember.ts`:
 
 ```ts
 import { renderComponent } from "@ember/renderer"
