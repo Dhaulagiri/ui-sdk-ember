@@ -2,6 +2,8 @@
 
 ui-sdk-ember brings [ui-sdk](https://github.com/vercel-labs/ui) to Ember. ui-sdk gives you the behaviors under a component: keyboard navigation, focus, selection, dismissal, popups and the ARIA they need. This repo ships them as Glimmer components in `ember-ui-sdk`. You write the markup and styles.
 
+Docs and live examples: https://dhaulagiri.github.io/ui-sdk-ember/
+
 Status: experimental. Expect breaking changes before 1.0. This project is unofficial and not affiliated with Vercel.
 
 ## Install
@@ -55,6 +57,8 @@ Pass `-- --shard=1/4` (and so on) to split the run.
 git submodule update --init
 pnpm install
 pnpm dev              # the playground app
+pnpm --filter site dev     # the docs site, on port 5340 (SITE_PORT)
+pnpm --filter site build   # build it; BASE_PATH=/ui-sdk-ember/ sets the base path
 pnpm typecheck        # every package and the playground
 pnpm format           # check formatting
 pnpm format:write     # fix formatting
