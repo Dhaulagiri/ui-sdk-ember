@@ -4,8 +4,12 @@
   "type": "module",
   "packageManager": "pnpm@10.34.5",
   "scripts": {
+    "build": "pnpm --filter ember-ui-sdk build",
+    "prepare": "pnpm build",
     "dev": "pnpm --filter playground dev",
     "test:upstream": "playwright test -c playwright.upstream.config.ts",
+    "pack:local": "pnpm --filter ember-ui-sdk pack --out artifacts/ember-ui-sdk.tgz",
+    "test:package": "pnpm pack:local && node --test tests/package.test.mjs && npm --prefix test-app ci --legacy-peer-deps --ignore-scripts --no-audit --no-fund && npm --prefix test-app run test:packed",
     "typecheck": "pnpm -r typecheck",
     "format": "prettier --check .",
     "format:write": "prettier --write .",

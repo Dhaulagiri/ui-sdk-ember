@@ -41,6 +41,7 @@ export default defineConfig({
     alias: { tests: resolve(import.meta.dirname, "../vendor/ui/tests") },
   },
   optimizeDeps: {
+    exclude: ["ember-ui-sdk"],
     include: [
       ...coreEntries,
       "decorator-transforms/runtime",

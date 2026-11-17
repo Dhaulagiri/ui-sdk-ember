@@ -58,7 +58,7 @@ class Preferences extends Component<{
   Blocks: { default: [] }
 }> {
   // The browser never runs a script Glimmer inserts, so only the server's counts.
-  get script() {
+  get script(): ReturnType<typeof htmlSafe> | undefined {
     if (typeof window !== "undefined") {
       return undefined
     }

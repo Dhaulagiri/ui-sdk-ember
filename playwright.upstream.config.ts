@@ -53,7 +53,11 @@ export default defineConfig<{
     : undefined,
   fullyParallel: true,
   retries: process.env["CI"] ? 2 : 0,
-  use: { baseURL: `http://localhost:${port}`, trace: "retain-on-failure" },
+  use: {
+    baseURL: `http://localhost:${port}`,
+    trace: "retain-on-failure",
+    channel: process.env.PLAYWRIGHT_CHANNEL,
+  },
   webServer: {
     command: `PLAYGROUND_PORT=${port} pnpm --filter playground dev`,
     url: `http://localhost:${port}`,

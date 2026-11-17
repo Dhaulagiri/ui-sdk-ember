@@ -1,5 +1,7 @@
 node_modules
 dist
+declarations
+artifacts
 test-results
 playwright-report
 blob-report

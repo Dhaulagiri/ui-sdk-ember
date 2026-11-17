@@ -2,4 +2,6 @@ vendor
 node_modules
 dist
 pnpm-lock.yaml
+test-app/package-lock.json
+test-app/tmp
 packages/ember-ui-sdk/docs

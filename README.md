@@ -17,7 +17,8 @@ Each component has its own entry point, like `ember-ui-sdk/tabs`, so an app only
 ## Requirements
 
 - Ember 7 (`ember-source` 7), with `@glimmer/component` and `@glimmer/tracking` installed.
-- Embroider with Vite, and the template-tag and decorator transforms. `ember-ui-sdk` ships `.gts` and `.ts` source, so the app's build has to compile it. `playground/ember-plugin.ts` is a working setup.
+- A standard Ember addon build, such as Embroider with Vite. The package ships JavaScript and declarations, not `.gts` or TypeScript source. Its portable templates use Ember's standard template-compilation API; no package-specific source loaders are needed.
+- For template typechecking, use the `@glint/template` version required by your `@glint/ember-tsc` version.
 - Node 24.
 
 ## Usage
@@ -56,6 +57,8 @@ Pass `-- --shard=1/4` (and so on) to split the run.
 ```bash
 git submodule update --init
 pnpm install
+pnpm build            # compile the addon (also runs during install)
+pnpm --filter ember-ui-sdk watch # rebuild the addon while editing its sources
 pnpm dev              # the playground app
 pnpm --filter site dev     # the docs site, on port 5340 (SITE_PORT)
 pnpm --filter site build   # build it; BASE_PATH=/ui-sdk-ember/ sets the base path
@@ -63,7 +66,17 @@ pnpm typecheck        # every package and the playground
 pnpm format           # check formatting
 pnpm format:write     # fix formatting
 pnpm test:upstream    # upstream specs against the Ember fixtures
+pnpm test:package     # packed-addon checks and the isolated Ember test app
+pnpm pack:local       # artifacts/ember-ui-sdk.tgz; builds before packing
 ```
+
+The playground and site import the built addon. Keep `pnpm --filter ember-ui-sdk watch` running alongside their dev server when changing SDK source.
+
+`test-app/` follows the Ember app blueprint: Embroider/Vite, QUnit, Testem and ember-try. It installs the tarball independently with npm, outside the pnpm workspace, so workspace links cannot mask missing published files. Its Ember 7.4 scenario checks template types, renders tabs with keyboard navigation, and opens/dismisses a dialog with focus restoration.
+
+The Ember 6.5 scenario checks **packaging and types only**: Ember CLI 6.5, ember-auto-import 2/webpack, `ember-tsc` 1.5.0 and `@glint/template` 1.7.7. It deliberately bypasses the unchanged Ember 7 peer requirement. It does not claim Ember 6.5 build or runtime support: that compiler rejects unbound `hash` in the SDK's strict templates. No compatibility aliases or consumer patches are applied.
+
+To try a local build in another app, run `pnpm pack:local`, then install the absolute path to `artifacts/ember-ui-sdk.tgz` using that app's package manager. Nothing is published. With an unsupported Ember version, any peer override is experimental; the packaging fixes alone do not make Ember 6.5 a supported runtime.
 
 ## Updating vendor/ui
 

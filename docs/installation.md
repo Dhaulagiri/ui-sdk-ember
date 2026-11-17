@@ -13,7 +13,11 @@ pnpm add ember-ui-sdk
 
 It depends on `@ui-sdk/core`, which installs with it. It needs these peers in your app: `ember-source` 7 or newer, `@glimmer/component` 2 or newer and `@glimmer/tracking`.
 
-The package ships `.gts` and `.ts` source with decorators, not compiled output. Your app's build has to compile that source, with the template tag, template compilation and decorator transforms applied to the package's files. [`playground/ember-plugin.ts`](https://github.com/Dhaulagiri/ui-sdk-ember/blob/main/playground/ember-plugin.ts) in the repository is a working Vite plugin that does this.
+The package is a v2 Ember addon with JavaScript and declaration exports for each component. Templates use Ember's standard template-compilation API and are compiled by your app's Ember compiler. Your app does not need to parse dependency `.gts` files, strip TypeScript, or transform the SDK's decorators.
+
+For template typechecking, install the `@glint/template` version required by your `@glint/ember-tsc`. Multiple incompatible copies can cause invokable-type errors.
+
+The package includes the standard classic-addon shim for discovery by Ember CLI with ember-auto-import 2. This does not widen runtime support: the supported peer remains Ember 7. Ember CLI 6.5 discovery and declaration consumption are tested, but its compiler rejects unbound `hash` in the SDK's strict templates; Ember 6.5 builds and runtime behavior are not supported or verified.
 
 ## Use a Component
 
