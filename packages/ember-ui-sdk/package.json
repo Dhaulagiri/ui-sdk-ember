@@ -1,6 +1,6 @@
 {
   "name": "ember-ui-sdk",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "description": "ui-sdk for Ember: keyboard, focus, popups and ARIA for your own Glimmer components.",
   "license": "Apache-2.0",
   "repository": {
