@@ -1,3 +1,4 @@
+import { hash } from "@ember/helper"
 import Component from "@glimmer/component"
 import { navigationMenu } from "@ui-sdk/core/navigation-menu"
 import { usePart, type PartSignature } from "../use-part"

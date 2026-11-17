@@ -2,7 +2,7 @@
 
 UI SDK for Ember. A library of behaviors to build your components, rendered as Glimmer components.
 
-> **Not published.** This package lives in a fork of [vercel-labs/ui](https://github.com/vercel-labs/ui) and isn't on npm. Use it from this repo, as a workspace package or a git dependency.
+Install with `pnpm add ember-ui-sdk`. Each component has its own entry point, such as `ember-ui-sdk/tabs`.
 
 It renders the same `@ui-sdk/core` behaviors as `@ui-sdk/react`, `vue`, `svelte`, `solid` and `web`: keyboard navigation, focus, selection, dismissal, popups and the ARIA they need. You write the markup and styles. State shows up as data attributes and CSS variables.
 
@@ -24,7 +24,10 @@ import { Tabs } from "ember-ui-sdk/tabs"
 ## Requirements
 
 - `ember-source` 7, `@glimmer/component` and `@glimmer/tracking` as peers. `@ui-sdk/core` is a dependency.
-- The package ships `.gts` and `.ts` source with decorators, so the app's build compiles it: Embroider with Vite, with the template-tag and decorator transforms. `playground/ember-plugin.ts` is a working setup.
+- A standard Ember addon build, such as Embroider with Vite. The v2 addon ships JavaScript and declarations. Portable templates use Ember's standard template-compilation API; no dependency `.gts`, TypeScript or decorator loaders are required.
+- For template typechecking, use the `@glint/template` version required by your `@glint/ember-tsc`.
+
+The classic-addon shim supports discovery by Ember CLI with ember-auto-import 2. The peer range remains Ember 7. Packed-package checks also cover Ember CLI 6.5 discovery, strict contextual declarations with `ember-tsc` 1.5.0, classic production compilation and focused tabs, dialog and combobox interactions. This limited coverage does not establish general Ember 6.5 support.
 
 ## How it maps to the other frameworks
 
@@ -44,10 +47,12 @@ Every component in `@ui-sdk/core` is ported (51), with Shortcuts, Preferences an
 
 ## Docs
 
-The docs site in `apps/docs` has Ember in its Frameworks menu: an installation page, a rendering page, every component page with live `.gts` examples, and Ember tabs on the Core and Guides pages. Run `pnpm dev` and open `/docs/ember/components/tabs`. `PORTING.md` is the recipe for porting a component, and `handoff/` holds the notes from the port.
+Docs and live examples: https://dhaulagiri.github.io/ui-sdk-ember/. The repository's `site/` serves the documentation; `pnpm --filter site dev` starts it. See `contributing/PORTING.md` for the porting recipe.
 
 ## Tests
 
-- The Playwright specs every framework shares run on the `ember` and `ember-data` projects: `cd tests && npx playwright test --project ember`.
-- `tests/ember-examples.spec.ts` opens every Ember docs example in a browser and fails on any error.
+- `pnpm test:upstream` runs the shared Playwright specs against the Ember playground.
+- `pnpm test:package` checks a packed tarball and runs the isolated `test-app/` with QUnit, Testem and ember-try.
 - `pnpm typecheck` checks the package, the fixtures and the examples with Glint.
+
+`pnpm build` compiles the addon; `pnpm --filter ember-ui-sdk watch` rebuilds it while editing. `pnpm pack:local` writes `artifacts/ember-ui-sdk.tgz` for installation in another app without publishing. Packing always runs the build.

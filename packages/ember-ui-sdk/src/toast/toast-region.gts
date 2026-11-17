@@ -1,3 +1,4 @@
+import { hash } from "@ember/helper"
 import Component from "@glimmer/component"
 import { toastRegion } from "@ui-sdk/core/toast"
 import { portalTarget } from "@ui-sdk/core/renderer"

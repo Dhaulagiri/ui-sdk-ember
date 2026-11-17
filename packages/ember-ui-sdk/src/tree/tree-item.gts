@@ -1,3 +1,4 @@
+import { hash } from "@ember/helper"
 import Component from "@glimmer/component"
 import { tracked } from "@glimmer/tracking"
 import { tree } from "@ui-sdk/core/tree"

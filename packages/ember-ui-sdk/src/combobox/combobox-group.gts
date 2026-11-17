@@ -1,4 +1,6 @@
+import { hash } from "@ember/helper"
 import Component from "@glimmer/component"
+import type { WithBoundArgs } from "@glint/template"
 import { combobox } from "@ui-sdk/core/combobox"
 import { usePart, type PartSignature } from "../use-part"
 import ComboboxGroupLabel from "./combobox-group-label.gts"
@@ -10,7 +12,18 @@ let count = 0
 
 /** Items under a label. Yields its `Label`, `Item`, `Items` and `SelectAll`. */
 class ComboboxGroup extends Component<
-  PartSignature<typeof combobox, "group", HTMLDivElement>
+  PartSignature<
+    typeof combobox,
+    "group",
+    HTMLDivElement,
+    {},
+    {
+      Label: WithBoundArgs<typeof ComboboxGroupLabel, "handle" | "group">
+      Item: WithBoundArgs<typeof ComboboxItem, "handle" | "group">
+      Items: WithBoundArgs<typeof ComboboxItems, "handle" | "group">
+      SelectAll: WithBoundArgs<typeof ComboboxSelectAll, "handle" | "group">
+    }
+  >
 > {
   id = `ui-sdk-e-group${++count}`
   part = usePart(

@@ -1,11 +1,17 @@
+import { hash } from "@ember/helper"
 import type Owner from "@ember/owner"
 import Component from "@glimmer/component"
 import { tracked } from "@glimmer/tracking"
+import type { WithBoundArgs } from "@glint/template"
 import { combobox } from "@ui-sdk/core/combobox"
 import { registerController } from "../controller-target"
 import { useFieldValues, type FieldContext } from "../field/context"
 import { usePart } from "../use-part"
-import { syncOptions, usePrimitive } from "../use-primitive"
+import {
+  syncOptions,
+  usePrimitive,
+  type PrimitiveHandle,
+} from "../use-primitive"
 import ValueInput from "../value-input.gts"
 import ComboboxArrow from "./combobox-arrow.gts"
 import ComboboxChip from "./combobox-chip.gts"
@@ -51,7 +57,39 @@ class Combobox extends Component<{
     /** The Field around it, as its `field` yields. */
     field?: FieldContext
   }
-  Blocks: { default: [Record<string, any>] }
+  Blocks: {
+    default: [
+      {
+        handle: PrimitiveHandle<typeof combobox>
+        Label: WithBoundArgs<typeof ComboboxLabel, "handle">
+        Input: WithBoundArgs<
+          typeof ComboboxInput,
+          "handle" | "shared" | "field"
+        >
+        Trigger: WithBoundArgs<typeof ComboboxTrigger, "handle">
+        Clear: WithBoundArgs<typeof ComboboxClear, "handle">
+        Value: WithBoundArgs<typeof ComboboxValue, "handle">
+        ValueIcon: WithBoundArgs<typeof ComboboxValueIcon, "handle">
+        Chips: WithBoundArgs<typeof ComboboxChips, "handle">
+        Chip: WithBoundArgs<typeof ComboboxChip, "handle">
+        ChipsOverflow: WithBoundArgs<typeof ComboboxChipsOverflow, "handle">
+        Content: WithBoundArgs<
+          typeof ComboboxContent,
+          "handle" | "shared" | "rootContainer"
+        >
+        List: WithBoundArgs<typeof ComboboxList, "handle">
+        Items: WithBoundArgs<typeof ComboboxItems, "handle">
+        Item: WithBoundArgs<typeof ComboboxItem, "handle">
+        Group: WithBoundArgs<typeof ComboboxGroup, "handle">
+        Separator: WithBoundArgs<typeof ComboboxSeparator, "handle">
+        SelectAll: WithBoundArgs<typeof ComboboxSelectAll, "handle">
+        Create: WithBoundArgs<typeof ComboboxCreate, "handle">
+        Empty: WithBoundArgs<typeof ComboboxEmpty, "handle">
+        Status: WithBoundArgs<typeof ComboboxStatus, "handle">
+        Arrow: WithBoundArgs<typeof ComboboxArrow, "handle">
+      },
+    ]
+  }
 }> {
   field = useFieldValues(this)
   handle = usePrimitive(this, combobox, () => ({

@@ -1,3 +1,4 @@
+import { hash } from "@ember/helper"
 import Component from "@glimmer/component"
 import { popover } from "@ui-sdk/core/popover"
 import { usePart, type PartSignature } from "../use-part"

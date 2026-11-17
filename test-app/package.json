@@ -1,0 +1,52 @@
+{
+  "name": "test-app",
+  "version": "0.0.0",
+  "private": true,
+  "exports": {
+    "./tests/*": "./tests/*",
+    "./*": "./app/*"
+  },
+  "scripts": {
+    "test": "vite build --mode development && testem ci --port 0",
+    "test:ember7": "npm run typecheck && npm test",
+    "test:packed": "npm install --no-save --legacy-peer-deps --ignore-scripts --no-audit --no-fund --package-lock=false ../artifacts/ember-ui-sdk.tgz && ember try:each",
+    "test:ember65": "ember try:one ember-6.5-classic",
+    "test:packaging": "node --test tests/packaging-test.cjs && ember-tsc --noEmit",
+    "typecheck": "ember-tsc --noEmit"
+  },
+  "devDependencies": {
+    "@babel/plugin-transform-typescript": "^7.29.9",
+    "@babel/plugin-transform-runtime": "^7.29.7",
+    "@babel/runtime": "^7.29.13",
+    "@ember/test-helpers": "^5.8.0",
+    "@embroider/compat": "^4.1.28",
+    "@embroider/config-meta-loader": "^1.0.1",
+    "@embroider/core": "^4.6.10",
+    "@embroider/macros": "^1.21.4",
+    "@embroider/vite": "^1.8.0",
+    "@babel/core": "^7.29.7",
+    "@glimmer/component": "2.2.1",
+    "@glimmer/tracking": "1.1.2",
+    "@glint/ember-tsc": "1.14.3",
+    "@glint/template": "1.11.1",
+    "@rollup/plugin-babel": "^7.1.0",
+    "@types/rsvp": "^4.0.9",
+    "ember-cli": "~7.4.0",
+    "ember-cli-babel": "^8.3.0",
+    "ember-load-initializers": "^3.0.1",
+    "ember-qunit": "^9.2.1",
+    "ember-resolver": "^13.0.2",
+    "ember-source": "7.4.0",
+    "ember-try": "^5.0.0",
+    "ember-ui-sdk": "file:../packages/ember-ui-sdk",
+    "qunit": "^2.24.0",
+    "qunit-dom": "^3.5.0",
+    "babel-plugin-ember-template-compilation": "^4.0.1",
+    "broccoli-merge-trees": "^4.2.0",
+    "decorator-transforms": "^2.4.0",
+    "loader.js": "^4.7.0",
+    "testem": "^3.21.5",
+    "typescript": "~5.9.3",
+    "vite": "^8.3.6"
+  }
+}

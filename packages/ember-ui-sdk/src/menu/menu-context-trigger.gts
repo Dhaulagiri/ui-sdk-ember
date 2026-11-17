@@ -15,7 +15,7 @@ class MenuContextTrigger extends Component<
     { controller?: object; handle?: PrimitiveHandle<typeof menu> }
   >
 > {
-  feature = menuContextTrigger
+  feature: typeof menuContextTrigger = menuContextTrigger
 
   get handle() {
     return controllerTarget(this.args.controller, this.args.handle)

@@ -1,3 +1,4 @@
+import { hash } from "@ember/helper"
 import Component from "@glimmer/component"
 import { toolbar } from "@ui-sdk/core/toolbar"
 import ToggleGroup from "../toggle/toggle-group.gts"

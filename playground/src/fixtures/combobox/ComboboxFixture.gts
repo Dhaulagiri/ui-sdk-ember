@@ -19,7 +19,7 @@ import { onItemsChange } from "tests/fixtures/items.ts"
 import { longItems, serializeForm } from "tests/fixtures/select.ts"
 
 type Parts = Record<string, unknown>
-type Entry = ListData[number]
+type Entry = ListData<unknown>[number]
 type Item = {
   value: string
   label: string
@@ -43,15 +43,27 @@ const ComposedItem: TOC<{
     >✓</i.Indicator></@parts.Item>
 </template>
 
-const asItem = (entry: Entry) =>
-  (typeof entry === "string" ? { value: entry, label: entry } : entry) as Item
+const asItem = (entry: Entry): Item => {
+  if (typeof entry === "string") {
+    return { value: entry, label: entry }
+  }
+  if (!("value" in entry) || typeof entry.value !== "string") {
+    throw new Error("This fixture expects items with string values")
+  }
+  return { ...entry, value: entry.value }
+}
 const isItem = (entry: Entry) =>
   typeof entry === "string" || (typeof entry === "object" && "value" in entry)
 const isSeparator = (entry: Entry) =>
   typeof entry === "object" && "type" in entry && entry.type === "separator"
 
 class DataItems extends Component<{
-  Args: { parts: Parts; root: Parts; entries: ListData; highlight?: boolean }
+  Args: {
+    parts: Parts
+    root: Parts
+    entries: ListData<unknown>
+    highlight?: boolean
+  }
 }> {
   asItem = asItem
   isItem = isItem
@@ -85,6 +97,12 @@ class DataItems extends Component<{
 export default class ComboboxFixture extends Component<{
   Args: { data?: boolean }
 }> {
+  selectedValues = (value: unknown): string[] => {
+    if (!Array.isArray(value)) {
+      return []
+    }
+    return value.filter((item): item is string => typeof item === "string")
+  }
   f = f
   options = comboboxOptions()
   @tracked action = ""
@@ -233,7 +251,10 @@ export default class ComboboxFixture extends Component<{
               {{#if this.options.multiple}}
                 <c.Chips class={{this.chipsClass}}>
                   <c.Value as |state|>
-                    {{#each state.value key="@identity" as |item|}}
+                    {{#each
+                      (this.selectedValues state.value) key="@identity"
+                      as |item|
+                    }}
                       <c.Chip class="chip" @value={{item}} as |chip|>
                         {{this.labelOf item}}
                         <chip.Remove

@@ -3,6 +3,8 @@
   "include": ["src"],
   "compilerOptions": {
     "experimentalDecorators": true,
+    // Glint reports explicit hash imports as unused on Ember 7.1+.
+    "noUnusedLocals": false,
     "types": ["ember-source/types"]
   }
 }

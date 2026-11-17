@@ -1,3 +1,4 @@
+import { hash } from "@ember/helper"
 import Component from "@glimmer/component"
 import type { ChangeDetails } from "@ui-sdk/core"
 import type { calendar } from "@ui-sdk/core/calendar"

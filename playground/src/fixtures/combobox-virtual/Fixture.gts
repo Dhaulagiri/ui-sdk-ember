@@ -2,7 +2,7 @@ import type { ModifierLike } from "@glint/template"
 import { capabilities, on, setModifierManager } from "@ember/modifier"
 import Component from "@glimmer/component"
 import { tracked } from "@glimmer/tracking"
-import { Combobox } from "ember-ui-sdk/combobox"
+import { Combobox, type ListData } from "ember-ui-sdk/combobox"
 import { longItems, scrollForRow, visibleRows } from "tests/fixtures/select.ts"
 
 const items = longItems()
@@ -27,8 +27,6 @@ const ref = setModifierManager(
   }>
 )
 
-type Item = { value: string; label: string }
-
 export default class Fixture extends Component {
   items = items
   height = height
@@ -47,21 +45,31 @@ export default class Fixture extends Component {
     }
   }
 
-  total = (visible: Item[]) =>
+  total = (visible: readonly unknown[]) =>
     `height: ${visible.length * row}px; position: relative`
 
-  rows = (visible: Item[]) => {
+  rows = (visible: ListData<unknown>) => {
     const { start, end } = visibleRows(
       this.scrollTop,
       height,
       visible.length,
       row
     )
-    return visible.slice(start, end).map((item, offset) => ({
-      ...item,
-      index: start + offset,
-      style: `position: absolute; top: ${(start + offset) * row}px; height: ${row}px; left: 0; right: 0`,
-    }))
+    return visible.slice(start, end).map((item, offset) => {
+      if (
+        typeof item !== "object" ||
+        !("value" in item) ||
+        typeof item.value !== "string"
+      ) {
+        throw new Error("This fixture expects items with string values")
+      }
+      return {
+        ...item,
+        value: item.value,
+        index: start + offset,
+        style: `position: absolute; top: ${(start + offset) * row}px; height: ${row}px; left: 0; right: 0`,
+      }
+    })
   }
 
   <template>

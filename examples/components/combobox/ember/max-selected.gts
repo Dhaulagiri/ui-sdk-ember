@@ -1,3 +1,4 @@
+import { stringValues } from "../../../shared/ember/combobox"
 import { array } from "@ember/helper"
 import { Check, X } from "lucide"
 import { Combobox } from "ember-ui-sdk/combobox"
@@ -24,7 +25,7 @@ const labels = [
       <c.Label>Labels (up to 3)</c.Label>
       <c.Chips>
         <c.Value as |state|>
-          {{#each state.value key="@identity" as |label|}}
+          {{#each (stringValues state.value) key="@identity" as |label|}}
             <c.Chip @value={{label}} as |chip|>
               {{label}}
               <chip.Remove aria-label="Remove {{label}}">{{icon

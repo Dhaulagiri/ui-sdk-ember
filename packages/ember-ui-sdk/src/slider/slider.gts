@@ -1,3 +1,4 @@
+import { hash } from "@ember/helper"
 import Component from "@glimmer/component"
 import type { ChangeDetails, CommitDetails } from "@ui-sdk/core"
 import { slider } from "@ui-sdk/core/slider"

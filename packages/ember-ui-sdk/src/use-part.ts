@@ -67,6 +67,7 @@ type PartSignature<
   S extends SlotName<P>,
   E extends Element = HTMLElement,
   Args = {},
+  Parts = Record<string, any>,
 > = {
   Element: E
   Args: Omit<
@@ -81,9 +82,7 @@ type PartSignature<
     Partial<Omit<PropsOf<P, S>, keyof Args>> &
     Args
   Blocks: {
-    default: [
-      { part: PartModifier; state: StateOf<P, S> } & Record<string, any>,
-    ]
+    default: [{ part: PartModifier; state: StateOf<P, S> } & Parts]
   }
 }
 

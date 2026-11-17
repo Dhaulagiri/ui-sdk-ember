@@ -54,7 +54,7 @@ function docsNav(): Plugin {
 export default defineConfig({
   base: process.env.BASE_PATH ?? "/",
   plugins: [docsNav(), ember()],
-  // The package's sources import it, and no node_modules beside them has it.
+  // App examples also use the decorator transform's runtime.
   resolve: {
     alias: {
       "decorator-transforms/runtime": fileURLToPath(
@@ -63,6 +63,7 @@ export default defineConfig({
     },
   },
   optimizeDeps: {
+    exclude: ["ember-ui-sdk"],
     include: ["decorator-transforms/runtime", "lucide"],
   },
   server: { fs: { allow: [resolve(import.meta.dirname, "..")] } },

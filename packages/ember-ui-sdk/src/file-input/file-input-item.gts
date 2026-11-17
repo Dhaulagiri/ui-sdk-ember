@@ -1,3 +1,4 @@
+import { hash } from "@ember/helper"
 import Component from "@glimmer/component"
 import { fileInput } from "@ui-sdk/core/file-input"
 import { fileKey } from "@ui-sdk/core/renderer"

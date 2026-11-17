@@ -1,4 +1,3 @@
-import { not, or } from "@ember/helper"
 import Component from "@glimmer/component"
 import { tracked } from "@glimmer/tracking"
 import { combobox } from "@ui-sdk/core/combobox"
@@ -18,6 +17,7 @@ class ComboboxItemText extends Component<
   // Read from the content once it's in the page, as Svelte does: a block
   // can't be read before it renders. Content that holds elements stays.
   @tracked text?: string
+  showSegments = (hasBlock: boolean) => Boolean(this.text) || !hasBlock
   part = usePart(
     this,
     () => this.args.handle,
@@ -38,8 +38,7 @@ class ComboboxItemText extends Component<
 
   <template>
     <span ...attributes {{this.part.modifier}} {{onInsert this.learn}}>
-      {{~! @glint-expect-error the helper types lack a call signature ~}}
-      {{~#if (or this.text (not (has-block)))~}}
+      {{~#if (this.showSegments (has-block))~}}
         {{~#each this.part.state.segments as |segment|~}}
           {{~#if segment.match}}<mark
             >{{segment.text}}</mark>{{else}}{{segment.text}}{{/if~}}

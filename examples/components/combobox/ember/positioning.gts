@@ -3,7 +3,7 @@ import { tracked } from "@glimmer/tracking"
 import { on } from "@ember/modifier"
 import { Check, ChevronDown } from "lucide"
 import { Checkbox } from "ember-ui-sdk/checkbox"
-import { Combobox } from "ember-ui-sdk/combobox"
+import { Combobox, type ComboboxContentProps } from "ember-ui-sdk/combobox"
 import { Select } from "ember-ui-sdk/select"
 import { icon } from "../../../shared/ember/icon"
 
@@ -31,8 +31,8 @@ const aligns = [
 ]
 
 export default class Positioning extends Component {
-  @tracked side = "bottom"
-  @tracked align = "start"
+  @tracked side: NonNullable<ComboboxContentProps["side"]> = "bottom"
+  @tracked align: NonNullable<ComboboxContentProps["align"]> = "start"
   @tracked anchored = false
 
   sides = sides
@@ -44,11 +44,20 @@ export default class Positioning extends Component {
   }
 
   onSideChange = (next: string | null) => {
-    if (next) this.side = next
+    if (
+      next === "top" ||
+      next === "right" ||
+      next === "bottom" ||
+      next === "left"
+    ) {
+      this.side = next
+    }
   }
 
   onAlignChange = (next: string | null) => {
-    if (next) this.align = next
+    if (next === "start" || next === "center" || next === "end") {
+      this.align = next
+    }
   }
 
   onCheckedChange = (next: boolean | "indeterminate") => {

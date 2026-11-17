@@ -7,10 +7,14 @@ Start with an app using Ember 7 or newer, with template tag components in `.gts`
 ## Install the Packages
 
 ```bash
-npm install ember-ui-sdk @ui-sdk/core
+npm install ember-ui-sdk
 ```
 
-`ember-ui-sdk` provides the Glimmer components. `@ui-sdk/core` provides their behavior and is a peer dependency. Install both so the components and any helpers you use share one copy of the core.
+`ember-ui-sdk` provides the Glimmer components. `@ui-sdk/core` provides their behavior and installs as a dependency.
+
+The v2 addon ships JavaScript and declarations, not raw `.gts` or TypeScript source. Your app's Ember compiler handles its portable templates through the standard template-compilation API. No package-specific source loaders are needed. For template typechecking, use the `@glint/template` version required by your `@glint/ember-tsc`.
+
+The peer range remains Ember 7. Packed-package checks also cover Ember CLI 6.5 discovery, strict contextual declarations with `ember-tsc` 1.5.0, classic production compilation and focused tabs, dialog and combobox interactions. This limited coverage does not establish general Ember 6.5 support.
 
 ## Use a Component
 

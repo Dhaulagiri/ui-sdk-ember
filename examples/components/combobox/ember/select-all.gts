@@ -1,3 +1,4 @@
+import { stringValues } from "../../../shared/ember/combobox"
 import { array, get } from "@ember/helper"
 import { Check, Minus, X } from "lucide"
 import { Combobox } from "ember-ui-sdk/combobox"
@@ -34,8 +35,10 @@ const timezones = [
   },
 ]
 
-const groupSelectAllLabel = (checked: boolean, label: string) =>
-  checked ? `Clear ${label}` : `Select all in ${label}`
+const groupSelectAllLabel = (state: object, label: string) =>
+  "checked" in state && state.checked === true
+    ? `Clear ${label}`
+    : `Select all in ${label}`
 
 <template>
   <Combobox @multiple={{true}} @defaultValue={{array "Europe/Paris"}} as |c|>
@@ -43,7 +46,7 @@ const groupSelectAllLabel = (checked: boolean, label: string) =>
       <c.Label>Timezones</c.Label>
       <c.Chips>
         <c.Value as |state|>
-          {{#each state.value key="@identity" as |value index|}}
+          {{#each (stringValues state.value) key="@identity" as |value index|}}
             <c.Chip @value={{value}} as |chip|>
               {{get state.labels index}}
               <chip.Remove aria-label="Remove {{get state.labels index}}">{{icon
@@ -71,7 +74,7 @@ const groupSelectAllLabel = (checked: boolean, label: string) =>
               {{group.label}}
             </g.Label>
             <g.SelectAll as |sa|>
-              {{groupSelectAllLabel sa.state.checked group.label}}
+              {{groupSelectAllLabel sa.state group.label}}
             </g.SelectAll>
             {{#each group.items key="value" as |zone|}}
               <g.Item @value={{zone.value}} @label={{zone.label}} as |item|>

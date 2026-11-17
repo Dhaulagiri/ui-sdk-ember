@@ -1,3 +1,4 @@
+import { hash } from "@ember/helper"
 import Component from "@glimmer/component"
 import { slider } from "@ui-sdk/core/slider"
 import type { FieldContext } from "../field/context"
