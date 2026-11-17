@@ -1,6 +1,7 @@
 module.exports = function (environment) {
   return {
     modulePrefix: "test-app",
+    emberVersion: require("ember-source/package.json").version,
     environment,
     rootURL: "/",
     locationType: "none",

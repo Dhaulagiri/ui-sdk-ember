@@ -10,7 +10,7 @@
     "test": "vite build --mode development && testem ci --port 0",
     "test:ember7": "npm run typecheck && npm test",
     "test:packed": "npm install --no-save --legacy-peer-deps --ignore-scripts --no-audit --no-fund --package-lock=false ../artifacts/ember-ui-sdk.tgz && ember try:each",
-    "test:ember65": "ember try:one ember-6.5-packaging",
+    "test:ember65": "ember try:one ember-6.5-classic",
     "test:packaging": "node --test tests/packaging-test.cjs && ember-tsc --noEmit",
     "typecheck": "ember-tsc --noEmit"
   },
@@ -42,7 +42,9 @@
     "qunit": "^2.24.0",
     "qunit-dom": "^3.5.0",
     "babel-plugin-ember-template-compilation": "^4.0.1",
+    "broccoli-merge-trees": "^4.2.0",
     "decorator-transforms": "^2.4.0",
+    "loader.js": "^4.7.0",
     "testem": "^3.21.5",
     "typescript": "~5.9.3",
     "vite": "^8.3.6"

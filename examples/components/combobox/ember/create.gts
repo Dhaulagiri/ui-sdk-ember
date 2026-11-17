@@ -1,3 +1,4 @@
+import { stringValues } from "../../../shared/ember/combobox"
 import Component from "@glimmer/component"
 import { tracked } from "@glimmer/tracking"
 import { Check, LoaderCircle, Plus, X } from "lucide"
@@ -15,6 +16,9 @@ function saveLabel(name: string) {
     )
   )
 }
+
+const errorMessage = (error: unknown) =>
+  error instanceof Error ? error.message : String(error)
 
 export default class Create extends Component {
   @tracked labels = [
@@ -49,7 +53,7 @@ export default class Create extends Component {
         <c.Label>Labels</c.Label>
         <c.Chips>
           <c.Value as |state|>
-            {{#each state.value key="@identity" as |label|}}
+            {{#each (stringValues state.value) key="@identity" as |label|}}
               <c.Chip @value={{label}} as |chip|>
                 {{label}}
                 <chip.Remove aria-label="Remove {{label}}">{{icon
@@ -77,9 +81,9 @@ export default class Create extends Component {
               {{icon Plus}}
               <span data-slot="stack">
                 Create “{{cr.state.query}}”
-                {{#if cr.state.error}}<span
-                    data-slot="hint"
-                  >{{cr.state.error.message}}</span>{{/if}}
+                {{#if cr.state.error}}<span data-slot="hint">{{errorMessage
+                      cr.state.error
+                    }}</span>{{/if}}
               </span>
             {{/if}}
           </c.Create>

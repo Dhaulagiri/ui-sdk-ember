@@ -2,10 +2,11 @@ import Component from "@glimmer/component"
 import { on } from "@ember/modifier"
 import { htmlSafe } from "@ember/template"
 import { tracked } from "@glimmer/tracking"
-import { Combobox } from "ember-ui-sdk/combobox"
+import { Combobox, type ListData } from "ember-ui-sdk/combobox"
 import { ChevronDown } from "lucide"
 import { attach } from "ember-ui-sdk/primitive"
 import { icon } from "../../../shared/ember/icon"
+import { listItems } from "../../../shared/ember/combobox"
 
 const manyItems = Array.from({ length: 10_000 }, (_, index) => ({
   value: `item-${index + 1}`,
@@ -51,7 +52,8 @@ export default class Virtualized extends Component {
     this.scrollTop = (event.currentTarget as HTMLElement).scrollTop
   }
 
-  visible = (items: typeof manyItems) => {
+  visible = (entries: ListData<unknown>) => {
+    const items = listItems(entries)
     const start = Math.max(0, Math.floor(this.scrollTop / row) - 4)
     const end = Math.min(
       items.length,

@@ -1,3 +1,4 @@
+import { hash } from "@ember/helper"
 import Component from "@glimmer/component"
 import { menubar } from "@ui-sdk/core/menubar"
 import Menu from "../menu/menu.gts"

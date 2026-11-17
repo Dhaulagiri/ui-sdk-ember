@@ -17,7 +17,7 @@ The package is a v2 Ember addon with JavaScript and declaration exports for each
 
 For template typechecking, install the `@glint/template` version required by your `@glint/ember-tsc`. Multiple incompatible copies can cause invokable-type errors.
 
-The package includes the standard classic-addon shim for discovery by Ember CLI with ember-auto-import 2. This does not widen runtime support: the supported peer remains Ember 7. Ember CLI 6.5 discovery and declaration consumption are tested, but its compiler rejects unbound `hash` in the SDK's strict templates; Ember 6.5 builds and runtime behavior are not supported or verified.
+The package includes the standard classic-addon shim for discovery by Ember CLI with ember-auto-import 2. The supported peer remains Ember 7. Packed-package checks also cover Ember CLI 6.5 discovery, strict contextual declarations with `ember-tsc` 1.5.0, classic production compilation and focused tabs, dialog and combobox interactions. This limited coverage does not establish general Ember 6.5 support.
 
 ## Use a Component
 

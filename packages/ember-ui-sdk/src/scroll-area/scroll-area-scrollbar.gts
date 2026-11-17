@@ -1,3 +1,4 @@
+import { hash } from "@ember/helper"
 import Component from "@glimmer/component"
 import { scrollArea } from "@ui-sdk/core/scroll-area"
 import { usePart, type PartSignature } from "../use-part"

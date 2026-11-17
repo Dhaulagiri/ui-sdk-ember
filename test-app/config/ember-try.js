@@ -18,8 +18,10 @@ module.exports = {
       },
     },
     {
-      name: "ember-6.5-packaging",
-      command: "npm run test:packaging",
+      name: "ember-6.5-classic",
+      command:
+        "npm run test:packaging && ember build --environment production && ember test",
+      env: { CLASSIC_BUILD: "true" },
       npm: {
         devDependencies: {
           "ember-source": "6.5.0",

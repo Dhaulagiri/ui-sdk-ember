@@ -1,3 +1,4 @@
+import { stringValues } from "../../../shared/ember/combobox"
 import { array, concat, get } from "@ember/helper"
 import { Check, X } from "lucide"
 import { Combobox } from "ember-ui-sdk/combobox"
@@ -39,7 +40,7 @@ const joinLabels = (labels: string[]) => labels.join(", ")
       <c.Label>Countries</c.Label>
       <c.Chips>
         <c.Value as |state|>
-          {{#each state.value key="@identity" as |value index|}}
+          {{#each (stringValues state.value) key="@identity" as |value index|}}
             <c.Chip @value={{value}} as |chip|>
               {{get state.labels index}}
               <chip.Remove

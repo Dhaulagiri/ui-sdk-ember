@@ -1,3 +1,4 @@
+import { hash } from "@ember/helper"
 import type Owner from "@ember/owner"
 import Component from "@glimmer/component"
 import { triggerMenu } from "@ui-sdk/core/trigger-menu"

@@ -14,7 +14,7 @@ npm install ember-ui-sdk
 
 The v2 addon ships JavaScript and declarations, not raw `.gts` or TypeScript source. Your app's Ember compiler handles its portable templates through the standard template-compilation API. No package-specific source loaders are needed. For template typechecking, use the `@glint/template` version required by your `@glint/ember-tsc`.
 
-The peer range remains Ember 7. Ember CLI 6.5 discovery and declaration consumption are tested, but its compiler rejects unbound `hash` in strict SDK templates; Ember 6.5 build and runtime support are not established.
+The peer range remains Ember 7. Packed-package checks also cover Ember CLI 6.5 discovery, strict contextual declarations with `ember-tsc` 1.5.0, classic production compilation and focused tabs, dialog and combobox interactions. This limited coverage does not establish general Ember 6.5 support.
 
 ## Use a Component
 

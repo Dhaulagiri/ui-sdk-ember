@@ -1,3 +1,4 @@
+import { hash } from "@ember/helper"
 import Component from "@glimmer/component"
 import { carousel } from "@ui-sdk/core/carousel"
 import { controllerTarget } from "../controller-target"

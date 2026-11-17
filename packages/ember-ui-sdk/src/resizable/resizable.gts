@@ -1,3 +1,4 @@
+import { hash } from "@ember/helper"
 import Component from "@glimmer/component"
 import { resizable, type ResizableOptions } from "@ui-sdk/core/resizable"
 import { usePart } from "../use-part"

@@ -1,3 +1,4 @@
+import { hash } from "@ember/helper"
 import Component from "@glimmer/component"
 import { accordion } from "@ui-sdk/core/accordion"
 import { usePart, type PartSignature } from "../use-part"

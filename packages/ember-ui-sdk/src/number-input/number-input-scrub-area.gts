@@ -1,3 +1,4 @@
+import { hash } from "@ember/helper"
 import Component from "@glimmer/component"
 import { numberInput } from "@ui-sdk/core/number-input"
 import { controllerTarget } from "../controller-target"

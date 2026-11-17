@@ -1,0 +1,19 @@
+<PackedCombobox as |c|>
+  <c.Label>Country</c.Label>
+  <c.Input />
+  <c.Trigger>Choose country</c.Trigger>
+  <c.Clear>Clear country</c.Clear>
+  <c.Content>
+    <c.Empty>No countries</c.Empty>
+    <c.List>
+      <c.Item @value="fr" as |item|>
+        <item.Text>France</item.Text>
+        <item.Indicator>Selected</item.Indicator>
+      </c.Item>
+      <c.Item @value="de" as |item|>
+        <item.Text>Germany</item.Text>
+        <item.Indicator>Selected</item.Indicator>
+      </c.Item>
+    </c.List>
+  </c.Content>
+</PackedCombobox>

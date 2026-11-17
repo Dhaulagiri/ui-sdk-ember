@@ -1,6 +1,11 @@
 import { Check, ChevronDown } from "lucide"
 import { Combobox } from "ember-ui-sdk/combobox"
 import { icon } from "../../../shared/ember/icon"
+import {
+  isListGroup,
+  isListItem,
+  listItems,
+} from "../../../shared/ember/combobox"
 
 const countries = [
   { value: "ar", label: "Argentina", keywords: ["república argentina"] },
@@ -55,10 +60,10 @@ const announcement = (change: { type: string; count?: number }) =>
       <c.Empty>No countries found.</c.Empty>
       <c.List as |list|>
         {{#each list.state.items key="@identity" as |entry|}}
-          {{#if entry.items}}
+          {{#if (isListGroup entry)}}
             <c.Group as |g|>
               <g.Label>{{entry.label}}</g.Label>
-              {{#each entry.items key="value" as |country|}}
+              {{#each (listItems entry.items) key="value" as |country|}}
                 <g.Item
                   @value={{country.value}}
                   @label={{country.label}}
@@ -69,7 +74,7 @@ const announcement = (change: { type: string; count?: number }) =>
                 </g.Item>
               {{/each}}
             </c.Group>
-          {{else}}
+          {{else if (isListItem entry)}}
             <c.Item @value={{entry.value}} @label={{entry.label}} as |item|>
               <item.Text />
               <item.Indicator>{{icon Check}}</item.Indicator>

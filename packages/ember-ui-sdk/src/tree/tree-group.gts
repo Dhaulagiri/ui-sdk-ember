@@ -1,3 +1,4 @@
+import { hash } from "@ember/helper"
 import { registerDestructor } from "@ember/destroyable"
 import type Owner from "@ember/owner"
 import Component from "@glimmer/component"

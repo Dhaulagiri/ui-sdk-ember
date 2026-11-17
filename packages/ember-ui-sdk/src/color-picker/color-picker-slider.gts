@@ -1,3 +1,4 @@
+import { hash } from "@ember/helper"
 import Component from "@glimmer/component"
 import { colorPicker } from "@ui-sdk/core/color-picker"
 import { usePart, type PartSignature } from "../use-part"

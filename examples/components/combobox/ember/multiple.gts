@@ -1,3 +1,4 @@
+import { stringValues } from "../../../shared/ember/combobox"
 import { array, get } from "@ember/helper"
 import { Check, ChevronDown, X } from "lucide"
 import { Combobox } from "ember-ui-sdk/combobox"
@@ -28,7 +29,10 @@ const frameworkLabel = (value: string) =>
       <div data-slot="row">
         <c.Chips>
           <c.Value as |state|>
-            {{#each state.value key="@identity" as |value index|}}
+            {{#each
+              (stringValues state.value) key="@identity"
+              as |value index|
+            }}
               <c.Chip @value={{value}} as |chip|>
                 {{get state.labels index}}
                 <chip.Remove

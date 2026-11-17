@@ -1,3 +1,4 @@
+import { hash } from "@ember/helper"
 import Component from "@glimmer/component"
 import { autocomplete } from "@ui-sdk/core/autocomplete"
 import { usePart, type PartSignature } from "../use-part"

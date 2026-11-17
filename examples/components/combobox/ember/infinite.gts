@@ -3,6 +3,7 @@ import { Check, ChevronDown } from "lucide"
 import { useAsyncOptions } from "ember-ui-sdk/async-options"
 import { Combobox } from "ember-ui-sdk/combobox"
 import { icon } from "../../../shared/ember/icon"
+import { listItems } from "../../../shared/ember/combobox"
 
 const movieTitles = [
   "The Shawshank Redemption",
@@ -96,7 +97,7 @@ export default class Infinite extends Component {
           {{#unless e.state.loading}}No movies found.{{/unless}}
         </c.Empty>
         <c.List as |list|>
-          {{#each list.state.items key="value" as |item|}}
+          {{#each (listItems list.state.items) key="value" as |item|}}
             <c.Item
               @value={{item.value}}
               @label={{item.label}}

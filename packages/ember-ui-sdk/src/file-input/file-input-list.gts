@@ -1,3 +1,4 @@
+import { hash } from "@ember/helper"
 import Component from "@glimmer/component"
 import { fileInput } from "@ui-sdk/core/file-input"
 import { usePart, type PartSignature } from "../use-part"

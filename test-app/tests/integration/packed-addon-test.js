@@ -2,20 +2,29 @@ import { module, test } from "qunit"
 import { setupRenderingTest } from "ember-qunit"
 import {
   click,
+  fillIn,
   focus,
   render,
   triggerKeyEvent,
   waitUntil,
 } from "@ember/test-helpers"
 import { precompileTemplate } from "@ember/template-compilation"
+import { VERSION } from "@ember/version"
+import config from "test-app/config/environment"
 import { Tabs } from "ember-ui-sdk/tabs"
 import { Dialog } from "ember-ui-sdk/dialog"
+import { Combobox } from "ember-ui-sdk/combobox"
 import * as primitive from "ember-ui-sdk/primitive"
 
 module("Integration | packed addon", function (hooks) {
   setupRenderingTest(hooks)
 
   test("component and primitive entries load", function (assert) {
+    assert.strictEqual(
+      VERSION,
+      config.emberVersion,
+      "the selected Ember runtime is loaded"
+    )
     assert.ok(Tabs)
     assert.ok(Dialog)
     assert.strictEqual(typeof primitive.attach, "function")
@@ -61,5 +70,76 @@ module("Integration | packed addon", function (hooks) {
     await triggerKeyEvent(document.activeElement, "keydown", "Escape")
     await waitUntil(() => !document.querySelector('[role="dialog"]'))
     assert.dom('[data-slot="dialog-trigger"]').isFocused()
+  })
+
+  test("combobox filters, selects with the keyboard and clears", async function (assert) {
+    await render(
+      precompileTemplate(
+        `<Combobox as |c|>
+          <c.Label>Country</c.Label>
+          <c.Input />
+          <c.Trigger>Choose country</c.Trigger>
+          <c.Clear>Clear country</c.Clear>
+          <c.Content>
+            <c.Empty>No countries</c.Empty>
+            <c.List>
+              <c.Item @value="fr" as |item|>
+                <item.Text>France</item.Text>
+                <item.Indicator>Selected</item.Indicator>
+              </c.Item>
+              <c.Item @value="de" as |item|>
+                <item.Text>Germany</item.Text>
+                <item.Indicator>Selected</item.Indicator>
+              </c.Item>
+            </c.List>
+          </c.Content>
+        </Combobox>`,
+        { strictMode: true, scope: () => ({ Combobox }) }
+      )
+    )
+    assert
+      .dom('[role="combobox"]')
+      .hasAttribute(
+        "aria-labelledby",
+        document.querySelector('[data-slot="combobox-label"]').id
+      )
+    await click('[data-slot="combobox-trigger"]')
+    await waitUntil(() => document.querySelector('[role="listbox"]'))
+    await fillIn('[role="combobox"]', "Fran")
+    await waitUntil(() =>
+      [...document.querySelectorAll('[role="option"]')].some(
+        (option) => option.textContent.includes("France") && !option.hidden
+      )
+    )
+    assert.dom('[role="option"]:not([hidden])', document).exists({ count: 1 })
+    await triggerKeyEvent('[role="combobox"]', "keydown", "ArrowDown")
+    await triggerKeyEvent('[role="combobox"]', "keydown", "Enter")
+    assert.dom('[role="combobox"]').hasValue("France")
+    await click('[data-slot="combobox-clear"]')
+    assert.dom('[role="combobox"]').hasValue("")
+  })
+
+  test("combobox chips remove a selected value", async function (assert) {
+    const selected = ["fr"]
+    await render(
+      precompileTemplate(
+        `<Combobox @multiple={{true}} @defaultValue={{selected}} as |c|>
+          <c.Label>Countries</c.Label>
+          <c.Input />
+          <c.Chips>
+            <c.Chip @value="fr" as |chip|>
+              France <chip.Remove>Remove France</chip.Remove>
+            </c.Chip>
+          </c.Chips>
+          <c.Content>
+            <c.List><c.Item @value="fr" @label="France" /></c.List>
+          </c.Content>
+        </Combobox>`,
+        { strictMode: true, scope: () => ({ Combobox, selected }) }
+      )
+    )
+    assert.dom('input[type="hidden"]').hasValue("fr")
+    await click('[data-slot="combobox-chip-remove"]')
+    assert.dom('input[type="hidden"][value="fr"]').doesNotExist()
   })
 })

@@ -1,3 +1,4 @@
+import { stringValues } from "../../../shared/ember/combobox"
 import Component from "@glimmer/component"
 import { array } from "@ember/helper"
 import { on } from "@ember/modifier"
@@ -90,7 +91,7 @@ export default class Form extends Component {
         >
           <c.Chips>
             <c.Value as |state|>
-              {{#each state.value key="@identity" as |interest|}}
+              {{#each (stringValues state.value) key="@identity" as |interest|}}
                 <c.Chip @value={{interest}} as |chip|>
                   {{interest}}
                   <chip.Remove aria-label="Remove {{interest}}">{{icon
