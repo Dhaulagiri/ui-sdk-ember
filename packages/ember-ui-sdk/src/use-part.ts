@@ -304,20 +304,69 @@ const modifierManager = {
     rendering(() => modifier.binding.detach(modifier.el!)),
 }
 
+// A modifier that binds nothing, for a part without a root.
+const unbound = setModifierManager(
+  () => ({
+    capabilities: capabilities("3.22", { disableAutoTracking: true }),
+    createModifier: () => ({}),
+    installModifier: () => {},
+    updateModifier: () => {},
+    destroyModifier: () => {},
+  }),
+  function () {}
+) as unknown as PartModifier
+
+// A part whose component was rendered without a root: present, with no
+// attributes, no state and a modifier that binds nothing.
+function detached(): PartBinding<Record<string, unknown>> {
+  const state = {}
+  return {
+    present: true,
+    attrs: {},
+    state,
+    modifier: unbound,
+    yielded: { part: unbound, state },
+  }
+}
+
 /**
  * Binds one part of `handle`'s instance for the life of `owner`, a part
  * component. Its props are the arguments the slot's schema names, with
  * `extra` over them, like an item's key a parent passes down.
+ *
+ * `handle` reads the root's instance, usually from an argument: a root
+ * yields its own part components with `(component MyTab handle=this.handle)`,
+ * so a part rendered by another component binds to the root that created
+ * it. If `handle` returns nothing when the part is created, the part is
+ * detached for its life: it's present, its state is empty, and its modifier
+ * binds nothing, so one component can render with or without its root.
  * @experimental
  */
 function usePart<P extends Primitive, S extends SlotName<P>>(
   owner: { args: object },
   handle: () => PrimitiveHandle<P>,
   slot: S,
+  extra?: () => Partial<PropsOf<P, S>>,
+  channel?: string
+): PartBinding<StateOf<P, S>>
+function usePart<P extends Primitive, S extends SlotName<P>>(
+  owner: { args: object },
+  handle: () => PrimitiveHandle<P> | undefined,
+  slot: S,
+  extra?: () => Partial<PropsOf<P, S>>,
+  channel?: string
+): PartBinding<Partial<StateOf<P, S>>>
+function usePart<P extends Primitive, S extends SlotName<P>>(
+  owner: { args: object },
+  handle: () => PrimitiveHandle<P> | undefined,
+  slot: S,
   extra: () => Partial<PropsOf<P, S>> = () => ({}),
   channel?: string
 ) {
-  const names = () => schemaOf(handle().primitive).slots[slot] ?? {}
+  if (!handle()) {
+    return detached() as PartBinding<Partial<StateOf<P, S>>>
+  }
+  const names = () => schemaOf(handle()!.primitive).slots[slot] ?? {}
   // A prop of kind "id" no argument gives, like a trigger's, keys this part alone.
   const id = `ui-sdk-e-part${++count}`
   // Parts on one element, like a toolbar button around a menu trigger, write
