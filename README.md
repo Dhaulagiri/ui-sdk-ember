@@ -16,7 +16,7 @@ Each component has its own entry point, like `ember-ui-sdk/tabs`, so an app only
 
 ## Requirements
 
-- Ember 7 (`ember-source` 7), with `@glimmer/component` and `@glimmer/tracking` installed.
+- Ember 5.12 or newer (`ember-source` 5.12, 6.x or 7.x), with `@glimmer/component` and `@glimmer/tracking` installed.
 - A standard Ember addon build, such as Embroider with Vite. The package ships JavaScript and declarations, not `.gts` or TypeScript source. Its portable templates use Ember's standard template-compilation API; no package-specific source loaders are needed.
 - For template typechecking, use the `@glint/template` version required by your `@glint/ember-tsc` version.
 - Node 24.
@@ -74,7 +74,7 @@ The playground and site import the built addon. Keep `pnpm --filter ember-ui-sdk
 
 `test-app/` follows the Ember app blueprint: Embroider/Vite, QUnit, Testem and ember-try. It installs the tarball independently with npm, outside the pnpm workspace, so workspace links cannot mask missing published files. Its Ember 7.4 scenario checks strict contextual-component types, tabs keyboard navigation, dialog focus restoration, and combobox filtering, keyboard selection, clearing and chip removal.
 
-The Ember 6.5 scenario uses Ember CLI 6.5, ember-auto-import 2/webpack, `ember-tsc` 1.5.0 and `@glint/template` 1.7.7. It checks addon discovery, strict contextual declarations, a classic production build that imports the combobox, the same rendering interactions, and booting the classic app. `classic/` supplies the classic app entry and HTML while sharing the rendering tests. Both scenarios enable `noPropertyAccessFromIndexSignature`. No compatibility aliases or consumer patches are applied. The scenario deliberately bypasses the unchanged Ember 7 peer requirement: this focused coverage is not general Ember 6.5 support.
+The Ember 6.5 scenario uses Ember CLI 6.5, ember-auto-import 2/webpack, `ember-tsc` 1.5.0 and `@glint/template` 1.7.7. It checks addon discovery, strict contextual declarations, a classic production build that imports the combobox, the same rendering interactions, and booting the classic app. `classic/` supplies the classic app entry and HTML while sharing the rendering tests. Both scenarios enable `noPropertyAccessFromIndexSignature`. No compatibility aliases or consumer patches are applied. The peer range allows Ember 5.12 and 6.x; this scenario is the focused coverage for 6.x, and Ember 5.12 is not covered by a scenario yet.
 
 The SDK explicitly imports `hash` from `@ember/helper` so older Ember compilers receive a lexical scope. Glint currently misidentifies those imports as unused on Ember 7.1+, so only the SDK's development `noUnusedLocals` check is disabled; strict type checking and consumer compiler settings remain enabled. No Glint patches are required.
 
