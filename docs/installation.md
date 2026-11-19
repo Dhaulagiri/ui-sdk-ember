@@ -3,7 +3,7 @@ title: Installation
 description: Install ember-ui-sdk in your Ember app.
 ---
 
-Start with an app using Ember 7 or newer, with template tag components in `.gts` files.
+Start with an app using Ember 5.12 or newer, with template tag components in `.gts` files.
 
 ## Install the Packages
 
@@ -17,7 +17,7 @@ The package is a v2 Ember addon with JavaScript and declaration exports for each
 
 For template typechecking, install the `@glint/template` version required by your `@glint/ember-tsc`. Multiple incompatible copies can cause invokable-type errors.
 
-The package includes the standard classic-addon shim for discovery by Ember CLI with ember-auto-import 2. The supported peer remains Ember 7. Packed-package checks also cover Ember CLI 6.5 discovery, strict contextual declarations with `ember-tsc` 1.5.0, classic production compilation and focused tabs, dialog and combobox interactions. This limited coverage does not establish general Ember 6.5 support.
+The package includes the standard classic-addon shim for discovery by Ember CLI with ember-auto-import 2. The peer range allows Ember 5.12, 6.x and 7.x. Packed-package checks also cover Ember CLI 6.5 discovery, strict contextual declarations with `ember-tsc` 1.5.0, classic production compilation and focused tabs, dialog and combobox interactions. Ember 5.12 is not covered by a scenario yet.
 
 ## Use a Component
 

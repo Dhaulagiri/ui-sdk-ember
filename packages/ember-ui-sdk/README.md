@@ -27,7 +27,7 @@ import { Tabs } from "ember-ui-sdk/tabs"
 - A standard Ember addon build, such as Embroider with Vite. The v2 addon ships JavaScript and declarations. Portable templates use Ember's standard template-compilation API; no dependency `.gts`, TypeScript or decorator loaders are required.
 - For template typechecking, use the `@glint/template` version required by your `@glint/ember-tsc`.
 
-The classic-addon shim supports discovery by Ember CLI with ember-auto-import 2. The peer range remains Ember 7. Packed-package checks also cover Ember CLI 6.5 discovery, strict contextual declarations with `ember-tsc` 1.5.0, classic production compilation and focused tabs, dialog and combobox interactions. This limited coverage does not establish general Ember 6.5 support.
+The classic-addon shim supports discovery by Ember CLI with ember-auto-import 2. The peer range allows Ember 5.12, 6.x and 7.x. Packed-package checks also cover Ember CLI 6.5 discovery, strict contextual declarations with `ember-tsc` 1.5.0, classic production compilation and focused tabs, dialog and combobox interactions. Ember 5.12 is not covered by a scenario yet.
 
 ## How it maps to the other frameworks
 
