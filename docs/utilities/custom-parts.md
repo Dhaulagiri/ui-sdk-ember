@@ -28,3 +28,70 @@ export default class RatingRoot extends Component {
 Controlled options follow data down and actions up: `@value` with `@onValueChange`. Pass a third argument to `usePrimitive` for options the arguments don't hold.
 
 A child part takes the root's `handle` as an argument and calls `usePart` with its own slot. A part's `present`, `attrs`, `state` and `modifier` track what they read.
+
+## Bind a Part From Another Component
+
+Ember has no context, so a part finds its root through an argument. A root that yields a part component of your own binds its instance to it with `(component)`, and the part hands that instance to `usePart`. The part binds to that root wherever it renders: in the root's template, or in the block of the app that uses the root.
+
+```gts title="app-tabs.gts"
+import Component from "@glimmer/component"
+import { hash } from "@ember/helper"
+import type { WithBoundArgs } from "@glint/template"
+import { tabs, type TabsPrimitive } from "@ui-sdk/core/tabs"
+import {
+  syncOptions,
+  usePart,
+  usePrimitive,
+  type PrimitiveHandle,
+} from "ember-ui-sdk/primitive"
+
+class AppTab extends Component<{
+  Element: HTMLButtonElement
+  Args: {
+    /** The tabs' instance, which AppTabs binds. */
+    handle?: PrimitiveHandle<TabsPrimitive>
+    value: string
+  }
+  Blocks: { default: [] }
+}> {
+  part = usePart(
+    this,
+    () => this.args.handle,
+    "tab",
+    () => ({ value: this.args.value })
+  )
+
+  <template>
+    <button
+      type="button"
+      ...attributes
+      {{this.part.modifier}}
+    >{{yield}}</button>
+  </template>
+}
+
+export default class AppTabs extends Component<{
+  Blocks: { default: [{ Tab: WithBoundArgs<typeof AppTab, "handle"> }] }
+}> {
+  handle = usePrimitive(this, tabs)
+  list = usePart(this, () => this.handle, "list")
+
+  <template>
+    {{syncOptions this.handle}}
+    <div {{this.list.modifier}}>
+      {{yield (hash Tab=(component AppTab handle=this.handle))}}
+    </div>
+  </template>
+}
+```
+
+```gts
+<AppTabs as |t|>
+  <t.Tab @value="a">Alpha</t.Tab>
+  <t.Tab @value="b">Beta</t.Tab>
+</AppTabs>
+```
+
+`WithBoundArgs` leaves `@handle` out of the type the app sees, so the instance stays between your root and your part. Keep it in an argument rather than a module-level map: the argument follows Ember's rendering, so each root's parts bind to that root, and nothing outlives it.
+
+If `handle` returns nothing when the part is created, the part is detached for its life: it's present, its state is empty, and its modifier binds nothing. The same component then renders inside its root or alone, and TypeScript types its state as possibly missing.
