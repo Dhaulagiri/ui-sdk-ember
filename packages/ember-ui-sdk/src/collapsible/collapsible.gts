@@ -1,4 +1,5 @@
 import { hash } from "@ember/helper"
+import type { WithBoundArgs } from "@glint/template"
 import type { ChangeDetails } from "@ui-sdk/core"
 import Component from "@glimmer/component"
 import {
@@ -6,7 +7,7 @@ import {
   type CollapsibleController,
   type CollapsibleOpenChangeReason,
 } from "@ui-sdk/core/collapsible"
-import { usePart } from "../use-part"
+import { usePart, type RootYield } from "../use-part"
 import { syncOptions, usePrimitive } from "../use-primitive"
 import CollapsibleTrigger from "./collapsible-trigger.gts"
 import CollapsiblePanel from "./collapsible-panel.gts"
@@ -35,7 +36,14 @@ class Collapsible extends Component<{
     /** Renders no element: bind your own with the yielded `part`. */
     render?: boolean
   }
-  Blocks: { default: [Record<string, any>] }
+  Blocks: {
+    default: [
+      RootYield<typeof collapsible> & {
+        Trigger: WithBoundArgs<typeof CollapsibleTrigger, "handle">
+        Panel: WithBoundArgs<typeof CollapsiblePanel, "handle">
+      },
+    ]
+  }
 }> {
   handle = usePrimitive(this, collapsible)
   root = usePart(this, () => this.handle, "root")
