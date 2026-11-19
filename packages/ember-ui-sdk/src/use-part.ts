@@ -86,6 +86,25 @@ type PartSignature<
   }
 }
 
+/**
+ * What a root yields beside its parts: its `part` modifier, the state of its
+ * slot, `root` unless `S` names another, and its `handle`. A root's block
+ * param is this and its parts, each with the arguments the root binds:
+ * `RootYield<typeof tabs> & { Tab: WithBoundArgs<typeof TabsTab, "handle"> }`.
+ * @experimental
+ */
+type RootYield<
+  P extends Primitive,
+  S extends SlotName<P> = "root" & SlotName<P>,
+> = {
+  /** Binds your own element to the root with `@render={{true}}`. */
+  part: PartModifier
+  /** The state of the root's slot. Reading a key tracks that key. */
+  state: StateOf<P, S>
+  /** The root's instance, for a part rendered outside its block. */
+  handle: PrimitiveHandle<P>
+}
+
 const bindings = new WeakMap<object, Binding>()
 let count = 0
 
@@ -343,4 +362,10 @@ function usePart<P extends Primitive, S extends SlotName<P>>(
   return binding as unknown as PartBinding<StateOf<P, S>>
 }
 
-export { type PartBinding, type PartModifier, type PartSignature, usePart }
+export {
+  type PartBinding,
+  type PartModifier,
+  type PartSignature,
+  type RootYield,
+  usePart,
+}
