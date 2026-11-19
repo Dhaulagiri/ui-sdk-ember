@@ -1,7 +1,7 @@
 import Component from "@glimmer/component"
 import { calendar, type CalendarGridCell } from "@ui-sdk/core/calendar"
 import type { PrimitiveHandle } from "../use-primitive"
-import CalendarWeek from "./calendar-week.gts"
+import CalendarWeek, { type CalendarWeekYield } from "./calendar-week.gts"
 
 /** The weeks of the grid's month, a row each, with a day in each cell. A block renders once per shown cell and gets its `cell` and `Day`. A cell that shows nothing stays an empty cell. */
 class CalendarWeeks extends Component<{
@@ -11,7 +11,7 @@ class CalendarWeeks extends Component<{
     offset?: number
     weeks: CalendarGridCell[][]
   }
-  Blocks: { default: [Record<string, any>] }
+  Blocks: { default: [CalendarWeekYield] }
 }> {
   <template>
     <tbody ...attributes>

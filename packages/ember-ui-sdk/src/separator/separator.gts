@@ -1,6 +1,6 @@
 import Component from "@glimmer/component"
 import { separator, type SeparatorOrientation } from "@ui-sdk/core/separator"
-import { usePart } from "../use-part"
+import { usePart, type RootYield } from "../use-part"
 import { syncOptions, usePrimitive } from "../use-primitive"
 
 /** A line between groups of content, announced as a separator unless it's `@decorative`. */
@@ -16,7 +16,7 @@ class Separator extends Component<{
     /** Renders no element: bind your own with the yielded `part`. */
     render?: boolean
   }
-  Blocks: { default: [Record<string, any>] }
+  Blocks: { default: [Pick<RootYield<typeof separator>, "part" | "state">] }
 }> {
   handle = usePrimitive(this, separator)
   root = usePart(this, () => this.handle, "root")

@@ -3,7 +3,7 @@ import {
   button as buttonPrimitive,
   type ButtonActionDetails,
 } from "@ui-sdk/core/button"
-import { usePart } from "../use-part"
+import { usePart, type RootYield } from "../use-part"
 import { syncOptions, usePrimitive } from "../use-primitive"
 
 /** A button, or a link or any element that acts as one through `@render`. */
@@ -28,7 +28,9 @@ class Button extends Component<{
     /** Renders no element: bind your own with the yielded `part`. */
     render?: boolean
   }
-  Blocks: { default: [Record<string, any>] }
+  Blocks: {
+    default: [Pick<RootYield<typeof buttonPrimitive>, "part" | "state">]
+  }
 }> {
   handle = usePrimitive(this, buttonPrimitive, () => ({
     action: (event, details) =>

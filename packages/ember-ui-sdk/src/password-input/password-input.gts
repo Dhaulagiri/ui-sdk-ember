@@ -1,4 +1,5 @@
 import { hash } from "@ember/helper"
+import type { WithBoundArgs } from "@glint/template"
 import Component from "@glimmer/component"
 import type { ChangeDetails } from "@ui-sdk/core"
 import {
@@ -8,7 +9,7 @@ import {
   type PasswordInputVisibleChangeReason,
 } from "@ui-sdk/core/password-input"
 import { useFieldValues, type FieldContext } from "../field/context"
-import { usePart } from "../use-part"
+import { usePart, type RootYield } from "../use-part"
 import { syncOptions, usePrimitive } from "../use-primitive"
 import PasswordInputControl from "./password-input-control.gts"
 import PasswordInputToggle from "./password-input-toggle.gts"
@@ -56,7 +57,17 @@ class PasswordInput extends Component<{
     /** Renders no element: bind your own with the yielded `part`. */
     render?: boolean
   }
-  Blocks: { default: [Record<string, any>] }
+  Blocks: {
+    default: [
+      RootYield<typeof passwordInput> & {
+        Control: WithBoundArgs<
+          typeof PasswordInputControl,
+          "handle" | "field" | "value" | "defaultValue"
+        >
+        Toggle: WithBoundArgs<typeof PasswordInputToggle, "handle">
+      },
+    ]
+  }
 }> {
   fieldValues = useFieldValues(this)
   handle = usePrimitive(this, passwordInput, () => ({

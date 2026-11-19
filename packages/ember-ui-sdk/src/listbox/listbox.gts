@@ -1,8 +1,9 @@
 import { hash } from "@ember/helper"
+import type { WithBoundArgs } from "@glint/template"
 import Component from "@glimmer/component"
 import { listbox } from "@ui-sdk/core/listbox"
 import { useFieldControl, type FieldContext } from "../field/context"
-import { usePart } from "../use-part"
+import { usePart, type RootYield } from "../use-part"
 import { syncOptions, usePrimitive } from "../use-primitive"
 import ValueInput from "../value-input.gts"
 import ListboxGroup from "./listbox-group.gts"
@@ -26,7 +27,16 @@ class Listbox extends Component<{
     /** Renders no element: bind your own with the yielded `part`. */
     render?: boolean
   }
-  Blocks: { default: [Record<string, any>] }
+  Blocks: {
+    default: [
+      RootYield<typeof listbox> & {
+        Item: WithBoundArgs<typeof ListboxItem, "handle">
+        Items: WithBoundArgs<typeof ListboxItems, "handle">
+        Group: WithBoundArgs<typeof ListboxGroup, "handle">
+        Separator: WithBoundArgs<typeof ListboxSeparator, "handle">
+      },
+    ]
+  }
 }> {
   fieldControl = useFieldControl(this, () => ({ id: this.args.id }))
   handle = usePrimitive(this, listbox, () => ({

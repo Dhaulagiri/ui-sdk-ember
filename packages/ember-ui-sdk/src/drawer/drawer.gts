@@ -1,4 +1,6 @@
 import { hash } from "@ember/helper"
+import type { RootYield } from "../use-part"
+import type { WithBoundArgs } from "@glint/template"
 import type Owner from "@ember/owner"
 import Component from "@glimmer/component"
 import { drawer } from "@ui-sdk/core/drawer"
@@ -22,7 +24,24 @@ class Drawer extends Component<{
     /** Renders the drawer into this element instead of in place. */
     container?: Element | DocumentFragment | null
   }
-  Blocks: { default: [Record<string, any>] }
+  Blocks: {
+    default: [
+      Pick<RootYield<typeof drawer>, "handle"> & {
+        Trigger: WithBoundArgs<typeof DrawerTrigger, "handle">
+        Backdrop: WithBoundArgs<
+          typeof DrawerBackdrop,
+          "handle" | "rootContainer"
+        >
+        Content: WithBoundArgs<typeof DrawerContent, "handle" | "rootContainer">
+        Handle: WithBoundArgs<typeof DrawerHandle, "handle">
+        Title: WithBoundArgs<typeof DrawerTitle, "handle">
+        Description: WithBoundArgs<typeof DrawerDescription, "handle">
+        Close: WithBoundArgs<typeof DrawerClose, "handle">
+        Shortcut: WithBoundArgs<typeof DrawerShortcut, "handle">
+        Outlet: WithBoundArgs<typeof DrawerOutlet, "handle">
+      },
+    ]
+  }
 }> {
   handle = usePrimitive(this, drawer)
 
