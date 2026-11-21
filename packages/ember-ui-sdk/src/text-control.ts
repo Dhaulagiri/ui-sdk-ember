@@ -37,4 +37,24 @@ type TextControlArgs = {
   render?: boolean
 }
 
-export { type TextControlArgs }
+// Glimmer writes `value` only when `@value` changes, so a controlled value the
+// parent kept goes back once the change settles, as in React.
+function keepControlled(owner: { args: TextControlArgs }) {
+  return (next: string, details: ChangeDetails<InputValueChangeReason>) => {
+    owner.args.onValueChange?.(next, details)
+    const event = details.event as InputEvent | undefined
+    const el = event?.target as HTMLInputElement | null | undefined
+    // Mid-composition the IME owns the text, and its last change comes after.
+    if (details.canceled || !el || event?.isComposing) {
+      return
+    }
+    queueMicrotask(() => {
+      const kept = owner.args.value
+      if (kept !== undefined && el.value !== kept) {
+        el.value = kept
+      }
+    })
+  }
+}
+
+export { keepControlled, type TextControlArgs }
