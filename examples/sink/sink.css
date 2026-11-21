@@ -7,3 +7,333 @@
 .sink svg.lucide {
   flex: none;
 }
+
+/* The agent panel: a launcher at the corner and a column beside the grid. */
+.sink .agent-launch {
+  position: fixed;
+  right: 20px;
+  bottom: 20px;
+  z-index: 30;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  height: 40px;
+  padding: 0 16px;
+  border: 0;
+  border-radius: 999px;
+  background: var(--ink);
+  color: var(--paper);
+  font-weight: 500;
+  box-shadow: 0 8px 24px -8px oklch(0.2 0.02 60 / 0.5);
+  cursor: pointer;
+}
+
+.sink .agent-launch[aria-expanded="true"] {
+  display: none;
+}
+
+.sink .agent-launch:focus-visible,
+.sink .agent-panel button:focus-visible,
+.sink .agent-panel textarea:focus-visible {
+  outline: 2px solid var(--signal);
+  outline-offset: 2px;
+}
+
+.sink .agent-panel {
+  position: fixed;
+  top: 72px;
+  right: 16px;
+  bottom: 16px;
+  z-index: 30;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  width: min(380px, calc(100vw - 32px));
+  padding: 16px;
+  overflow: auto;
+  border: 1px solid var(--rule);
+  border-radius: 18px;
+  background: var(--raised);
+  box-shadow: 0 24px 48px -16px oklch(0.2 0.02 60 / 0.35);
+}
+
+.sink .agent-panel[hidden] {
+  display: none;
+}
+
+.sink .agent-head {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 2px 8px;
+}
+
+.sink .agent-title {
+  margin: 0;
+  font-weight: 600;
+}
+
+.sink .agent-webmcp {
+  grid-column: 1;
+  margin: 0;
+  color: var(--ink-3);
+  font-size: 12px;
+}
+
+.sink .agent-webmcp[data-on] {
+  color: oklch(0.5 0.12 150);
+}
+
+.sink .agent-close {
+  grid-column: 2;
+  grid-row: 1 / span 2;
+  align-self: start;
+  display: grid;
+  place-items: center;
+  width: 28px;
+  height: 28px;
+  border: 0;
+  border-radius: 8px;
+  background: transparent;
+  cursor: pointer;
+}
+
+.sink .agent-close:hover {
+  background: var(--paper-2);
+}
+
+/* Buttons outside a tile take the white tile's colors. The approval dialog
+   renders outside the sink, so it's named on its own. */
+.sink .agent-panel,
+.agent-ask {
+  --tile-accent: var(--signal, oklch(0.64 0.19 38));
+  --tile-accent-ink: oklch(1 0 0);
+  --tile-rule: oklch(0.89 0.012 80);
+  --tile-surface: oklch(1 0 0);
+  --tile-ink: oklch(0.22 0.015 60);
+  --tile-ink-2: oklch(0.45 0.018 62);
+}
+
+.sink .agent-tab-list {
+  display: flex;
+  gap: 4px;
+  border-bottom: 1px solid var(--rule);
+}
+
+.sink .agent-tab {
+  padding: 6px 10px;
+  border: 0;
+  border-bottom: 2px solid transparent;
+  background: none;
+  color: var(--ink-2);
+  cursor: pointer;
+}
+
+.sink .agent-tab[data-selected] {
+  border-bottom-color: var(--ink);
+  color: var(--ink);
+}
+
+.sink .agent-tab-panel {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding-top: 12px;
+}
+
+.sink .agent-note {
+  margin: 0;
+  color: var(--ink-2);
+  font-size: 13px;
+}
+
+.sink .agent-panel code,
+.sink .agent-panel pre,
+.sink .agent-log,
+.sink .agent-input {
+  font-family: var(--mono);
+  font-size: 12px;
+}
+
+.sink .agent-tasks,
+.sink .agent-log,
+.sink .agent-changes {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.sink .agent-task {
+  display: flex;
+  gap: 10px;
+  width: 100%;
+  padding: 8px 10px;
+  border: 1px solid var(--rule);
+  border-radius: 10px;
+  background: var(--paper);
+  text-align: left;
+  cursor: pointer;
+}
+
+.sink .agent-task svg {
+  align-self: center;
+}
+
+.sink .agent-task:hover:not(:disabled) {
+  border-color: var(--ink-3);
+}
+
+.sink .agent-task:disabled {
+  opacity: 0.55;
+  cursor: default;
+}
+
+.sink .agent-task[data-running] {
+  opacity: 1;
+  border-color: var(--signal);
+}
+
+.sink .agent-log {
+  padding: 10px;
+  border-radius: 10px;
+  background: var(--ink);
+  color: var(--paper);
+}
+
+.sink .agent-log [data-kind="task"] {
+  color: var(--ink-3);
+}
+
+.sink .agent-log [data-kind="call"]::before {
+  content: "› ";
+  color: var(--signal);
+}
+
+.sink .agent-log [data-kind="seen"] {
+  padding-left: 1.2em;
+  color: color-mix(in oklab, var(--paper) 70%, transparent);
+}
+
+.sink .agent-log [data-kind="done"] {
+  color: oklch(0.82 0.14 150);
+}
+
+.sink .agent-log [data-kind="error"] {
+  color: oklch(0.75 0.16 30);
+}
+
+.sink .agent-log [data-kind="ask"] {
+  color: oklch(0.85 0.12 85);
+}
+
+.sink .agent-tools {
+  position: relative;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  padding: 3px;
+  border-radius: 10px;
+  background: var(--paper-2);
+}
+
+.sink .agent-tools [data-scope="segmented-control"][data-part="item"],
+.sink .agent-tools button {
+  position: relative;
+  z-index: 1;
+  height: 28px;
+  border: 0;
+  background: none;
+  font-family: var(--mono);
+  font-size: 12px;
+  cursor: pointer;
+}
+
+.sink .agent-tools-indicator {
+  position: absolute;
+  top: var(--segmented-control-indicator-top);
+  left: var(--segmented-control-indicator-left);
+  width: var(--segmented-control-indicator-width);
+  height: var(--segmented-control-indicator-height);
+  border-radius: 8px;
+  background: var(--raised);
+  box-shadow: 0 1px 2px oklch(0.2 0.02 60 / 0.15);
+  transition:
+    left 200ms var(--ease-out),
+    width 200ms var(--ease-out);
+}
+
+.sink .agent-input-label {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  color: var(--ink-2);
+  font-size: 12px;
+}
+
+.sink .agent-input {
+  padding: 8px;
+  border: 1px solid var(--rule);
+  border-radius: 10px;
+  background: var(--paper);
+  color: var(--ink);
+  resize: vertical;
+}
+
+.sink .agent-call {
+  align-self: flex-start;
+}
+
+.sink .agent-output {
+  max-height: 320px;
+  margin: 0;
+  padding: 10px;
+  overflow: auto;
+  border-radius: 10px;
+  background: var(--ink);
+  color: var(--paper);
+}
+
+.sink .agent-changes li {
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
+  font-size: 13px;
+}
+
+.sink .agent-source {
+  flex: none;
+  padding: 1px 6px;
+  border-radius: 6px;
+  background: var(--paper-2);
+  font: 500 11px/1.4 var(--mono);
+}
+
+.sink .agent-source[data-source="agent"] {
+  background: var(--ink);
+  color: var(--paper);
+}
+
+.sink .agent-change {
+  min-width: 0;
+  overflow-wrap: anywhere;
+}
+
+.sink .agent-empty {
+  color: var(--ink-3);
+}
+
+/* The tile an agent step is working in. */
+.sink .tile[data-agent-target] {
+  outline: 3px solid var(--signal);
+  outline-offset: 4px;
+  transition: outline-color 200ms;
+}
+
+@media (max-width: 640px) {
+  .sink .agent-panel {
+    top: auto;
+    left: 16px;
+    max-height: 70vh;
+  }
+}

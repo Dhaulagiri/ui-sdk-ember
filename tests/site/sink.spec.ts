@@ -66,3 +66,51 @@ test("the sink fits a phone without sideways scroll", async ({ page }) => {
   )
   expect(overflow).toBeLessThanOrEqual(0)
 })
+
+test("the agent panel drives tiles and waits for the person on a marked step", async ({
+  page,
+}) => {
+  const errors = collectErrors(page)
+  await page.goto("/#/sink")
+  await page.getByRole("button", { name: "Agent", exact: true }).click()
+  const panel = page.getByRole("complementary", { name: "Agent" })
+
+  await panel.getByRole("button", { name: /Quiet my devices down/ }).click()
+  await expect(panel.locator(".agent-log")).toContainText(
+    "Wi-Fi and Bluetooth are off",
+    { timeout: 10_000 }
+  )
+  await expect(page.getByRole("switch", { name: /Wi-Fi/ })).not.toBeChecked()
+
+  await panel.getByRole("button", { name: /Delete the legacy-cron/ }).click()
+  const ask = page.getByRole("alertdialog", { name: "Let the agent do this?" })
+  await expect(ask).toContainText("Delete legacy-cron and its 12 deployments", {
+    timeout: 10_000,
+  })
+  await ask.getByRole("button", { name: "Refuse" }).click()
+  await expect(panel.locator(".agent-log")).toContainText("You refused")
+
+  await panel.getByRole("tab", { name: "Activity" }).click()
+  await expect(panel.locator(".agent-changes")).toContainText("Volume")
+  expect(errors).toEqual([])
+})
+
+test("the agent sees the tiles, not the tags or its own panel", async ({
+  page,
+}) => {
+  await page.goto("/#/sink")
+  await expect(page.locator(".tile").first()).toBeVisible()
+  const components = await page.evaluate(() =>
+    (
+      window as unknown as {
+        agent: { snapshot: () => { component: string; label?: string }[] }
+      }
+    ).agent.snapshot()
+  )
+  const labels = components.map((c) => `${c.component}:${c.label ?? ""}`)
+  expect(labels).toContain("radio:Cabin")
+  expect(labels.filter((label) => label.startsWith("toggle:Slider"))).toEqual(
+    []
+  )
+  expect(labels.some((label) => label.includes("Tool"))).toBe(false)
+})
