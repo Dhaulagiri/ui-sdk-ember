@@ -2,7 +2,9 @@ import { Tabs } from "ember-ui-sdk/tabs"
 import { array } from "@ember/helper"
 import { Dialog } from "ember-ui-sdk/dialog"
 import { Combobox } from "ember-ui-sdk/combobox"
-import { attach } from "ember-ui-sdk/primitive"
+import { attach, usePart, type PrimitiveHandle } from "ember-ui-sdk/primitive"
+import type { TabsPrimitive } from "ember-ui-sdk/tabs"
+import Component from "@glimmer/component"
 import type { ComponentLike } from "@glint/template"
 
 const TypedTabs: ComponentLike<{
@@ -13,8 +15,38 @@ const TypedTabs: ComponentLike<{
 
 const attachment = (_element: Element) => {}
 
+// A part another component renders, handed its root's instance as @handle.
+class AppTab extends Component<{
+  Element: HTMLButtonElement
+  Args: { handle: PrimitiveHandle<TabsPrimitive>; value: string }
+  Blocks: { default: [] }
+}> {
+  part = usePart(
+    this,
+    () => this.args.handle,
+    "tab",
+    () => ({ value: this.args.value })
+  )
+
+  get selected(): boolean {
+    return this.part.state.selected
+  }
+
+  <template>
+    <button type="button" {{this.part.modifier}}>{{yield}}</button>
+  </template>
+}
+
+// A root's instance, as a root yields it.
+declare const tabsHandle: PrimitiveHandle<TabsPrimitive>
+
 <template>
   <TypedTabs @defaultValue="a" />
+  <AppTab @handle={{tabsHandle}} @value="a">Bound</AppTab>
+  {{! @glint-expect-error a tab takes its root's instance }}
+  <AppTab @value="b">Alone</AppTab>
+  {{! @glint-expect-error a tab takes its value }}
+  <AppTab />
   <Dialog @defaultOpen={{false}} />
   <div {{attach attachment}}></div>
   <Combobox as |c|>
