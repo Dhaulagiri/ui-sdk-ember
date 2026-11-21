@@ -356,7 +356,7 @@ class AppTab extends Component<{
   Element: HTMLButtonElement
   Args: {
     /** The tabs' instance, which AppTabs binds. */
-    handle?: PrimitiveHandle<TabsPrimitive>
+    handle: PrimitiveHandle<TabsPrimitive>
     value: string
   }
   Blocks: { default: [] }
@@ -397,4 +397,4 @@ export default class AppTabs extends Component<{
 
 `WithBoundArgs` leaves `@handle` out of the type the app sees, so the instance stays between your root and your part. Keep it in an argument rather than a module-level map: the argument follows Ember's rendering, so each root's parts bind to that root, and nothing outlives it.
 
-If `handle` returns nothing when the part is created, the part is detached for its life: it's present, its state is empty, and its modifier binds nothing. The same component then renders inside its root or alone, and TypeScript types its state as possibly missing.
+A part created without an instance throws, as it does in the other frameworks, so a part you render alone needs its root's `handle` passed by hand.
