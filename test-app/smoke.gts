@@ -18,7 +18,7 @@ const attachment = (_element: Element) => {}
 // A part another component renders, handed its root's instance as @handle.
 class AppTab extends Component<{
   Element: HTMLButtonElement
-  Args: { handle?: PrimitiveHandle<TabsPrimitive>; value: string }
+  Args: { handle: PrimitiveHandle<TabsPrimitive>; value: string }
   Blocks: { default: [] }
 }> {
   part = usePart(
@@ -28,8 +28,7 @@ class AppTab extends Component<{
     () => ({ value: this.args.value })
   )
 
-  get selected(): boolean | undefined {
-    // Without a root, the part is detached and its state is empty.
+  get selected(): boolean {
     return this.part.state.selected
   }
 
@@ -44,6 +43,7 @@ declare const tabsHandle: PrimitiveHandle<TabsPrimitive>
 <template>
   <TypedTabs @defaultValue="a" />
   <AppTab @handle={{tabsHandle}} @value="a">Bound</AppTab>
+  {{! @glint-expect-error a tab takes its root's instance }}
   <AppTab @value="b">Alone</AppTab>
   {{! @glint-expect-error a tab takes its value }}
   <AppTab />

@@ -21,7 +21,7 @@ import { Combobox } from "ember-ui-sdk/combobox"
 import * as primitive from "ember-ui-sdk/primitive"
 
 // A tab of the app's own: it binds ui-sdk's tab part to the instance its
-// root hands it as @handle, and renders unbound without one.
+// root hands it as @handle.
 class AppTab extends Component {
   part = primitive.usePart(
     this,
@@ -95,8 +95,7 @@ module("Integration | packed addon", function (hooks) {
           </tabs.List>
           <tabs.Panel @value="a">Panel alpha</tabs.Panel>
           <tabs.Panel @value="b">Panel beta</tabs.Panel>
-        </AppTabs>
-        <AppTab id="alone">Alone</AppTab>`,
+        </AppTabs>`,
         { strictMode: true, scope: () => ({ AppTabs, AppTab }) }
       )
     )
@@ -106,11 +105,14 @@ module("Integration | packed addon", function (hooks) {
     await triggerKeyEvent(document.activeElement, "keydown", "ArrowLeft")
     assert.dom('.app-tab[aria-selected="true"]').hasText("Alpha").isFocused()
     assert.dom('[role="tabpanel"]:not([hidden])').hasText("Panel alpha")
-    assert
-      .dom("#alone")
-      .doesNotHaveAttribute("role", "a part without a root binds nothing")
-    await click("#alone")
-    assert.dom('.app-tab[aria-selected="true"]').hasText("Alpha")
+  })
+
+  test("a part without its root's instance throws", function (assert) {
+    // Called directly: a render that throws would leave the renderer broken.
+    assert.throws(
+      () => primitive.usePart({ args: {} }, () => undefined, "tab"),
+      /^Error: A tab part needs @handle, or the root's yielded part\.$/
+    )
   })
 
   test("dialog opens, dismisses and restores focus", async function (assert) {
