@@ -1,5 +1,5 @@
 import type { TOC } from "@ember/component/template-only"
-import { fn, get } from "@ember/helper"
+import { fn, get, hash } from "@ember/helper"
 import type Owner from "@ember/owner"
 import { on } from "@ember/modifier"
 import { registerDestructor } from "@ember/destroyable"
@@ -76,23 +76,6 @@ import type { Tile } from "../types.ts"
 
 const wait = (ms: number) =>
   new Promise<void>((resolve) => setTimeout(resolve, ms))
-
-/** An icon that carries a class (and, for the odd one, an accessible name). */
-function iconc(
-  node: IconNode,
-  size: number,
-  className: string,
-  label?: string
-) {
-  const svg = icon(node, size)
-  svg.setAttribute("class", className)
-  if (label) {
-    svg.removeAttribute("aria-hidden")
-    svg.setAttribute("aria-label", label)
-    svg.setAttribute("role", "img")
-  }
-  return svg
-}
 
 const Avatar = <template>
   <span class="ov-avatar" data-size={{if @size @size "md"}} aria-hidden="true">
@@ -304,10 +287,10 @@ class Palette extends Component {
                 {{#if entry.shortcut}}<item.Shortcut
                     class="ov-cmd-shortcut"
                   />{{/if}}
-                {{#if entry.page}}{{iconc
+                {{#if entry.page}}{{icon
                     ChevronRight
                     16
-                    "ov-cmd-caret"
+                    (hash class="ov-cmd-caret")
                   }}{{/if}}
               </g.Item>
             {{/each}}
@@ -334,10 +317,10 @@ class Palette extends Component {
                 {{#if entry.shortcut}}<item.Shortcut
                     class="ov-cmd-shortcut"
                   />{{/if}}
-                {{#if entry.page}}{{iconc
+                {{#if entry.page}}{{icon
                     ChevronRight
                     16
-                    "ov-cmd-caret"
+                    (hash class="ov-cmd-caret")
                   }}{{/if}}
               </g.Item>
             {{/each}}
@@ -790,7 +773,7 @@ class Region extends Component {
                 <span class="ov-region-id">{{r.id}}</span>
                 <span class="ov-region-name">{{r.city}}</span>
                 <span class="ov-region-ms">{{r.ms}}</span>
-                {{iconc Check 16 "ov-region-check"}}
+                {{icon Check 16 (hash class="ov-region-check")}}
               </d.Close>
             {{/each}}
           </div>
@@ -1376,7 +1359,7 @@ class Deploys extends Component {
                         14
                       }}</m.ItemIcon>
                     Copy
-                    {{iconc ChevronRight 14 "ov-menu-caret"}}
+                    {{icon ChevronRight 14 (hash class="ov-menu-caret")}}
                   </s.Trigger>
                   <s.Content class="b-pop ov-menu" @collisionPadding={{12}}>
                     <s.Item @value="copy-url" class="b-item ov-menu-item">
@@ -1716,7 +1699,7 @@ class Editor extends Component {
               <m.Sub as |s|>
                 <s.Trigger class="b-item ov-menu-item">
                   Open recent
-                  {{iconc ChevronRight 14 "ov-menu-caret"}}
+                  {{icon ChevronRight 14 (hash class="ov-menu-caret")}}
                 </s.Trigger>
                 <s.Content class="b-pop ov-menu" @collisionPadding={{12}}>
                   <s.Item
@@ -1974,7 +1957,7 @@ class Sidebar extends Component {
               >
                 <span class="ov-side-icon">{{icon section.icon 16}}</span>
                 {{section.label}}
-                {{iconc ChevronRight 16 "ov-side-caret"}}
+                {{icon ChevronRight 16 (hash class="ov-side-caret")}}
               </i.Trigger>
               <i.Content class="ov-side-panel" as |c|>
                 <p class="ov-side-panel-title">{{section.label}}</p>
@@ -2100,7 +2083,7 @@ class Inbox extends Component {
         <ul class="ov-inbox-list">
           {{#each this.items key="id" as |item|}}
             <li class="ov-inbox-row">
-              {{iconc item.icon 14 "ov-inbox-icon"}}
+              {{icon item.icon 14 (hash class="ov-inbox-icon")}}
               <span class="ov-inbox-title">{{item.title}}</span>
               <button
                 type="button"
@@ -2356,10 +2339,10 @@ class LineComments extends Component {
             >
               <span class="ov-line-n">{{line.n}}</span>
               <code class="ov-line-code">{{line.code}}</code>
-              {{#if (this.note line.n)}}{{iconc
+              {{#if (this.note line.n)}}{{icon
                   MessageCircle
                   14
-                  "ov-line-note"
+                  (hash class="ov-line-note")
                 }}{{/if}}
             </button>
           </li>
@@ -2497,12 +2480,14 @@ class Assignee extends Component {
                 >
                   <Avatar @initials={{a.initials}} @size="sm" />
                   {{a.name}}
-                  {{#if (this.isWho a.id)}}{{iconc
-                      Check
-                      14
-                      "ov-assign-check"
-                      "Current"
-                    }}{{/if}}
+                  {{#if (this.isWho a.id)}}<span
+                      role="img"
+                      aria-label="Current"
+                    >{{icon
+                        Check
+                        14
+                        (hash class="ov-assign-check")
+                      }}</span>{{/if}}
                 </c.Item>
               {{/each}}
             </c.List>

@@ -1,12 +1,11 @@
 import { registerDestructor } from "@ember/destroyable"
 import { fn } from "@ember/helper"
-import { capabilities, on, setModifierManager } from "@ember/modifier"
+import { on } from "@ember/modifier"
 import { guidFor } from "@ember/object/internals"
 import { schedule } from "@ember/runloop"
 import { htmlSafe } from "@ember/template"
 import Component from "@glimmer/component"
 import { tracked } from "@glimmer/tracking"
-import type { ModifierLike } from "@glint/template"
 import {
   Bot,
   Check,
@@ -69,31 +68,8 @@ import {
 } from "ember-ui-sdk/token-input"
 import "../../../vendor/ui/apps/docs/app/sink/tiles/locale.css"
 import { icon } from "../icon.ts"
+import { onInsert } from "../on-insert.ts"
 import type { Tile } from "../types.ts"
-
-/** Runs `callback(el)` once the element is in the page; what it returns runs when it leaves. */
-const onInsert = setModifierManager(
-  () => ({
-    capabilities: capabilities("3.22", { disableAutoTracking: true }),
-    createModifier: () => ({ cleanup: undefined as void | (() => void) }),
-    installModifier: (
-      modifier: { cleanup: void | (() => void) },
-      el: Element,
-      { positional }: { positional: unknown[] }
-    ) => {
-      modifier.cleanup = (
-        positional[0] as (el: Element) => void | (() => void)
-      )(el)
-    },
-    updateModifier: () => {},
-    destroyModifier: (modifier: { cleanup: void | (() => void) }) =>
-      modifier.cleanup?.(),
-  }),
-  function () {} as unknown as ModifierLike<{
-    Element: Element
-    Args: { Positional: [(el: any) => void | (() => void)] }
-  }>
-)
 
 class LocaleSwitch extends Component<{
   Args: {

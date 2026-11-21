@@ -14,7 +14,6 @@ import {
   CircleCheck,
   Coffee,
   Coins,
-  createElement,
   CreditCard,
   Dumbbell,
   Eye,
@@ -62,23 +61,11 @@ import "../../../vendor/ui/apps/docs/app/sink/tiles/forms.css"
 import { icon } from "../icon.ts"
 import type { Tile } from "../types.ts"
 
-/** A Lucide icon with extra attributes, like a fill, for what Phosphor's fill weight drew. */
-const mark = (
-  node: IconNode,
-  size: number,
-  attrs: Record<string, string> = {}
-) =>
-  createElement(node, {
-    "aria-hidden": "true",
-    width: String(size),
-    height: String(size),
-    ...attrs,
-  })
-
+/** Phosphor's fill weight, drawn with a Lucide icon. */
 const solid = (node: IconNode, size = 16) =>
-  mark(node, size, { fill: "currentColor" })
+  icon(node, size, { fill: "currentColor" })
 
-const spinner = (size = 16) => mark(LoaderCircle, size, { class: "fm-spin" })
+const spinner = (size = 16) => icon(LoaderCircle, size, { class: "fm-spin" })
 
 const wait = (ms: number) =>
   new Promise<void>((resolve) => setTimeout(resolve, ms))

@@ -13,15 +13,7 @@ import {
   type Color,
 } from "@ui-sdk/core/color"
 import { cropImage } from "@ui-sdk/core/image"
-import {
-  createElement,
-  Check,
-  RotateCw,
-  Star,
-  Truck,
-  WandSparkles,
-  X,
-} from "lucide"
+import { Check, RotateCw, Star, Truck, WandSparkles, X } from "lucide"
 import type { IconNode } from "lucide"
 import { Button } from "ember-ui-sdk/button"
 import { ColorPicker } from "ember-ui-sdk/color-picker"
@@ -35,19 +27,6 @@ import { TimeInput } from "ember-ui-sdk/time-input"
 import "../../../vendor/ui/apps/docs/app/sink/tiles/pickers.css"
 import { icon } from "../icon.ts"
 import type { Tile } from "../types.ts"
-
-/** A Lucide icon with extra attributes, like a fill, for what Phosphor's fill weight drew. */
-const mark = (
-  node: IconNode,
-  size: number,
-  attrs: Record<string, string> = {}
-) =>
-  createElement(node, {
-    "aria-hidden": "true",
-    width: String(size),
-    height: String(size),
-    ...attrs,
-  })
 
 const white = parseColor("#fff")!
 const black = parseColor("#000")!
@@ -248,13 +227,13 @@ class ContrastCheck extends Component {
   }
 
   passIcon = () =>
-    mark(Check, 12, {
+    icon(Check, 12, {
       "aria-label": "Passes",
       "aria-hidden": "false",
       role: "img",
     })
   failIcon = () =>
-    mark(X, 12, { "aria-label": "Fails", "aria-hidden": "false", role: "img" })
+    icon(X, 12, { "aria-label": "Fails", "aria-hidden": "false", role: "img" })
 
   <template>
     <div class="pk-contrast">
@@ -489,9 +468,9 @@ const aspects = [
   { name: "Location", value: 5 },
 ]
 
-const solidStar = (size: number) => mark(Star, size, { fill: "currentColor" })
+const solidStar = (size: number) => icon(Star, size, { fill: "currentColor" })
 const solidStarFill = (size: number) =>
-  mark(Star, size, { fill: "currentColor", class: "pk-star-fill" })
+  icon(Star, size, { fill: "currentColor", class: "pk-star-fill" })
 
 class StayRating extends Component {
   id = guidFor(this)

@@ -1,5 +1,5 @@
 import type { TOC } from "@ember/component/template-only"
-import { array, fn } from "@ember/helper"
+import { array, fn, hash } from "@ember/helper"
 import { capabilities, on, setModifierManager } from "@ember/modifier"
 import { guidFor } from "@ember/object/internals"
 import { htmlSafe } from "@ember/template"
@@ -23,7 +23,6 @@ import {
   ChevronDown,
   ChevronLeft,
   ChevronRight,
-  createElement,
   FileAudio,
   FileImage,
   FileText,
@@ -72,33 +71,10 @@ import {
 import { TriggerMenu } from "ember-ui-sdk/trigger-menu"
 import "../../../vendor/ui/apps/docs/app/sink/tiles/collections.css"
 import { icon } from "../icon.ts"
+import { onInsert } from "../on-insert.ts"
 import type { Tile } from "../types.ts"
 
 /* Shared helpers */
-
-/** `{{connect this.setup}}` runs `setup(el)` once the element is in the page, and its result when it leaves. */
-const connect = setModifierManager(
-  () => ({
-    capabilities: capabilities("3.22", { disableAutoTracking: true }),
-    createModifier: () => ({ cleanup: undefined as void | (() => void) }),
-    installModifier: (
-      modifier: { cleanup: void | (() => void) },
-      el: Element,
-      { positional }: { positional: unknown[] }
-    ) => {
-      modifier.cleanup = (
-        positional[0] as (el: Element) => void | (() => void)
-      )(el)
-    },
-    updateModifier: () => {},
-    destroyModifier: (modifier: { cleanup: void | (() => void) }) =>
-      modifier.cleanup?.(),
-  }),
-  function () {} as unknown as ModifierLike<{
-    Element: Element
-    Args: { Positional: [(el: any) => void | (() => void)] }
-  }>
-)
 
 /** `{{findable this.shown}}` writes the hidden attribute, which `until-found` lets find in page open. */
 const findable = setModifierManager(
@@ -149,14 +125,6 @@ const prefersReducedMotion = () =>
 
 const clock = (seconds: number) =>
   `${Math.floor(seconds / 60)}:${String(Math.floor(seconds % 60)).padStart(2, "0")}`
-
-const ico = (node: IconNode, size = 14, className?: string) =>
-  createElement(node, {
-    "aria-hidden": "true",
-    width: String(size),
-    height: String(size),
-    ...(className ? { class: className } : {}),
-  })
 
 const eq = (a: unknown, b: unknown) => a === b
 const plusOne = (value: number) => value + 1
@@ -437,7 +405,7 @@ class NowPlaying extends Component {
     `${clock(value ?? 0)} of ${clock(this.track.secs)}`
 
   <template>
-    <div class="cl-player" {{connect this.watch}}>
+    <div class="cl-player" {{onInsert this.watch}}>
       <header class="cl-player-head">
         <Cover
           @hue={{210}}
@@ -700,7 +668,7 @@ class TenThousand extends Component {
         <s.Viewport
           aria-label="Library"
           class="cl-lib-viewport"
-          {{connect this.attach}}
+          {{onInsert this.attach}}
         >
           <s.Content>
             <div
@@ -876,12 +844,12 @@ class FileRows extends Component<{
           {{/if}}
           {{#if (isFolder item)}}
             {{#if l.state.expanded}}
-              {{ico FolderOpen 14 "cl-ftree-icon"}}
+              {{icon FolderOpen 14 (hash class="cl-ftree-icon")}}
             {{else}}
-              {{ico Folder 14 "cl-ftree-icon"}}
+              {{icon Folder 14 (hash class="cl-ftree-icon")}}
             {{/if}}
           {{else}}
-            {{ico (rowIcon item) 14 "cl-ftree-icon"}}
+            {{icon (rowIcon item) 14 (hash class="cl-ftree-icon")}}
           {{/if}}
           <span class="cl-ellipsis">{{item.label}}</span>
         </i.Label>
@@ -1252,7 +1220,7 @@ const Seasons = <template>
             <i.Trigger class="cl-acc-trigger">
               <span class="cl-acc-name">{{season.label}}</span>
               <span class="cl-sub">{{season.meta}}</span>
-              {{ico ChevronDown 14 "cl-acc-caret"}}
+              {{icon ChevronDown 14 (hash class="cl-acc-caret")}}
             </i.Trigger>
           </i.Header>
           <i.Panel class="cl-acc-panel">
@@ -1660,7 +1628,7 @@ class FolderImport extends Component {
   }
 
   <template>
-    <div class="cl-import" {{connect this.watch}}>
+    <div class="cl-import" {{onInsert this.watch}}>
       <div class="cl-import-head">
         <span class="cl-stack">
           <span class="cl-track-title">Field Recordings 2025</span>
@@ -2032,7 +2000,7 @@ class BookSearch extends Component {
       >
         <c.Label class="cl-label">Find a book</c.Label>
         <div class="cl-search-field">
-          {{ico Search 14 "cl-search-icon"}}
+          {{icon Search 14 (hash class="cl-search-icon")}}
           <c.Input
             placeholder="Title or author"
             class="b-input cl-search-input"
@@ -2253,7 +2221,7 @@ class SyncLog extends Component {
     })
 
   <template>
-    <div class="cl-log" {{connect this.watch}}>
+    <div class="cl-log" {{onInsert this.watch}}>
       <div class="cl-log-head">
         <span class="cl-log-live" data-live={{dataOn this.visible}}>
           Copying to pocket player
@@ -2266,7 +2234,7 @@ class SyncLog extends Component {
           tabindex="0"
           role="log"
           aria-label="Copy log"
-          {{connect this.attach}}
+          {{onInsert this.attach}}
         >
           {{#each this.lines key="id" as |line|}}
             <div class="cl-log-line" data-skipped={{dataOn line.skipped}}>
@@ -2390,7 +2358,7 @@ class RenamePlaylists extends Component {
 
   <template>
     <div class="cl-rename">
-      <ul class="cl-rename-list" {{connect this.attachList}}>
+      <ul class="cl-rename-list" {{onInsert this.attachList}}>
         {{#each this.rows key="id" as |row|}}
           <li
             data-row={{row.id}}
@@ -2402,7 +2370,7 @@ class RenamePlaylists extends Component {
               <input
                 aria-label="Rename {{row.name}}"
                 class="cl-rename-input"
-                {{connect this.bindInput}}
+                {{onInsert this.bindInput}}
                 {{on "keydown" this.inputKeydown}}
                 {{on "blur" this.inputBlur}}
               />
@@ -2480,7 +2448,7 @@ class HiddenPassage extends Component {
         class="cl-passage-hidden"
         data-found={{dataOn this.found}}
         {{findable this.shown}}
-        {{connect this.bind}}
+        {{onInsert this.bind}}
       >
         <p class="cl-passage-text">
           Under the logbook she found a brass key, cold as river stone, and a
