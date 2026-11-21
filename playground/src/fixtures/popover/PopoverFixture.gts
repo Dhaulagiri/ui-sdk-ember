@@ -56,6 +56,7 @@ export default class PopoverFixture extends Component {
           @side={{this.content.side}}
           @align={{this.content.align}}
           @initialFocus={{this.content.initialFocus}}
+          @inline={{this.content.inline}}
         >
           <p.Arrow class="arrow" />
           {{#if this.parts.title}}<p.Title

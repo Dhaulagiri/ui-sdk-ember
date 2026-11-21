@@ -73,8 +73,8 @@ importers:
         specifier: ^1.11.0
         version: 1.11.0
       '@ui-sdk/core':
-        specifier: ^0.1.0-beta.5
-        version: 0.1.0-beta.5
+        specifier: ^0.1.0-beta.13
+        version: 0.1.0-beta.13
       decorator-transforms:
         specifier: ^2.4.0
         version: 2.4.0(@babel/core@7.29.13)
@@ -131,8 +131,8 @@ importers:
         specifier: ^0.33.0
         version: 0.33.0
       '@ui-sdk/core':
-        specifier: ^0.1.0-beta.5
-        version: 0.1.0-beta.5
+        specifier: ^0.1.0-beta.13
+        version: 0.1.0-beta.13
       ember-source:
         specifier: ~7.4.0
         version: 7.4.0(@glimmer/component@2.2.1)
@@ -1432,6 +1432,9 @@ packages:
 
   '@types/symlink-or-copy@1.2.2':
     resolution: {integrity: sha512-MQ1AnmTLOncwEf9IVU+B2e4Hchrku5N67NkgcAHW0p3sdzPe0FNMANxEm6OJUzPniEQGkeT3OROLlCwZJLWFZA==}
+
+  '@ui-sdk/core@0.1.0-beta.13':
+    resolution: {integrity: sha512-URjk9hqdc/cZKDtw6Gb9NqjY48U8l0EgoP4d5ghlooa3av+GrR0iSmsav133UU4oelcuKIO1ZPJ4j7gIPMr1Vg==}
 
   '@ui-sdk/core@0.1.0-beta.5':
     resolution: {integrity: sha512-dmunrxWrZ+vwldKJ6THQNYyyfbLFY6K82hBvIZSnuGwpEQmXKmM0iuANgGXtaqw8unSB2p9E5s3y7zfE9rgP6Q==}
@@ -4682,6 +4685,8 @@ snapshots:
   '@types/resolve@1.20.2': {}
 
   '@types/symlink-or-copy@1.2.2': {}
+
+  '@ui-sdk/core@0.1.0-beta.13': {}
 
   '@ui-sdk/core@0.1.0-beta.5': {}
 

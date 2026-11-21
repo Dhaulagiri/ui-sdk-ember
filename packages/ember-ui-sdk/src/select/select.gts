@@ -51,6 +51,12 @@ class Select extends Component<{
     registerController(this, () => this.args.controller, this.handle)
   }
 
+  // The hidden field is a textarea, so Enter in a form's one text field
+  // submits it, as next to a native <select>. Its value is its text.
+  get formText() {
+    return this.formInput.attrs.value as string | undefined
+  }
+
   // One more hidden input per value with `multiple`. The form input's
   // attributes change with the value, so reading them keeps these current.
   get values() {
@@ -85,7 +91,7 @@ class Select extends Component<{
         Arrow=(component SelectArrow handle=this.handle)
       )
     }}
-    <input {{this.formInput.modifier}} />
+    <textarea {{this.formInput.modifier}}>{{this.formText}}</textarea>
     {{#each this.values key="@identity" as |value|}}
       <SelectValueInput @handle={{this.handle}} @value={{value}} />
     {{/each}}

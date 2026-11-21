@@ -1,7 +1,7 @@
 import Component from "@glimmer/component"
 import { input as inputPrimitive } from "@ui-sdk/core/input"
 import { useFieldControl } from "../field/context"
-import type { TextControlArgs } from "../text-control"
+import { keepControlled, type TextControlArgs } from "../text-control"
 import { usePart, type PartModifier } from "../use-part"
 import { syncOptions, usePrimitive } from "../use-primitive"
 
@@ -12,7 +12,11 @@ class Input extends Component<{
   Blocks: { default: [{ part: PartModifier; state: Record<string, unknown> }] }
 }> {
   fieldControl = useFieldControl(this, () => ({ id: this.args.id }))
-  handle = usePrimitive(this, inputPrimitive)
+  // Takes `@onValueChange` and puts back a value the parent didn't take.
+  onValueChange = keepControlled(this)
+  handle = usePrimitive(this, inputPrimitive, () => ({
+    onValueChange: this.onValueChange,
+  }))
   root = usePart(
     this,
     () => this.handle,

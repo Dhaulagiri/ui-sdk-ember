@@ -53,6 +53,8 @@ import { Drawer } from "ember-ui-sdk/drawer"
 
 Put long content in an inner `min-h-0 flex-1 overflow-y-auto` area. A downward drag scrolls that area first; when it reaches the top, the same gesture can move the drawer. `@initialFocus="content"` starts focus on the sheet itself.
 
+Fields, sliders and color areas inside the sheet keep their own drags. For a drag surface of your own, like a canvas or a map, add `data-drawer-no-drag` to it, and a drag that starts there won't move the drawer.
+
 [drawer/scrollable](../../examples/components/drawer/ember/scrollable.gts)
 
 Open the long sheet and scroll its text. At the top, drag downward to move the sheet; on a keyboard, Tab reaches the controls and Escape closes it.

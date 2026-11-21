@@ -21,11 +21,12 @@ class FieldError extends Component<{
   }
   Blocks: { default: [{ part: PartModifier; state: Record<string, unknown> }] }
 }> {
-  generated = `ui-sdk-e-error${++count}`
+  // Each error is its own part, keyed by a made value. Core gives the first
+  // one that shows the id the control points at before the field binds.
+  uid = `e-error${++count}`
   part = useFieldPart(this, "error", () => ({
-    id:
-      this.args.id ??
-      (this.args.match === undefined ? undefined : this.generated),
+    id: this.args.id,
+    value: this.uid,
     match: this.args.match,
   }))
 

@@ -77,7 +77,7 @@ Choose a framework, then press the clear button. The selection and text clear, f
 
 ## Auto Highlight
 
-Add `@autoHighlight={{true}}` to highlight the first match while typing, so Enter can choose it immediately. With `@autoHighlight="always"`, opening the list also highlights the selected item, or the first, so the arrow keys move from there. A highlight it placed follows the list as items arrive, and one the user moved stays while its item is there.
+Add `@autoHighlight={{true}}` to highlight the first match while typing, so Enter can choose it immediately. With `@autoHighlight="always"`, opening the list also highlights the selected item, or the first, so the arrow keys move from there. `@autoHighlight="selected"` highlights only the selected item when the list opens, and nothing when none is. A highlight it placed follows the list as items arrive, and one the user moved stays while its item is there.
 
 [combobox/auto-highlight](../../examples/components/combobox/ember/auto-highlight.gts)
 

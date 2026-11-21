@@ -138,7 +138,7 @@ Choose a year and month to jump directly to a birthday, then choose the day.
 
 ## Custom Month and Year Selects
 
-The month and year selects are native `select` elements. To use your own select, control the calendar's `@month` and drive it from your select's value, as with the [Select](./select.md) component. Keep a `c.Heading` in the calendar, visually hidden if you like, so the grid stays named.
+The month and year selects are native `select` elements. To use your own select, control the calendar's `@month` and drive it from your select's value, as with the [Select](./select.md) component. Keep a `c.Heading` in the calendar, visually hidden if you like, so a month change is still announced. Each grid names itself.
 
 [calendar/custom-select](../../examples/components/calendar/ember/custom-select.gts)
 

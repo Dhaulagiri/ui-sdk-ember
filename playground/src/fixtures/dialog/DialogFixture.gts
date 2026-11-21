@@ -74,6 +74,7 @@ export default class DialogFixture extends Component {
           class="dialog"
           @initialFocus={{this.content.initialFocus}}
           @finalFocus={{this.content.finalFocus}}
+          @inline={{this.content.inline}}
         >
           {{#if this.parts.title}}<d.Title
               class="title"
@@ -103,7 +104,11 @@ export default class DialogFixture extends Component {
             </form>
           {{/if}}
           {{#if this.parts.nested}}
-            <Dialog @onOpenChange={{this.onNestedOpenChange}} as |n|>
+            <Dialog
+              @defaultOpen={{this.parts.nestedOpen}}
+              @onOpenChange={{this.onNestedOpenChange}}
+              as |n|
+            >
               <n.Trigger>{{this.f.nested.trigger}}</n.Trigger>
               {{#if this.parts.backdrop}}<n.Backdrop
                   class="dialog-backdrop"
