@@ -449,6 +449,8 @@ class PickupTime extends Component {
           <f.Label class="b-label">Time</f.Label>
           <TimeInput
             class="b-input pk-segments"
+            @min={{deskOpens}}
+            @max={{deskCloses}}
             @value={{this.time}}
             @onValueChange={{this.setTime}}
             @field={{f.field}}
