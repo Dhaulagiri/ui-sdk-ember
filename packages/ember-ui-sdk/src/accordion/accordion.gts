@@ -1,4 +1,5 @@
 import { hash } from "@ember/helper"
+import type { WithBoundArgs } from "@glint/template"
 import type { ChangeDetails } from "@ui-sdk/core"
 import Component from "@glimmer/component"
 import {
@@ -6,7 +7,7 @@ import {
   type AccordionController,
   type AccordionValueChangeReason,
 } from "@ui-sdk/core/accordion"
-import { usePart } from "../use-part"
+import { usePart, type RootYield } from "../use-part"
 import { syncOptions, usePrimitive } from "../use-primitive"
 import AccordionItem from "./accordion-item.gts"
 
@@ -40,7 +41,13 @@ class Accordion extends Component<{
     /** Renders no element: bind your own with the yielded `part`. */
     render?: boolean
   }
-  Blocks: { default: [Record<string, any>] }
+  Blocks: {
+    default: [
+      RootYield<typeof accordion> & {
+        Item: WithBoundArgs<typeof AccordionItem, "handle">
+      },
+    ]
+  }
 }> {
   handle = usePrimitive(this, accordion)
   root = usePart(this, () => this.handle, "root")

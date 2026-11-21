@@ -1,4 +1,5 @@
 import { hash } from "@ember/helper"
+import type { WithBoundArgs } from "@glint/template"
 import type { ChangeDetails } from "@ui-sdk/core"
 import { useFieldValues, type FieldContext } from "../field/context"
 import Component from "@glimmer/component"
@@ -8,7 +9,7 @@ import {
   type NumberInputValueChangeReason,
 } from "@ui-sdk/core/number-input"
 import { registerController } from "../controller-target"
-import { usePart } from "../use-part"
+import { usePart, type RootYield } from "../use-part"
 import { syncOptions, usePrimitive } from "../use-primitive"
 import NumberInputGroup from "./number-input-group.gts"
 import NumberInputControl from "./number-input-control.gts"
@@ -67,7 +68,21 @@ class NumberInput extends Component<{
     /** Renders no element: bind your own with the yielded `part`. */
     render?: boolean
   }
-  Blocks: { default: [Record<string, any>] }
+  Blocks: {
+    default: [
+      RootYield<typeof numberInput> & {
+        Group: WithBoundArgs<typeof NumberInputGroup, "handle">
+        Control: WithBoundArgs<typeof NumberInputControl, "handle" | "field">
+        Increment: WithBoundArgs<typeof NumberInputIncrement, "handle">
+        Decrement: WithBoundArgs<typeof NumberInputDecrement, "handle">
+        ScrubArea: WithBoundArgs<typeof NumberInputScrubArea, "handle">
+        ScrubAreaCursor: WithBoundArgs<
+          typeof NumberInputScrubAreaCursor,
+          "handle"
+        >
+      },
+    ]
+  }
 }> {
   fieldValues = useFieldValues(this)
   handle = usePrimitive(this, numberInput, () => ({

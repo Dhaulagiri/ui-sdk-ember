@@ -1,4 +1,5 @@
 import { hash } from "@ember/helper"
+import type { WithBoundArgs } from "@glint/template"
 import Component from "@glimmer/component"
 import type { ChangeDetails, CommitDetails } from "@ui-sdk/core"
 import { slider } from "@ui-sdk/core/slider"
@@ -7,7 +8,7 @@ import {
   useFieldValues,
   type FieldContext,
 } from "../field/context"
-import { usePart } from "../use-part"
+import { usePart, type RootYield } from "../use-part"
 import { syncOptions, usePrimitive } from "../use-primitive"
 import SliderControl from "./slider-control.gts"
 import SliderIndicator from "./slider-indicator.gts"
@@ -70,7 +71,17 @@ class Slider extends Component<{
     /** Renders no element: bind your own with the yielded `part`. */
     render?: boolean
   }
-  Blocks: { default: [Record<string, any>] }
+  Blocks: {
+    default: [
+      RootYield<typeof slider> & {
+        Control: WithBoundArgs<typeof SliderControl, "handle">
+        Track: WithBoundArgs<typeof SliderTrack, "handle">
+        Indicator: WithBoundArgs<typeof SliderIndicator, "handle">
+        Thumb: WithBoundArgs<typeof SliderThumb, "handle" | "field">
+        Value: WithBoundArgs<typeof SliderValue, "handle">
+      },
+    ]
+  }
 }> {
   // A range is a group the field's label names. A single thumb's input is
   // the control itself. Decided once, from the shape the slider starts with.

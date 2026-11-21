@@ -1,7 +1,8 @@
 import { hash } from "@ember/helper"
+import type { WithBoundArgs } from "@glint/template"
 import Component from "@glimmer/component"
 import { resizable, type ResizableOptions } from "@ui-sdk/core/resizable"
-import { usePart } from "../use-part"
+import { usePart, type RootYield } from "../use-part"
 import { syncOptions, usePrimitive } from "../use-primitive"
 import ResizableHandle from "./resizable-handle.gts"
 import ResizablePanel from "./resizable-panel.gts"
@@ -37,7 +38,14 @@ class Resizable extends Component<{
     /** Renders no element: bind your own with the yielded `part`. */
     render?: boolean
   }
-  Blocks: { default: [Record<string, any>] }
+  Blocks: {
+    default: [
+      RootYield<typeof resizable> & {
+        Panel: WithBoundArgs<typeof ResizablePanel, "handle">
+        Handle: WithBoundArgs<typeof ResizableHandle, "handle">
+      },
+    ]
+  }
 }> {
   handle = usePrimitive(this, resizable)
   root = usePart(this, () => this.handle, "root")

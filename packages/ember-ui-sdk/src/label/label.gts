@@ -1,6 +1,6 @@
 import Component from "@glimmer/component"
 import { label as labelPrimitive } from "@ui-sdk/core/label"
-import { usePart } from "../use-part"
+import { usePart, type RootYield } from "../use-part"
 import { syncOptions, usePrimitive } from "../use-primitive"
 
 /**
@@ -16,7 +16,9 @@ class Label extends Component<{
     /** Renders no element: bind your own with the yielded `part`. */
     render?: boolean
   }
-  Blocks: { default: [Record<string, any>] }
+  Blocks: {
+    default: [Pick<RootYield<typeof labelPrimitive>, "part" | "state">]
+  }
 }> {
   handle = usePrimitive(this, labelPrimitive)
   root = usePart(this, () => this.handle, "root")

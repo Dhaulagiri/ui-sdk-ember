@@ -1,11 +1,12 @@
 import { hash } from "@ember/helper"
+import type { WithBoundArgs } from "@glint/template"
 import Component from "@glimmer/component"
 import {
   toolbar,
   type ToolbarController,
   type ToolbarOrientation,
 } from "@ui-sdk/core/toolbar"
-import { usePart } from "../use-part"
+import { usePart, type RootYield } from "../use-part"
 import { syncOptions, usePrimitive } from "../use-primitive"
 import ToolbarGroup from "./toolbar-group.gts"
 import ToolbarButton from "./toolbar-button.gts"
@@ -32,7 +33,19 @@ class Toolbar extends Component<{
     /** Renders no element: bind your own with the yielded `part`. */
     render?: boolean
   }
-  Blocks: { default: [Record<string, any>] }
+  Blocks: {
+    default: [
+      RootYield<typeof toolbar> & {
+        Group: WithBoundArgs<typeof ToolbarGroup, "handle">
+        Button: WithBoundArgs<typeof ToolbarButton, "handle">
+        Link: WithBoundArgs<typeof ToolbarLink, "handle">
+        Input: WithBoundArgs<typeof ToolbarInput, "handle">
+        Separator: WithBoundArgs<typeof ToolbarSeparator, "handle">
+        Toggle: WithBoundArgs<typeof Toggle, "toolbar">
+        ToggleGroup: WithBoundArgs<typeof ToggleGroup, "toolbar">
+      },
+    ]
+  }
 }> {
   handle = usePrimitive(this, toolbar)
   root = usePart(this, () => this.handle, "root")

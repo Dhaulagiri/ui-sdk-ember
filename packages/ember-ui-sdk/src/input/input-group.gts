@@ -1,7 +1,8 @@
 import { hash } from "@ember/helper"
+import type { WithBoundArgs } from "@glint/template"
 import Component from "@glimmer/component"
 import { inputGroup } from "@ui-sdk/core/input"
-import { usePart } from "../use-part"
+import { usePart, type RootYield } from "../use-part"
 import { syncOptions, usePrimitive } from "../use-primitive"
 import InputClear from "./input-clear.gts"
 
@@ -14,7 +15,13 @@ class InputGroup extends Component<{
     /** Renders no element: bind your own with the yielded `part`. */
     render?: boolean
   }
-  Blocks: { default: [Record<string, any>] }
+  Blocks: {
+    default: [
+      RootYield<typeof inputGroup, "group"> & {
+        Clear: WithBoundArgs<typeof InputClear, "handle">
+      },
+    ]
+  }
 }> {
   handle = usePrimitive(this, inputGroup)
   root = usePart(this, () => this.handle, "group")

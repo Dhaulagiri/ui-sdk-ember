@@ -1,7 +1,8 @@
 import { hash } from "@ember/helper"
+import type { WithBoundArgs } from "@glint/template"
 import Component from "@glimmer/component"
 import { calendar } from "@ui-sdk/core/calendar"
-import { usePart } from "../use-part"
+import { usePart, type RootYield } from "../use-part"
 import { syncOptions, usePrimitive } from "../use-primitive"
 import CalendarDay from "./calendar-day.gts"
 import CalendarGrid from "./calendar-grid.gts"
@@ -24,7 +25,19 @@ class Calendar extends Component<{
     /** Renders no element: bind your own with the yielded `part`. */
     render?: boolean
   }
-  Blocks: { default: [Record<string, any>] }
+  Blocks: {
+    default: [
+      RootYield<typeof calendar> & {
+        Previous: WithBoundArgs<typeof CalendarPrevious, "handle">
+        Next: WithBoundArgs<typeof CalendarNext, "handle">
+        Heading: WithBoundArgs<typeof CalendarHeading, "handle">
+        MonthSelect: WithBoundArgs<typeof CalendarMonthSelect, "handle">
+        YearSelect: WithBoundArgs<typeof CalendarYearSelect, "handle">
+        Grid: WithBoundArgs<typeof CalendarGrid, "handle">
+        Day: WithBoundArgs<typeof CalendarDay, "handle">
+      },
+    ]
+  }
 }> {
   handle = usePrimitive(this, calendar)
   root = usePart(this, () => this.handle, "root")

@@ -1,9 +1,10 @@
 import { hash } from "@ember/helper"
+import type { WithBoundArgs } from "@glint/template"
 import type Owner from "@ember/owner"
 import Component from "@glimmer/component"
 import { navigationMenu } from "@ui-sdk/core/navigation-menu"
 import { registerController } from "../controller-target"
-import { usePart } from "../use-part"
+import { usePart, type RootYield } from "../use-part"
 import {
   syncOptions,
   usePrimitive,
@@ -32,7 +33,26 @@ class NavigationMenu extends Component<{
     /** @internal The item of the parent menu a nested menu sits in. */
     parentItem?: string
   }
-  Blocks: { default: [Record<string, any>] }
+  Blocks: {
+    default: [
+      RootYield<typeof navigationMenu> & {
+        List: WithBoundArgs<
+          typeof NavigationMenuList,
+          "handle" | "rootContainer"
+        >
+        Item: WithBoundArgs<
+          typeof NavigationMenuItem,
+          "handle" | "rootContainer"
+        >
+        Link: WithBoundArgs<typeof NavigationMenuLink, "handle">
+        Indicator: WithBoundArgs<typeof NavigationMenuIndicator, "handle">
+        Viewport: WithBoundArgs<
+          typeof NavigationMenuViewport,
+          "handle" | "rootContainer"
+        >
+      },
+    ]
+  }
 }> {
   handle = usePrimitive(this, navigationMenu, () => ({
     parent: (this.args.parent

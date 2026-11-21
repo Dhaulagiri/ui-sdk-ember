@@ -1,7 +1,8 @@
 import { hash } from "@ember/helper"
+import type { WithBoundArgs } from "@glint/template"
 import Component from "@glimmer/component"
 import { tree } from "@ui-sdk/core/tree"
-import { usePart } from "../use-part"
+import { usePart, type RootYield } from "../use-part"
 import { syncOptions, usePrimitive } from "../use-primitive"
 import TreeItem from "./tree-item.gts"
 import TreeItems from "./tree-items.gts"
@@ -20,7 +21,14 @@ class Tree extends Component<{
     controller?: object
     render?: boolean
   }
-  Blocks: { default: [Record<string, any>] }
+  Blocks: {
+    default: [
+      RootYield<typeof tree> & {
+        Item: WithBoundArgs<typeof TreeItem, "handle">
+        Items: WithBoundArgs<typeof TreeItems, "handle">
+      },
+    ]
+  }
 }> {
   handle = usePrimitive(this, tree)
   root = usePart(this, () => this.handle, "root")

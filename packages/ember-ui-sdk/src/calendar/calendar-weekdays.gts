@@ -1,4 +1,5 @@
 import Component from "@glimmer/component"
+import type { WithBoundArgs } from "@glint/template"
 import { calendar } from "@ui-sdk/core/calendar"
 import { usePart } from "../use-part"
 import type { PrimitiveHandle } from "../use-primitive"
@@ -12,7 +13,11 @@ class CalendarWeekdays extends Component<{
     offset?: number
     weekdays: unknown[]
   }
-  Blocks: { default: [Record<string, any>] }
+  Blocks: {
+    default: [
+      WithBoundArgs<typeof CalendarWeekday, "handle" | "offset" | "index">,
+    ]
+  }
 }> {
   row = usePart(
     this,
