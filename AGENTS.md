@@ -7,6 +7,7 @@ An Ember adapter for [ui-sdk](https://github.com/vercel-labs/ui). The published 
 - `packages/ember-ui-sdk`: the package. Each component is a module in `src/`, exported per entry point (`ember-ui-sdk/tabs`); the Glimmer templates are `.gts`.
 - `playground`: the fixture app, Embroider with Vite.
 - `vendor/ui`: upstream, a git submodule pinned to the `@ui-sdk/core` tag we depend on. Never edit it.
+- `examples/sink`: the `#/sink` page, an Ember port of ui-sdk.dev/sink. Each `tiles/*.gts` ports one of upstream's tile files, keeping its ids and classes and importing its CSS from `vendor/ui`.
 - `playwright.upstream.config.ts`: runs upstream's specs against the playground, and lists known gaps with their reasons.
 
 ## Commands
@@ -15,6 +16,7 @@ An Ember adapter for [ui-sdk](https://github.com/vercel-labs/ui). The published 
 - `pnpm typecheck`: every package and the playground.
 - `pnpm format` / `pnpm format:write`: Prettier check and fix.
 - `pnpm test:upstream`: upstream specs (Chromium). Run it for whatever you touch, and pass `-- --shard=N/4` to split it.
+- `pnpm test:site`: smoke tests for the built docs site, including that every `/sink` tile renders without errors.
 
 Don't install new packages without asking. `@changesets/cli` and `prettier` are already at the root.
 

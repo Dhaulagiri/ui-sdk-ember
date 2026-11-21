@@ -42,8 +42,8 @@ importers:
         specifier: ^1.1.2
         version: 1.1.2
       '@ui-sdk/core':
-        specifier: ^0.1.0-beta.5
-        version: 0.1.0-beta.5
+        specifier: ^0.1.0-beta.13
+        version: 0.1.0-beta.13
       decorator-transforms:
         specifier: ^2.4.0
         version: 2.4.0(@babel/core@7.29.13)
@@ -1435,9 +1435,6 @@ packages:
 
   '@ui-sdk/core@0.1.0-beta.13':
     resolution: {integrity: sha512-URjk9hqdc/cZKDtw6Gb9NqjY48U8l0EgoP4d5ghlooa3av+GrR0iSmsav133UU4oelcuKIO1ZPJ4j7gIPMr1Vg==}
-
-  '@ui-sdk/core@0.1.0-beta.5':
-    resolution: {integrity: sha512-dmunrxWrZ+vwldKJ6THQNYyyfbLFY6K82hBvIZSnuGwpEQmXKmM0iuANgGXtaqw8unSB2p9E5s3y7zfE9rgP6Q==}
 
   '@volar/kit@2.4.31':
     resolution: {integrity: sha512-pQgvegC28dfdNcs/iDNZVHkMs+dG7rpD9Aj+sNU2hildv1QuH7/MIoff/cSJW/IR25AGOeHWbJXWWFKDXXWtVw==}
@@ -4687,8 +4684,6 @@ snapshots:
   '@types/symlink-or-copy@1.2.2': {}
 
   '@ui-sdk/core@0.1.0-beta.13': {}
-
-  '@ui-sdk/core@0.1.0-beta.5': {}
 
   '@volar/kit@2.4.31(typescript@5.9.3)':
     dependencies:

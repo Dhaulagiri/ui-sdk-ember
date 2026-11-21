@@ -1,6 +1,11 @@
 {
   "extends": "../tsconfig.base.json",
-  "include": ["components/*/ember/*.gts", "shared/ember/*.ts"],
+  "include": [
+    "components/*/ember/*.gts",
+    "shared/ember/*.ts",
+    "sink/**/*.ts",
+    "sink/**/*.gts"
+  ],
   "compilerOptions": {
     "noUnusedLocals": false,
     "experimentalDecorators": true,

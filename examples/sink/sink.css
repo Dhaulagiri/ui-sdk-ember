@@ -1,0 +1,9 @@
+/* The docs site's own page rules, undone where the sink shares them. */
+.sink main.bento {
+  padding: 0;
+}
+
+/* Lucide draws strokes, so its icons take the text color. */
+.sink svg.lucide {
+  flex: none;
+}
