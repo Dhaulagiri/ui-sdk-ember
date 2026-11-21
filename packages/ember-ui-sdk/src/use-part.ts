@@ -327,6 +327,11 @@ const modifierManager = {
  * Binds one part of `handle`'s instance for the life of `owner`, a part
  * component. Its props are the arguments the slot's schema names, with
  * `extra` over them, like an item's key a parent passes down.
+ *
+ * `handle` reads the root's instance, usually from an argument: a root
+ * yields its own part components with `(component MyTab handle=this.handle)`,
+ * so a part rendered by another component binds to the root that created
+ * it. A part created without one throws, as it does in the other frameworks.
  * @experimental
  */
 function usePart<P extends Primitive, S extends SlotName<P>>(
@@ -336,6 +341,11 @@ function usePart<P extends Primitive, S extends SlotName<P>>(
   extra: () => Partial<PropsOf<P, S>> = () => ({}),
   channel?: string
 ) {
+  if (!handle()) {
+    throw new Error(
+      `A ${String(slot)} part needs @handle, or the root's yielded part.`
+    )
+  }
   const names = () => schemaOf(handle().primitive).slots[slot] ?? {}
   // A prop of kind "id" no argument gives, like a trigger's, keys this part alone.
   const id = `ui-sdk-e-part${++count}`

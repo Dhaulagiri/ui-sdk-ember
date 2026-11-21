@@ -9,12 +9,46 @@ import {
   waitUntil,
 } from "@ember/test-helpers"
 import { precompileTemplate } from "@ember/template-compilation"
+import { setComponentTemplate } from "@ember/component"
+import templateOnly from "@ember/component/template-only"
+import { hash } from "@ember/helper"
+import Component from "@glimmer/component"
 import { VERSION } from "@ember/version"
 import config from "test-app/config/environment"
 import { Tabs } from "ember-ui-sdk/tabs"
 import { Dialog } from "ember-ui-sdk/dialog"
 import { Combobox } from "ember-ui-sdk/combobox"
 import * as primitive from "ember-ui-sdk/primitive"
+
+// A tab of the app's own: it binds ui-sdk's tab part to the instance its
+// root hands it as @handle.
+class AppTab extends Component {
+  part = primitive.usePart(
+    this,
+    () => this.args.handle,
+    "tab",
+    () => ({ value: this.args.value })
+  )
+}
+setComponentTemplate(
+  precompileTemplate(
+    `<button type="button" class="app-tab" ...attributes {{this.part.modifier}}>{{yield}}</button>`,
+    { strictMode: true }
+  ),
+  AppTab
+)
+
+// The app's own root, which yields its tab bound to the instance, the way a
+// design system wraps the tabs.
+const AppTabs = setComponentTemplate(
+  precompileTemplate(
+    `<Tabs @defaultValue={{@defaultValue}} as |t|>
+      {{yield (hash List=t.List Tab=(component AppTab handle=t.handle) Panel=t.Panel)}}
+    </Tabs>`,
+    { strictMode: true, scope: () => ({ Tabs, AppTab, hash }) }
+  ),
+  templateOnly()
+)
 
 module("Integration | packed addon", function (hooks) {
   setupRenderingTest(hooks)
@@ -49,6 +83,36 @@ module("Integration | packed addon", function (hooks) {
     await triggerKeyEvent('[role="tab"]', "keydown", "ArrowRight")
     assert.dom('[role="tab"][aria-selected="true"]').hasText("Beta").isFocused()
     assert.dom('[role="tabpanel"]:not([hidden])').hasText("Panel beta")
+  })
+
+  test("a part another component renders binds to the root it is handed", async function (assert) {
+    await render(
+      precompileTemplate(
+        `<AppTabs @defaultValue="b" as |tabs|>
+          <tabs.List aria-label="App tabs">
+            <tabs.Tab @value="a">Alpha</tabs.Tab>
+            <tabs.Tab @value="b">Beta</tabs.Tab>
+          </tabs.List>
+          <tabs.Panel @value="a">Panel alpha</tabs.Panel>
+          <tabs.Panel @value="b">Panel beta</tabs.Panel>
+        </AppTabs>`,
+        { strictMode: true, scope: () => ({ AppTabs, AppTab }) }
+      )
+    )
+    assert.dom('.app-tab[role="tab"]').exists({ count: 2 })
+    assert.dom('.app-tab[aria-selected="true"]').hasText("Beta")
+    await focus('.app-tab[aria-selected="true"]')
+    await triggerKeyEvent(document.activeElement, "keydown", "ArrowLeft")
+    assert.dom('.app-tab[aria-selected="true"]').hasText("Alpha").isFocused()
+    assert.dom('[role="tabpanel"]:not([hidden])').hasText("Panel alpha")
+  })
+
+  test("a part without its root's instance throws", function (assert) {
+    // Called directly: a render that throws would leave the renderer broken.
+    assert.throws(
+      () => primitive.usePart({ args: {} }, () => undefined, "tab"),
+      /^Error: A tab part needs @handle, or the root's yielded part\.$/
+    )
   })
 
   test("dialog opens, dismisses and restores focus", async function (assert) {

@@ -39,7 +39,7 @@ import { Rating } from "./rating-parts"
 </template>
 ```
 
-A part also takes the root's instance as `@handle`, which the yielded parts pass for you. Pass `@handle={{r.handle}}` yourself only to render a part outside the root's block.
+A part also takes the root's instance as `@handle`, which the yielded parts pass for you. Pass `@handle={{r.handle}}` yourself only to render a part outside the root's block. To hand the instance to a part component of your own, see [Bind a Part From Another Component](./utilities/custom-parts.md#bind-a-part-from-another-component).
 
 ## Render Your Own Element
 
