@@ -1,4 +1,5 @@
 import { hash } from "@ember/helper"
+import type { WithBoundArgs } from "@glint/template"
 import Component from "@glimmer/component"
 import {
   colorPicker,
@@ -10,7 +11,7 @@ import {
   type ColorPickerValueCommitDetails,
 } from "@ui-sdk/core/color-picker"
 import { useFieldControl, type FieldContext } from "../field/context"
-import { usePart } from "../use-part"
+import { usePart, type RootYield } from "../use-part"
 import { syncOptions, usePrimitive } from "../use-primitive"
 import ColorPickerArea from "./color-picker-area.gts"
 import ColorPickerChannelInput from "./color-picker-channel-input.gts"
@@ -66,7 +67,20 @@ class ColorPicker extends Component<{
     /** Renders no element: bind your own with the yielded `part`. */
     render?: boolean
   }
-  Blocks: { default: [Record<string, any>] }
+  Blocks: {
+    default: [
+      RootYield<typeof colorPicker> & {
+        Area: WithBoundArgs<typeof ColorPickerArea, "handle">
+        Slider: WithBoundArgs<typeof ColorPickerSlider, "handle">
+        Input: WithBoundArgs<typeof ColorPickerInput, "handle">
+        ChannelInput: WithBoundArgs<typeof ColorPickerChannelInput, "handle">
+        Swatch: WithBoundArgs<typeof ColorPickerSwatch, "handle">
+        EyeDropper: WithBoundArgs<typeof ColorPickerEyeDropper, "handle">
+        Swatches: WithBoundArgs<typeof ColorPickerSwatches, "handle">
+        SwatchItem: WithBoundArgs<typeof ColorPickerSwatchItem, "handle">
+      },
+    ]
+  }
 }> {
   fieldControl = useFieldControl(this, () => ({ id: this.args.id }))
   handle = usePrimitive(this, colorPicker, () => ({

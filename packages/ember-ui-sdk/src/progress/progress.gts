@@ -1,11 +1,12 @@
 import { hash } from "@ember/helper"
+import type { WithBoundArgs } from "@glint/template"
 import Component from "@glimmer/component"
 import {
   progress,
   type GaugeLabelDetails,
   type NumberFormat,
 } from "@ui-sdk/core/progress"
-import { usePart } from "../use-part"
+import { usePart, type RootYield } from "../use-part"
 import { syncOptions, usePrimitive } from "../use-primitive"
 import ProgressIndicator from "./progress-indicator.gts"
 import ProgressLabel from "./progress-label.gts"
@@ -33,7 +34,16 @@ class Progress extends Component<{
     /** Renders no element: bind your own with the yielded `part`. */
     render?: boolean
   }
-  Blocks: { default: [Record<string, any>] }
+  Blocks: {
+    default: [
+      RootYield<typeof progress> & {
+        Track: WithBoundArgs<typeof ProgressTrack, "handle">
+        Indicator: WithBoundArgs<typeof ProgressIndicator, "handle">
+        Label: WithBoundArgs<typeof ProgressLabel, "handle">
+        Value: WithBoundArgs<typeof ProgressValue, "handle">
+      },
+    ]
+  }
 }> {
   handle = usePrimitive(this, progress)
   root = usePart(this, () => this.handle, "root")

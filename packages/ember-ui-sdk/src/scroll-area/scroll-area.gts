@@ -1,11 +1,12 @@
 import { hash } from "@ember/helper"
+import type { WithBoundArgs } from "@glint/template"
 import Component from "@glimmer/component"
 import {
   scrollArea,
   type ScrollAreaController,
   type ScrollAreaType,
 } from "@ui-sdk/core/scroll-area"
-import { usePart } from "../use-part"
+import { usePart, type RootYield } from "../use-part"
 import { syncOptions, usePrimitive } from "../use-primitive"
 import ScrollAreaViewport from "./scroll-area-viewport.gts"
 import ScrollAreaContent from "./scroll-area-content.gts"
@@ -30,7 +31,17 @@ class ScrollArea extends Component<{
     /** Renders no element: bind your own with the yielded `part`. */
     render?: boolean
   }
-  Blocks: { default: [Record<string, any>] }
+  Blocks: {
+    default: [
+      RootYield<typeof scrollArea> & {
+        Viewport: WithBoundArgs<typeof ScrollAreaViewport, "handle">
+        Content: WithBoundArgs<typeof ScrollAreaContent, "handle">
+        Scrollbar: WithBoundArgs<typeof ScrollAreaScrollbar, "handle">
+        Corner: WithBoundArgs<typeof ScrollAreaCorner, "handle">
+        ScrollToEnd: WithBoundArgs<typeof ScrollAreaScrollToEnd, "handle">
+      },
+    ]
+  }
 }> {
   handle = usePrimitive(this, scrollArea)
   root = usePart(this, () => this.handle, "root")

@@ -1,11 +1,12 @@
 import { hash } from "@ember/helper"
+import type { WithBoundArgs } from "@glint/template"
 import Component from "@glimmer/component"
 import {
   meter,
   type MeterLabelDetails,
   type NumberFormat,
 } from "@ui-sdk/core/meter"
-import { usePart } from "../use-part"
+import { usePart, type RootYield } from "../use-part"
 import { syncOptions, usePrimitive } from "../use-primitive"
 import MeterIndicator from "./meter-indicator.gts"
 import MeterLabel from "./meter-label.gts"
@@ -33,7 +34,16 @@ class Meter extends Component<{
     /** Renders no element: bind your own with the yielded `part`. */
     render?: boolean
   }
-  Blocks: { default: [Record<string, any>] }
+  Blocks: {
+    default: [
+      RootYield<typeof meter> & {
+        Track: WithBoundArgs<typeof MeterTrack, "handle">
+        Indicator: WithBoundArgs<typeof MeterIndicator, "handle">
+        Label: WithBoundArgs<typeof MeterLabel, "handle">
+        Value: WithBoundArgs<typeof MeterValue, "handle">
+      },
+    ]
+  }
 }> {
   handle = usePrimitive(this, meter)
   root = usePart(this, () => this.handle, "root")

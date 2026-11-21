@@ -1,0 +1,11 @@
+{
+  // Checks what a consumer sees: the built declarations, under the strictest
+  // index-signature rule an app may turn on.
+  "extends": "../../../tsconfig.base.json",
+  "include": ["."],
+  "compilerOptions": {
+    "experimentalDecorators": true,
+    "noPropertyAccessFromIndexSignature": true,
+    "types": ["ember-source/types"]
+  }
+}

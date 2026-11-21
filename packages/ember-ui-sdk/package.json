@@ -305,7 +305,7 @@
     "build": "rollup -c",
     "prepack": "pnpm build",
     "watch": "rollup -c --watch",
-    "typecheck": "ember-tsc --noEmit"
+    "typecheck": "ember-tsc --noEmit && ember-tsc --noEmit -p type-tests"
   },
   "publishConfig": {
     "access": "public"

@@ -1,9 +1,18 @@
 import { hash } from "@ember/helper"
 import Component from "@glimmer/component"
+import type { WithBoundArgs } from "@glint/template"
 import { calendar, type CalendarGridCell } from "@ui-sdk/core/calendar"
 import { usePart } from "../use-part"
 import type { PrimitiveHandle } from "../use-primitive"
 import CalendarDay from "./calendar-day.gts"
+
+/** What a custom week yields for each day it shows. */
+type CalendarWeekYield = {
+  /** The day's cell in the grid. */
+  cell: CalendarGridCell
+  /** The day, bound to its date. */
+  Day: WithBoundArgs<typeof CalendarDay, "handle" | "offset" | "value">
+}
 
 // A week's row, for CalendarWeeks, which renders one per week.
 class CalendarWeek extends Component<{
@@ -14,7 +23,7 @@ class CalendarWeek extends Component<{
     week: CalendarGridCell[]
     custom?: boolean
   }
-  Blocks: { default: [Record<string, any>] }
+  Blocks: { default: [CalendarWeekYield] }
 }> {
   row = usePart(
     this,
@@ -52,3 +61,4 @@ class CalendarWeek extends Component<{
 }
 
 export default CalendarWeek
+export type { CalendarWeekYield }

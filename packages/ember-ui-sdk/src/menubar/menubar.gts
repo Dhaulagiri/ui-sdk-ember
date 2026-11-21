@@ -1,8 +1,9 @@
 import { hash } from "@ember/helper"
+import type { WithBoundArgs } from "@glint/template"
 import Component from "@glimmer/component"
 import { menubar } from "@ui-sdk/core/menubar"
 import Menu from "../menu/menu.gts"
-import { usePart } from "../use-part"
+import { usePart, type RootYield } from "../use-part"
 import { syncOptions, usePrimitive } from "../use-primitive"
 
 /** A row of menus, like a desktop app's: one tab stop, arrow keys between the triggers and between open menus. Yields a `Menu` that joins it. */
@@ -24,7 +25,13 @@ class Menubar extends Component<{
     /** Renders no element: bind your own with the yielded `part`. */
     render?: boolean
   }
-  Blocks: { default: [Record<string, any>] }
+  Blocks: {
+    default: [
+      RootYield<typeof menubar> & {
+        Menu: WithBoundArgs<typeof Menu, "menubar">
+      },
+    ]
+  }
 }> {
   handle = usePrimitive(this, menubar)
   root = usePart(this, () => this.handle, "root")

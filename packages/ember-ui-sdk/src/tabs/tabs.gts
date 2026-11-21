@@ -1,8 +1,9 @@
 import { hash } from "@ember/helper"
+import type { WithBoundArgs } from "@glint/template"
 import Component from "@glimmer/component"
 import type { ChangeDetails } from "@ui-sdk/core"
 import { tabs } from "@ui-sdk/core/tabs"
-import { usePart } from "../use-part"
+import { usePart, type RootYield } from "../use-part"
 import { syncOptions, usePrimitive } from "../use-primitive"
 import TabsIndicator from "./tabs-indicator.gts"
 import TabsList from "./tabs-list.gts"
@@ -38,7 +39,17 @@ class Tabs extends Component<{
     /** Renders no element: bind your own with the yielded `part`. */
     render?: boolean
   }
-  Blocks: { default: [Record<string, any>] }
+  Blocks: {
+    default: [
+      RootYield<typeof tabs> & {
+        List: WithBoundArgs<typeof TabsList, "handle">
+        Tab: WithBoundArgs<typeof TabsTab, "handle">
+        TabIcon: WithBoundArgs<typeof TabsTabIcon, "handle">
+        Panel: WithBoundArgs<typeof TabsPanel, "handle">
+        Indicator: WithBoundArgs<typeof TabsIndicator, "handle">
+      },
+    ]
+  }
 }> {
   handle = usePrimitive(this, tabs)
   root = usePart(this, () => this.handle, "root")

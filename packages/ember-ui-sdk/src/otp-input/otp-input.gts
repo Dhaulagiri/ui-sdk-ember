@@ -1,4 +1,5 @@
 import { hash } from "@ember/helper"
+import type { WithBoundArgs } from "@glint/template"
 import type { ChangeDetails } from "@ui-sdk/core"
 import Component from "@glimmer/component"
 import {
@@ -7,7 +8,7 @@ import {
   type OTPInputValueChangeReason,
 } from "@ui-sdk/core/otp-input"
 import { useFieldControl, type FieldContext } from "../field/context"
-import { usePart } from "../use-part"
+import { usePart, type RootYield } from "../use-part"
 import { syncOptions, usePrimitive } from "../use-primitive"
 import OTPInputGroup from "./otp-input-group.gts"
 import OTPInputSeparator from "./otp-input-separator.gts"
@@ -70,7 +71,26 @@ class OTPInput extends Component<{
     /** Renders no element: bind your own with the yielded `part`. */
     render?: boolean
   }
-  Blocks: { default: [Record<string, any>] }
+  Blocks: {
+    default: [
+      RootYield<typeof otpInput> & {
+        Group: WithBoundArgs<typeof OTPInputGroup, "handle">
+        Separator: WithBoundArgs<typeof OTPInputSeparator, "handle">
+        Slot: WithBoundArgs<typeof OTPInputSlot, "handle">
+        Input: WithBoundArgs<
+          typeof OTPInputControl,
+          | "handle"
+          | "id"
+          | "autofocus"
+          | "fieldModifier"
+          | "ariaLabel"
+          | "ariaLabelledby"
+          | "ariaDescribedby"
+          | "ariaInvalid"
+        >
+      },
+    ]
+  }
 }> {
   fieldControl = useFieldControl(this, () => ({ id: this.args.id }))
   handle = usePrimitive(this, otpInput, () => ({
