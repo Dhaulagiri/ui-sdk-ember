@@ -140,3 +140,25 @@ export default class AppTabs extends Component<{
 `WithBoundArgs` leaves `@handle` out of the type the app sees, so the instance stays between your root and your part. Keep it in an argument rather than a module-level map: the argument follows Ember's rendering, so each root's parts bind to that root, and nothing outlives it.
 
 A part created without an instance throws, as it does in the other frameworks, so a part you render alone needs its root's `handle` passed by hand.
+
+## Get an Element After It Renders
+
+`{{onInsert this.learn}}` calls `learn(el)` once its element is in the page, for an element you need to keep, like to measure it or hand it to a primitive. Tracked state the callback sets renders a microtask later, so it doesn't trip Ember's rule against changing what a render already read. A function the callback returns runs when the element leaves.
+
+```gts title="measured.gts"
+import Component from "@glimmer/component"
+import { tracked } from "@glimmer/tracking"
+import { onInsert } from "ember-ui-sdk/primitive"
+
+export default class Measured extends Component {
+  @tracked width = 0
+
+  measure = (el: HTMLElement) => {
+    this.width = el.offsetWidth
+  }
+
+  <template>
+    <div {{onInsert this.measure}}>{{this.width}}px wide</div>
+  </template>
+}
+```

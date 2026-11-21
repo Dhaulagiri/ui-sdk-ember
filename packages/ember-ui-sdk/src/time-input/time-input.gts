@@ -24,6 +24,10 @@ class TimeInput extends Component<{
     granularity?: "hour" | "minute" | "second"
     /** Whether hours run to 12 or 24. */
     hourCycle?: 12 | 24
+    /** The earliest time, like `09:00`. */
+    min?: string
+    /** The latest time, like `17:30`. */
+    max?: string
     /** The locale the segments are ordered and formatted in. */
     locale?: string
     /** Disables it. */

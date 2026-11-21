@@ -9,7 +9,7 @@ export default class Storage extends Component {
 
   <template>
     <Resizable @autoSaveId="docs-storage" @storage={{this.session}} as |r|>
-      <r.Panel id="session-chats" @defaultSize={{35}} @minSize={{20}}>
+      <r.Panel @id="session-chats" @defaultSize={{35}} @minSize={{20}}>
         <h3>Messages</h3>
         <ul>
           <li>Inès Moreau</li>
@@ -18,7 +18,7 @@ export default class Storage extends Component {
         </ul>
       </r.Panel>
       <r.Handle aria-label="Resize messages" />
-      <r.Panel id="session-thread" @minSize={{20}}>
+      <r.Panel @id="session-thread" @minSize={{20}}>
         <h3>Inès Moreau</h3>
         <span data-slot="hint">Can we move the review to Friday?</span>
       </r.Panel>

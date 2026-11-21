@@ -349,14 +349,14 @@ Drag the handle and release it, or press an arrow key. The console logs the layo
 
 ## Persistence
 
-`@autoSaveId` saves the layout in `localStorage` when an interaction completes and restores it when the group attaches in the browser. Server markup starts with the default sizes. Each set of panels keeps its own layout, so a panel that comes and goes gets its sizes back. Give panels an `id` so the saved layout survives changes elsewhere on the page.
+`@autoSaveId` saves the layout in `localStorage` when an interaction completes and restores it when the group attaches in the browser. Server markup starts with the default sizes. Each set of panels keeps its own layout, so a panel that comes and goes gets its sizes back. Give panels an `@id` so the saved layout survives changes elsewhere on the page.
 
 ```glimmer-ts title="persistence.gts"
 import { Resizable } from "ember-ui-sdk/resizable"
 
 <template>
   <Resizable @autoSaveId="docs-persistence" as |r|>
-    <r.Panel id="docs-sidebar" @defaultSize={{30}} @minSize={{20}}>
+    <r.Panel @id="docs-sidebar" @defaultSize={{30}} @minSize={{20}}>
       <h3>Outline</h3>
       <ul>
         <li>Introduction</li>
@@ -367,7 +367,7 @@ import { Resizable } from "ember-ui-sdk/resizable"
     <r.Handle aria-label="Resize outline">
       <div></div>
     </r.Handle>
-    <r.Panel id="docs-content" @minSize={{30}}>
+    <r.Panel @id="docs-content" @minSize={{30}}>
       <h3>Introduction</h3>
       <span data-slot="hint">Last edited by Wren Takahashi</span>
     </r.Panel>
@@ -395,7 +395,7 @@ export default class Storage extends Component {
 
   <template>
     <Resizable @autoSaveId="docs-storage" @storage={{this.session}} as |r|>
-      <r.Panel id="session-chats" @defaultSize={{35}} @minSize={{20}}>
+      <r.Panel @id="session-chats" @defaultSize={{35}} @minSize={{20}}>
         <h3>Messages</h3>
         <ul>
           <li>Inès Moreau</li>
@@ -404,7 +404,7 @@ export default class Storage extends Component {
         </ul>
       </r.Panel>
       <r.Handle aria-label="Resize messages" />
-      <r.Panel id="session-thread" @minSize={{20}}>
+      <r.Panel @id="session-thread" @minSize={{20}}>
         <h3>Inès Moreau</h3>
         <span data-slot="hint">Can we move the review to Friday?</span>
       </r.Panel>
@@ -419,7 +419,7 @@ A server can't read `localStorage`, so it renders each panel's `@defaultSize` an
 
 ## Controller
 
-A controller, from `createResizableController()`, collapses, expands and resizes panels from anywhere, by id or index, and reads the layout with `getLayout()`. Changes it makes report the `imperative` reason.
+A controller, from `createResizableController()`, collapses, expands and resizes panels from anywhere, by `@id` or index, and reads the layout with `getLayout()`. Changes it makes report the `imperative` reason.
 
 ```glimmer-ts title="controller.gts"
 import Component from "@glimmer/component"
@@ -461,7 +461,7 @@ export default class ControllerExample extends Component {
         <button type="button" {{on "click" this.read}}>Read</button>
       </div>
       <Resizable @controller={{this.editor}} as |r|>
-        <r.Panel id="controller-sidebar" @defaultSize={{30}} @minSize={{20}} @collapsible={{true}}>
+        <r.Panel @id="controller-sidebar" @defaultSize={{30}} @minSize={{20}} @collapsible={{true}}>
           <h3>Files</h3>
           <ul>
             <li>page.tsx</li>
@@ -661,7 +661,7 @@ Pass the root's options as `@` arguments. `@layout` is controlled with `@onLayou
 - `disabled?` (`boolean`): Stops every handle: no drags, no keys, and handles leave the tab order.
 - `step?` (`number`): How far an arrow key moves a handle, in percent.
 - `largeStep?` (`number`): How far Shift with an arrow key moves a handle, in percent.
-- `autoSaveId?` (`string`): Saves the layout when an interaction completes and restores it on the next visit, under this key. Give panels an `id` so it survives changes elsewhere on the page.
+- `autoSaveId?` (`string`): Saves the layout when an interaction completes and restores it on the next visit, under this key. Give panels an `@id` so it survives changes elsewhere on the page.
 - `storage?` (`ResizableStorage`): Where `autoSaveId` saves: anything with `getItem` and `setItem`, like a cookie store a server can read.
 - `controller?` (`object`): Resizes the group from anywhere. Create one with `createResizableController()`.
 - `debug?` (`boolean`): Logs every state change with its reason to the console, in development builds.
