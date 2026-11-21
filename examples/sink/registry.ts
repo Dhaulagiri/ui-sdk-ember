@@ -12,13 +12,17 @@ const file = (name: string): Tile[] => files[`./tiles/${name}.gts`] ?? []
 export const kindOf = (name: string) =>
   /^use[A-Z]/.test(name) ? "hook" : /^[A-Z]/.test(name) ? "component" : "helper"
 
-// Upstream's groups, minus the ones that only exercise core's helpers.
+// Upstream's groups. Tiles that only exercise core's helpers aren't ported, so
+// the motion, language, drag and studio files hold just the ones using Ember.
 export const groups: Record<string, Tile[]> = {
   reference: file("reference"),
   forms: [...file("forms"), ...file("pickers")],
   overlays: [...file("overlays"), ...file("layers")],
   collections: [...file("collections"), ...file("records")],
-  language: file("locale"),
+  motion: [...file("motion"), ...file("gestures")],
+  language: [...file("language"), ...file("locale")],
+  drag: file("drag"),
+  studio: file("studio"),
 }
 
 // One tile from each group in turn, so neighbors come from different areas.
