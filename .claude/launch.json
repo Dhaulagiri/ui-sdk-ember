@@ -1,0 +1,12 @@
+{
+  "version": "0.0.1",
+  "configurations": [
+    {
+      "name": "site-sink",
+      "runtimeExecutable": "pnpm",
+      "runtimeArgs": ["--filter", "site", "dev"],
+      "env": { "SITE_PORT": "5351" },
+      "port": 5351
+    }
+  ]
+}

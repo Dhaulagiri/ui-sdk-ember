@@ -6,6 +6,7 @@ import pages from "virtual:docs-nav"
 import { enhance } from "./enhance.ts"
 import { fill } from "./fill.ts"
 import { parse } from "./markdown.ts"
+import { Sink } from "../../examples/sink/sink.gts"
 import { isDark, toggle } from "./theme.ts"
 
 const docs = import.meta.glob("../../docs/**/*.md", {
@@ -75,6 +76,11 @@ export class App extends Component {
 
   async load() {
     const { path } = this.route
+    if (path === "sink") {
+      this.missing = false
+      document.title = "Sink | ember-ui-sdk"
+      return
+    }
     const load = docs[`../../docs/${path}.md`]
     if (!load) {
       this.missing = true
@@ -111,11 +117,16 @@ export class App extends Component {
 
   isCurrent = (path: string) => path === this.route.path
 
+  get isSink() {
+    return this.route.path === "sink"
+  }
+
   <template>
     <a class="skip" href="#main">Skip to content</a>
     <header class="top">
       <a class="brand" href="#/">ember-ui-sdk</a>
       <nav aria-label="Links">
+        <a href="#/sink">Sink</a>
         <a href="https://github.com/Dhaulagiri/ui-sdk-ember">GitHub</a>
         <a href="https://www.npmjs.com/package/ember-ui-sdk">npm</a>
         <a href="https://ui-sdk.dev/docs">ui-sdk</a>
@@ -127,37 +138,41 @@ export class App extends Component {
         >{{if this.dark "☀" "☾"}}</button>
       </nav>
     </header>
-    <div class="layout">
-      <nav class="side" aria-label="Docs">
-        {{#each groups as |group|}}
-          <h2>{{group.name}}</h2>
-          <ul>
-            {{#each group.pages as |page|}}
-              <li>
-                <a
-                  href={{page.href}}
-                  aria-current={{if (this.isCurrent page.path) "page"}}
-                >{{page.title}}</a>
-              </li>
-            {{/each}}
-          </ul>
-        {{/each}}
-      </nav>
-      {{! template-lint-disable no-invalid-interactive }}
-      <main id="main" tabindex="-1" {{on "click" this.scrollToAnchor}}>
-        {{#if this.missing}}
-          <h1>Page not found</h1>
-          <p><a href="#/">Back to the introduction</a></p>
-        {{else}}
-          <h1>{{this.title}}</h1>
-          {{#if this.description}}<p
-              class="lede"
-            >{{this.description}}</p>{{/if}}
-          <article
-            {{fill render this.html this.route.path this.route.anchor}}
-          ></article>
-        {{/if}}
-      </main>
-    </div>
+    {{#if this.isSink}}
+      <Sink />
+    {{else}}
+      <div class="layout">
+        <nav class="side" aria-label="Docs">
+          {{#each groups as |group|}}
+            <h2>{{group.name}}</h2>
+            <ul>
+              {{#each group.pages as |page|}}
+                <li>
+                  <a
+                    href={{page.href}}
+                    aria-current={{if (this.isCurrent page.path) "page"}}
+                  >{{page.title}}</a>
+                </li>
+              {{/each}}
+            </ul>
+          {{/each}}
+        </nav>
+        {{! template-lint-disable no-invalid-interactive }}
+        <main id="main" tabindex="-1" {{on "click" this.scrollToAnchor}}>
+          {{#if this.missing}}
+            <h1>Page not found</h1>
+            <p><a href="#/">Back to the introduction</a></p>
+          {{else}}
+            <h1>{{this.title}}</h1>
+            {{#if this.description}}<p
+                class="lede"
+              >{{this.description}}</p>{{/if}}
+            <article
+              {{fill render this.html this.route.path this.route.anchor}}
+            ></article>
+          {{/if}}
+        </main>
+      </div>
+    {{/if}}
   </template>
 }
