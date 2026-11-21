@@ -1,5 +1,6 @@
 // Helpers for building custom parts on the same primitives the components use.
 export { attach, type Attachment } from "./attach"
+export { onInsert } from "./on-insert"
 export { createParts, type Parts } from "./create-parts"
 export {
   type PartBinding,
