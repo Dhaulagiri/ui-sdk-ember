@@ -104,6 +104,12 @@ class Combobox extends Component<{
     registerController(this, () => this.args.controller, this.handle)
   }
 
+  // The hidden field is a textarea, so Enter in a form's one text field
+  // submits it, as next to a native <select>. Its value is its text.
+  get formText() {
+    return this.formInput.attrs.value as string | undefined
+  }
+
   get values() {
     this.formInput.attrs
     return this.handle.state.multiple
@@ -157,7 +163,7 @@ class Combobox extends Component<{
         @fromRoot={{true}}
       />
     {{/unless}}
-    <input {{this.formInput.modifier}} />
+    <textarea {{this.formInput.modifier}}>{{this.formText}}</textarea>
     {{#each this.values key="@identity" as |value|}}
       <ValueInput @handle={{this.handle}} @value={{value}} />
     {{/each}}

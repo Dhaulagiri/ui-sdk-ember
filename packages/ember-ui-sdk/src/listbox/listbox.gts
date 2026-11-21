@@ -46,6 +46,12 @@ class Listbox extends Component<{
   root = usePart(this, () => this.handle, "root")
   formInput = usePart(this, () => this.handle, "form-input")
 
+  // The hidden field is a textarea, so Enter in a form's one text field
+  // submits it, as next to a native <select>. Its value is its text.
+  get formText() {
+    return this.formInput.attrs.value as string | undefined
+  }
+
   get values() {
     this.formInput.attrs
     return this.handle.state.multiple
@@ -83,7 +89,7 @@ class Listbox extends Component<{
         </div>
       {{/if}}
     {{/let}}
-    <input {{this.formInput.modifier}} />
+    <textarea {{this.formInput.modifier}}>{{this.formText}}</textarea>
     {{#each this.values key="@identity" as |value|}}
       <ValueInput @handle={{this.handle}} @value={{value}} />
     {{/each}}
