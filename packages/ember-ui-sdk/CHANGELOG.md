@@ -1,5 +1,11 @@
 # ember-ui-sdk
 
+## 0.3.0
+
+### Minor Changes
+
+- 471ccb0: Type what the roots yield. Collapsible, Tabs and 32 more roots now yield their `part` modifier, `state`, `handle` and parts with precise types instead of `Record<string, any>`, so `c.Panel` and `c.part` check in strict templates with `noPropertyAccessFromIndexSignature`, and a misspelled part or a wrong argument is an error. `ember-ui-sdk/primitive` exports `RootYield` and `PartModifier` to type your own roots the same way.
+
 ## 0.2.1
 
 ### Patch Changes
