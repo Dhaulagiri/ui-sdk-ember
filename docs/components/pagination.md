@@ -36,7 +36,7 @@ The list yields its state, whose `items` contains page numbers and the strings `
 
 `p.Link` shows its page number unless you supply children. The current link gets `aria-current="page"` and `data-current`. `p.Ellipsis` shows “…” and is hidden from screen readers.
 
-Give Previous, Next, First, and Last text or an `aria-label`. At an end, a step gets `aria-disabled="true"` and `data-disabled` and stops changing the page. As a button, it stays in the tab order.
+Give Previous, Next, First, and Last text or an `aria-label`. At an end, a step gets `aria-disabled="true"` and `data-disabled` and stops changing the page. As a button, it stays in the tab order. Set `@disabled={{true}}` on the root to do the same for every page and step, like while results load. A controller still changes the page.
 
 ## Usage
 

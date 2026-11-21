@@ -64,8 +64,14 @@ Name the control with `aria-label`, or put it in a [Field](./field.md) whose lab
   height: var(--segmented-control-indicator-height);
   transition-property: top, left, width, height;
   transition-duration: 200ms;
+
+  &[data-activation-direction="none"] {
+    transition: none;
+  }
 }
 ```
+
+Skip the transitions while `data-activation-direction` is `"none"`, so the indicator doesn't slide in on its first placement. After that it says which way the checked item moved: `left`, `right`, `up` or `down`.
 
 ## Vertical
 

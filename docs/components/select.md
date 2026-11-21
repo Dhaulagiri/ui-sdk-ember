@@ -343,6 +343,6 @@ The select follows the [WAI-ARIA select-only combobox pattern](https://www.w3.or
 
 ### Keyboard
 
-While the list is open, focus stays on the trigger and `aria-activedescendant` names the highlighted item, so key handlers go on the trigger and the highlight is styled with `data-highlighted`, not `:focus-visible`. A list with a search field keeps focus in the field instead.
-
 Arrow keys move through the open list; Home and End reach its first and last items. Set `@loop={{false}}` to stop arrow keys at either end. The popup follows the trigger's inherited text direction; use logical CSS properties for spacing in right-to-left layouts.
+
+Set `@virtualFocus={{true}}` to keep focus on the trigger while the list is open, as on a native select: arrow keys, Home, End and typing move the highlight, the trigger points at it with `aria-activedescendant`, and Tab closes the list and moves on. A search field in the list still takes focus.

@@ -120,7 +120,7 @@ Open each one: Rename focuses its field, Publish focuses its Publish button, and
 
 ## Open on Hover
 
-`@openOnHover` adds pointer opening while keeping click, keyboard, and touch activation. `@delay` and `@closeDelay` control the pause before opening and closing. You can cross the gap into the content and interact with it.
+`@openOnHover` adds pointer opening while keeping click, keyboard, and touch activation. `@delay` and `@closeDelay` control the pause before opening and closing. You can cross the gap into the content and interact with it. Another popover or hover card opening on hover closes it, unless that one is inside it, so a row of hover triggers shows one at a time.
 
 [popover/hover](../../examples/components/popover/ember/hover.gts)
 
@@ -180,6 +180,14 @@ Popovers render in place by default and use the browser's top layer. `@container
   <p.Content>...</p.Content>
 </Popover>
 ```
+
+## In Place
+
+A popover opens above the page. Set `@inline={{true}}` on the content to render it where it is, inside its parent's layout and stacking, like a panel that opens out of a corner widget. Your CSS places it, so `@side`, `@align` and the offsets don't apply.
+
+[popover/inline](../../examples/components/popover/ember/inline.gts)
+
+Open Feedback. The panel opens above the button, inside the corner box.
 
 ## Custom Rendering
 

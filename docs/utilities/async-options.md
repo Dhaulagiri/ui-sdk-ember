@@ -65,11 +65,12 @@ Use `c.Status` and `c.Empty` to show loading, error, and empty messages, as in t
 
 The third argument sets the starting behavior:
 
-| Option      | What It Does                                            | Default |
-| ----------- | ------------------------------------------------------- | ------- |
-| `debounce`  | Milliseconds typing must pause before a request starts. | `200`   |
-| `query`     | The starting search text.                               | `""`    |
-| `immediate` | Loads that text as soon as the component mounts.        | `false` |
+| Option      | What It Does                                                                    | Default |
+| ----------- | ------------------------------------------------------------------------------- | ------- |
+| `debounce`  | Milliseconds typing must pause before a request starts.                         | `200`   |
+| `query`     | The starting search text.                                                       | `""`    |
+| `immediate` | Loads that text as soon as the component mounts.                                | `false` |
+| `minLength` | Characters the text needs before anything loads. Shorter text clears the items. | `0`     |
 
 ```ts
 movies = useAsyncOptions(this, searchMovies, { immediate: true, debounce: 300 })

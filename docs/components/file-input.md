@@ -80,7 +80,7 @@ Without `@multiple`, a new file replaces the current one. A rejected file leaves
 
 ## Validation
 
-Pass `@validate` for checks of your own. Return a reason string to reject a file, or `null` to accept it. It runs after the built-in type and size checks, and its reason reaches `@onReject` like theirs. Validate uploads on your server too.
+Pass `@validate` for checks of your own. Return a reason string to reject a file, or `null` to accept it. Its second argument's `accepted` holds the files of the same drop accepted before this one, so a duplicate check catches two files with one name in a single drop. It runs after the built-in type and size checks, and its reason reaches `@onReject` like theirs. Validate uploads on your server too.
 
 ## Page-Wide Drop
 

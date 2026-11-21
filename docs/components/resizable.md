@@ -94,7 +94,7 @@ Resize Files to log the layout and its reason. Split Evenly and Reset set the la
 
 ## Saving on Complete
 
-`@onLayoutChange` runs on every frame of a drag. `@onLayoutCommit` runs once, when the interaction that changed the layout ends: the pointer lifts, the key comes up, or a panel collapses. Save there.
+`@onLayoutChange` runs on every frame of a drag. `@onLayoutCommit` runs once, when the interaction that changed the layout ends: the pointer lifts, the key comes up, or a panel collapses. Save there. Escape during a drag puts the panels back where they started, and nothing commits.
 
 [resizable/complete](../../examples/components/resizable/ember/complete.gts)
 

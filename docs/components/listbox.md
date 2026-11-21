@@ -71,7 +71,7 @@ Choose Basil, then hold Shift and choose Pepper to select a range. Use Ctrl+A or
 
 ## Selection That Follows Focus
 
-A single list selects as arrow keys, Home, End, or typing move focus. A multiple list can do the same with `@activation="automatic"`, like a file list: a press or arrow replaces the selection, Ctrl or Cmd adds to it, and Ctrl or Cmd with an arrow moves focus without selecting.
+A single list selects as arrow keys, Page Up and Page Down, Home, End, or typing move focus. Page Up and Page Down move ten options, and stop at the ends. A multiple list can do the same with `@activation="automatic"`, like a file list: a press or arrow replaces the selection, Ctrl or Cmd adds to it, and Ctrl or Cmd with an arrow moves focus without selecting.
 
 Taps and screen-reader presses toggle an option instead, since they do not have modifier keys.
 
@@ -90,6 +90,14 @@ Set `@activation="manual"` on a single list to browse without selecting. Space, 
 [listbox/manual](../../examples/components/listbox/ember/manual.gts)
 
 Move through the options with the arrow keys. Nothing is selected until you press Space or Enter, and the console logs the choice.
+
+## Focus on the List
+
+Set `@virtualFocus={{true}}` to keep focus on the list itself while arrow keys, Home, End, and typing move a highlight through the options. The list points at the highlighted option with `aria-activedescendant`, so screen readers still announce it. Style the highlight with `[data-highlighted]`, since the options don't take focus.
+
+[listbox/virtual-focus](../../examples/components/listbox/ember/virtual-focus.gts)
+
+Tab into the list and move through it with the arrow keys. Focus stays on the list, and Space or Enter chooses the highlighted option.
 
 ## Deselectable
 
@@ -236,6 +244,6 @@ Follows the [WAI-ARIA listbox pattern](https://www.w3.org/WAI/ARIA/apg/patterns/
 
 ### Focus
 
-The list is one tab stop. Tab returns to the last focused option, then falls back to the first selected or enabled option. Options receive real DOM focus, so `focus-visible` works directly.
+The list is one tab stop. Tab returns to the last focused option, then falls back to the first selected or enabled option. Options receive real DOM focus, so `focus-visible` works directly. With `@virtualFocus`, the list is the tab stop and keeps focus instead.
 
 The root forwards focus into the options, including when you press a field label or the list's padding. Escape stays available to an enclosing dialog.
