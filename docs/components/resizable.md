@@ -102,7 +102,7 @@ Drag the handle and release it, or press an arrow key. The console logs the layo
 
 ## Persistence
 
-`@autoSaveId` saves the layout in `localStorage` when an interaction completes and restores it when the group attaches in the browser. Server markup starts with the default sizes. Each set of panels keeps its own layout, so a panel that comes and goes gets its sizes back. Give panels an `id` so the saved layout survives changes elsewhere on the page.
+`@autoSaveId` saves the layout in `localStorage` when an interaction completes and restores it when the group attaches in the browser. Server markup starts with the default sizes. Each set of panels keeps its own layout, so a panel that comes and goes gets its sizes back. Give panels an `@id` so the saved layout survives changes elsewhere on the page.
 
 [resizable/persistence](../../examples/components/resizable/ember/persistence.gts)
 
@@ -122,7 +122,7 @@ A server can't read `localStorage`, so it renders each panel's `@defaultSize` an
 
 ## Controller
 
-A controller, from `createResizableController()`, collapses, expands and resizes panels from anywhere, by id or index, and reads the layout with `getLayout()`. Changes it makes report the `imperative` reason.
+A controller, from `createResizableController()`, collapses, expands and resizes panels from anywhere, by `@id` or index, and reads the layout with `getLayout()`. Changes it makes report the `imperative` reason.
 
 [resizable/controller](../../examples/components/resizable/ember/controller.gts)
 

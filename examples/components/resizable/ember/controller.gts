@@ -38,7 +38,7 @@ export default class ControllerExample extends Component {
       </div>
       <Resizable @controller={{this.editor}} as |r|>
         <r.Panel
-          id="controller-sidebar"
+          @id="controller-sidebar"
           @defaultSize={{30}}
           @minSize={{20}}
           @collapsible={{true}}
