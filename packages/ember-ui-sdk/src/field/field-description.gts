@@ -6,6 +6,8 @@ import {
 } from "./context"
 import type { PartModifier } from "../use-part"
 
+let count = 0
+
 /** Describes its Field. Right inside a FieldSet, outside any Field, it describes the group, so screen readers say it as focus enters the group. */
 class FieldDescription extends Component<{
   Element: HTMLParagraphElement
@@ -19,7 +21,13 @@ class FieldDescription extends Component<{
   }
   Blocks: { default: [{ part: PartModifier; state: Record<string, unknown> }] }
 }> {
-  part = useFieldPart(this, "description", () => ({ id: this.args.id }))
+  // Each description is its own part, keyed by a made value, so each gets an
+  // id of its own and a control with two is described by both.
+  uid = `e-description${++count}`
+  part = useFieldPart(this, "description", () => ({
+    id: this.args.id,
+    value: this.uid,
+  }))
 
   <template>
     {{#if @render}}
