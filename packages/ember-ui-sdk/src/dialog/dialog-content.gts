@@ -21,8 +21,11 @@ class DialogContent extends Component<
     : undefined
   part = usePart(this, () => this.args.handle, "content")
 
+  // With `inline`, the content and its viewport stay where they render.
   get target() {
-    return portalTarget(this.args.container ?? this.args.rootContainer)
+    return this.args.inline
+      ? undefined
+      : portalTarget(this.args.container ?? this.args.rootContainer)
   }
 
   <template>

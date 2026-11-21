@@ -74,6 +74,7 @@ export default class DialogFixture extends Component {
           class="dialog"
           @initialFocus={{this.content.initialFocus}}
           @finalFocus={{this.content.finalFocus}}
+          @inline={{this.content.inline}}
         >
           {{#if this.parts.title}}<d.Title
               class="title"
