@@ -21,9 +21,9 @@ Use the following composition to build an `ImageCropper`:
 ImageCropper as |c|
 ├── c.Viewport as |v|
 │   ├── c.Image
-│   └── c.Selection as |s|
-│       ├── c.Grid
-│       └── c.Handle
+│   ├── c.Selection as |s|
+│   │   └── c.Grid
+│   └── c.Handle
 ├── c.Zoom
 ├── c.Rotate
 └── c.Flip
@@ -34,7 +34,7 @@ ImageCropper as |c|
 - **c.Image** is the image, turned and flipped. Give it `alt`.
 - **c.Selection** shows the crop over the image. It's a slider you drag or move with the arrow keys.
 - **c.Grid** draws lines across the selection, in thirds, for you to style.
-- **c.Handle** resizes the selection from one edge or corner, its `@position`, like `"se"` for the bottom right.
+- **c.Handle** resizes the selection from one edge or corner, its `@position`, like `"se"` for the bottom right. It goes beside the selection, not inside it, and sits on its edge or corner.
 - **c.Zoom** is a range input from 1, the largest crop, to `@maxZoom`.
 - **c.Rotate** turns the image a quarter clockwise.
 - **c.Flip** mirrors the image left to right, or top to bottom with `@direction="vertical"`.
@@ -57,10 +57,9 @@ import { ImageCropper } from "ember-ui-sdk/image-cropper"
   >
     <c.Viewport as |v|>
       <c.Image alt="Your cover photo" />
-      <c.Selection as |s|>
-        <c.Handle @position="nw" />
-        <c.Handle @position="se" />
-      </c.Selection>
+      <c.Selection />
+      <c.Handle @position="nw" />
+      <c.Handle @position="se" />
     </c.Viewport>
   </ImageCropper>
 </template>

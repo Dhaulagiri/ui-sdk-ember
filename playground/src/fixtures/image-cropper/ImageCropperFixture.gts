@@ -62,10 +62,10 @@ export default class ImageCropperFixture extends Component {
           <c.Image alt={{this.f.alt}} />
           <c.Selection>
             <c.Grid />
-            {{#each this.f.handles as |position|}}
-              <c.Handle @position={{position}} />
-            {{/each}}
           </c.Selection>
+          {{#each this.f.handles as |position|}}
+            <c.Handle @position={{position}} />
+          {{/each}}
         </c.Viewport>
         <c.Zoom />
         <c.Rotate>Rotate</c.Rotate>

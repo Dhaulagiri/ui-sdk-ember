@@ -53,10 +53,10 @@ export default class AspectRatio extends Component {
           <c.Image alt="Mountains at sunset" />
           <c.Selection>
             <c.Grid />
-            {{#each this.handles key="@identity" as |position|}}
-              <c.Handle @position={{position}} />
-            {{/each}}
           </c.Selection>
+          {{#each this.handles key="@identity" as |position|}}
+            <c.Handle @position={{position}} />
+          {{/each}}
         </c.Viewport>
       </ImageCropper>
     </div>
