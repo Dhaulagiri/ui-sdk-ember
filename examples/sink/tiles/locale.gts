@@ -49,7 +49,7 @@ import {
   valueAt,
   wrap,
 } from "@ui-sdk/core/number"
-import { createAgent, type AgentComponent } from "ember-ui-sdk/agent"
+import type { AgentComponent } from "ember-ui-sdk/agent"
 import { elementOf } from "ember-ui-sdk/observe"
 import { Button } from "ember-ui-sdk/button"
 import { Field } from "ember-ui-sdk/field"
@@ -68,6 +68,7 @@ import {
 } from "ember-ui-sdk/token-input"
 import "../../../vendor/ui/apps/docs/app/sink/tiles/locale.css"
 import { icon } from "../icon.ts"
+import { pageAgent } from "../agent.ts"
 import { onInsert } from "../on-insert.ts"
 import type { Tile } from "../types.ts"
 
@@ -800,8 +801,6 @@ type LogLine = {
   text: string
 }
 
-let pageAgent: ReturnType<typeof createAgent> | undefined
-const agentOf = () => (pageAgent ??= createAgent())
 const pause = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms))
 const quoted = (value: unknown) =>
   typeof value === "string" ? `"${value}"` : String(value)
@@ -919,7 +918,7 @@ class AgentFill extends Component {
     this.log = [{ kind: "task", text: TASK }]
     this.formKey++
     await pause(500)
-    const agent = agentOf()
+    const agent = pageAgent()
     say({ kind: "call", text: "snapshot()" })
     await pause(350)
     const mine = new Map<string, AgentComponent>()
