@@ -32,7 +32,7 @@ function enhance(article: HTMLElement, html: string, path: string) {
     } else if (/^https?:/.test(href)) {
       link.target = "_blank"
       link.rel = "noopener noreferrer"
-    } else if (href.startsWith("#")) {
+    } else if (href.startsWith("#") && !href.startsWith("#/")) {
       link.dataset.anchor = href.slice(1)
     } else if (/\.md(#|$)/.test(href)) {
       link.setAttribute("href", resolveDoc(path, href))
