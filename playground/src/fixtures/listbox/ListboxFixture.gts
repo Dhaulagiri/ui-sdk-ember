@@ -133,6 +133,7 @@ export default class ListboxFixture extends Component<{
               @activation={{this.options.activation}}
               @orientation={{this.options.orientation}}
               @loop={{this.options.loop}}
+              @virtualFocus={{this.options.virtualFocus}}
               @deselectable={{this.options.deselectable}}
               @required={{this.options.required}}
               @readOnly={{this.options.readOnly}}

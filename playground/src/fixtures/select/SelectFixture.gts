@@ -220,6 +220,7 @@ export default class SelectFixture extends Component<{
               @required={{this.options.required}}
               @readOnly={{this.options.readOnly}}
               @disabled={{this.options.disabled}}
+              @virtualFocus={{this.options.virtualFocus}}
               @defaultOpen={{this.options.defaultOpen}}
               @modal={{this.options.modal}}
               @presentation={{this.options.presentation}}
