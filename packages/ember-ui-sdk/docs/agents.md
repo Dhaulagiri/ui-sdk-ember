@@ -43,10 +43,10 @@ The [component skill](./agents.md#skills) gives the agent a workflow to follow. 
 
 Connect an agent to a UI built with ui-sdk and it can read component state and call component actions directly. For example, it can rename a project by calling the input's `setValue` action.
 
-Create the bridge before the page renders. Import it from the same package as your components; this example uses React:
+Create the bridge before the page renders. Import it from the same package as your components; this example uses Ember:
 
 ```ts
-import { createAgent } from "@ui-sdk/react/agent"
+import { createAgent } from "ember-ui-sdk/agent"
 
 const agent = createAgent()
 ```
@@ -134,6 +134,16 @@ For a custom component, read the relevant sections of docs/core.md
 and docs/rendering.md in the same package.
 ```
 
+**Ember**
+
+```text
+This project uses Ember and ui-sdk. Read
+node_modules/ember-ui-sdk/docs/llms.txt to see what's available.
+
+For a custom component, read the relevant sections of docs/core.md
+in the same package.
+```
+
 **Solid**
 
 ```text
@@ -207,6 +217,18 @@ Use our existing styles.
 
 ```text
 Build an emoji picker in Svelte using ui-sdk.
+
+Add a search input and a grid of emoji. Down from the search input
+should move focus to the first result. Arrow keys move through the
+grid, and Enter selects an emoji. Announce the selection to screen readers.
+
+Use our existing styles.
+```
+
+**Ember**
+
+```text
+Build an emoji picker in Ember using ui-sdk.
 
 Add a search input and a grid of emoji. Down from the search input
 should move focus to the first result. Arrow keys move through the
@@ -320,10 +342,10 @@ For a complete app you can run, follow the [Guide](./agents.md#guide). It takes 
 
 ## Create the Bridge
 
-Create the bridge once. These examples use React:
+Create the bridge once. These examples use Ember:
 
-```ts title="agent.ts"
-import { createAgent } from "@ui-sdk/react/agent"
+```ts title="app/agent.ts"
+import { createAgent } from "ember-ui-sdk/agent"
 
 const agent = createAgent()
 
@@ -339,6 +361,7 @@ Use the agent entry from the same package as your components:
 | React          | `@ui-sdk/react/agent`  |
 | Vue            | `@ui-sdk/vue/agent`    |
 | Svelte         | `@ui-sdk/svelte/agent` |
+| Ember          | `ember-ui-sdk/agent`   |
 | Solid          | `@ui-sdk/solid/agent`  |
 | Web Components | `@ui-sdk/web/agent`    |
 
@@ -346,15 +369,18 @@ Use the agent entry from the same package as your components:
 
 Render a ui-sdk input with an accessible name:
 
-```tsx
-import { Input } from "@ui-sdk/react/input"
+```gts title="app/components/project-name.gts"
+import { Input } from "ember-ui-sdk/input"
+
+<template>
+  <Input aria-label="Project name" @defaultValue="Apollo" />
+</template>
+```
+
+Import the bridge once from `app/app.ts`, so it exists before the page renders:
+
+```ts title="app/app.ts"
 import "./agent"
-
-function ProjectName() {
-  return <Input aria-label="Project name" defaultValue="Apollo" />
-}
-
-export { ProjectName }
 ```
 
 The name helps both people using a screen reader and agents identify the input. A [Field label](./components/field.md) works too.
@@ -422,7 +448,7 @@ const [region] = await agent.query({ within: "Region", text: "Europe" })
 `agentTools` describes `snapshot`, `act`, and `query` with names, descriptions, and JSON Schemas:
 
 ```ts
-import { agentTools } from "@ui-sdk/react/agent"
+import { agentTools } from "ember-ui-sdk/agent"
 ```
 
 Use these definitions when setting up your agent's tools. Route each tool call to the matching method on `agent` and return its result to the model. Your model SDK determines how you register and handle those calls.
@@ -451,6 +477,8 @@ The snapshot reads the primitive's `controlled` state keys. If none are declared
 Build a Vite app, try the agent bridge in the console, and let ChatGPT use it through WebMCP.
 
 We'll build a Select for choosing a region. First, you'll read and change it from the browser console. Then you'll give ChatGPT the same tools and ask it to choose a region for you.
+
+The Guide uses React. In an Ember app, the agent code is the same: import it from `ember-ui-sdk/agent` and `ember-ui-sdk/observe`, and the history helpers from `@ui-sdk/core/history`. The `import.meta.hot` cleanup works in an Embroider app on Vite too.
 
 ## Create a Vite App
 
@@ -1257,7 +1285,7 @@ For a complete example with ChatGPT prompts, follow the [Guide](./agents.md#guid
 Import `registerTools` from the same package as your bridge:
 
 ```ts
-import { registerTools } from "@ui-sdk/react/agent"
+import { registerTools } from "ember-ui-sdk/agent"
 import { agent } from "./agent"
 
 const unregister = registerTools(agent, {
@@ -1290,7 +1318,7 @@ These are hints for the tool consumer. `snapshot` and `query` never open a compo
 
 The bridge's methods, tool definitions, and the data they return.
 
-Import these APIs from your framework's agent entry, such as `@ui-sdk/react/agent`. Vue, Svelte, Solid, and Web Components use `@ui-sdk/vue/agent`, `@ui-sdk/svelte/agent`, `@ui-sdk/solid/agent`, and `@ui-sdk/web/agent`.
+Import these APIs from your framework's agent entry, such as `ember-ui-sdk/agent`. React, Vue, Svelte, Solid, and Web Components use `@ui-sdk/react/agent`, `@ui-sdk/vue/agent`, `@ui-sdk/svelte/agent`, `@ui-sdk/solid/agent`, and `@ui-sdk/web/agent`.
 
 Start with [Get Started](./agents.md#get-started) for the basic calls, or follow the [Guide](./agents.md#guide) to try them in a Vite app and ChatGPT.
 
@@ -1299,7 +1327,7 @@ Start with [Get Started](./agents.md#get-started) for the basic calls, or follow
 Creates a bridge with `snapshot`, `act`, `query`, and `subscribe`:
 
 ```ts
-import { createAgent } from "@ui-sdk/react/agent"
+import { createAgent } from "ember-ui-sdk/agent"
 
 const agent = createAgent()
 ```
@@ -1470,7 +1498,7 @@ Call `unsubscribe()` when you're done. See [Observe Changes](./agents.md#observe
 The definitions of the three tools: `snapshot`, `act`, and `query`.
 
 ```ts
-import { agentTools } from "@ui-sdk/react/agent"
+import { agentTools } from "ember-ui-sdk/agent"
 ```
 
 Each definition is `{ name, description, inputSchema }`. Adapt it to your model SDK's tool format, route calls to the matching bridge method in the page, and return the result to the model. These definitions don't create a model connection or run a tool loop for you.
@@ -1480,7 +1508,7 @@ Each definition is `{ name, description, inputSchema }`. Adapt it to your model 
 Registers the three tools with `document.modelContext.registerTool` when the browser provides it:
 
 ```ts
-import { registerTools } from "@ui-sdk/react/agent"
+import { registerTools } from "ember-ui-sdk/agent"
 
 const unregister = registerTools(agent, {
   allow: (step) => step.action !== "press" || confirm(`Press ${step.args[0]}?`),
