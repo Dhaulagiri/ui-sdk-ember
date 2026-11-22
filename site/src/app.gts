@@ -6,6 +6,7 @@ import pages from "virtual:docs-nav"
 import { enhance } from "./enhance.ts"
 import { fill } from "./fill.ts"
 import { parse } from "./markdown.ts"
+import { A2uiPage } from "../../examples/a2ui/a2ui-page.gts"
 import { Sink } from "../../examples/sink/sink.gts"
 import { isDark, toggle } from "./theme.ts"
 
@@ -81,6 +82,11 @@ export class App extends Component {
       document.title = "Sink | ember-ui-sdk"
       return
     }
+    if (path === "a2ui") {
+      this.missing = false
+      document.title = "A2UI | ember-ui-sdk"
+      return
+    }
     const load = docs[`../../docs/${path}.md`]
     if (!load) {
       this.missing = true
@@ -121,12 +127,17 @@ export class App extends Component {
     return this.route.path === "sink"
   }
 
+  get isA2ui() {
+    return this.route.path === "a2ui"
+  }
+
   <template>
     <a class="skip" href="#main">Skip to content</a>
     <header class="top">
       <a class="brand" href="#/">ember-ui-sdk</a>
       <nav aria-label="Links">
         <a href="#/sink">Sink</a>
+        <a href="#/a2ui">A2UI</a>
         <a href="https://github.com/Dhaulagiri/ui-sdk-ember">GitHub</a>
         <a href="https://www.npmjs.com/package/ember-ui-sdk">npm</a>
         <a href="https://ui-sdk.dev/docs">ui-sdk</a>
@@ -140,6 +151,8 @@ export class App extends Component {
     </header>
     {{#if this.isSink}}
       <Sink />
+    {{else if this.isA2ui}}
+      <A2uiPage />
     {{else}}
       <div class="layout">
         <nav class="side" aria-label="Docs">

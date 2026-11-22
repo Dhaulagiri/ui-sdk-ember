@@ -246,6 +246,7 @@ class Checkout extends Component {
         class="b-btn fm-pay-btn"
         data-variant="primary"
         data-done={{flag this.paid}}
+        data-agent-confirm="Pay for the booking with this card"
         @type="submit"
         @pendingAnnouncement="Processing payment"
         @onClick={{this.pay}}

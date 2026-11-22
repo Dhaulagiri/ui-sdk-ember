@@ -29,7 +29,8 @@ const TileView: TOC<{
         <strong>{{@tile.title}}</strong>
         {{@tile.blurb}}
       </p>
-      <div class="tile-uses" aria-label="Uses">
+      {{! The tags filter the grid; an agent reads the tiles, not them. }}
+      <div class="tile-uses" aria-label="Uses" data-agent-hidden>
         {{#each @tile.uses as |name|}}
           <Toggle
             class="tile-use"

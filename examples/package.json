@@ -10,6 +10,7 @@
     "@glimmer/tracking": "^1.1.2",
     "@ui-sdk/core": "^0.1.0-beta.13",
     "decorator-transforms": "^2.4.0",
+    "ember-a2ui": "^0.1.1",
     "ember-source": "~7.4.0",
     "ember-ui-sdk": "workspace:*",
     "lucide": "1.54.0"

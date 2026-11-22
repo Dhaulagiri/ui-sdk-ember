@@ -582,6 +582,7 @@ class DeleteProject extends Component {
             <d.Close
               @value="confirm"
               class="b-btn ov-destroy"
+              data-agent-confirm="Delete legacy-cron and its 12 deployments"
               @action={{this.remove}}
               as |c|
             >{{if c.state.pending "Deleting…" "Delete project"}}</d.Close>

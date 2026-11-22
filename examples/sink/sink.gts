@@ -3,6 +3,8 @@ import { tracked } from "@glimmer/tracking"
 // Before the tiles, whose own rules win where they style the same elements.
 import "../../vendor/ui/apps/docs/app/sink/bento/bento.css"
 import "./sink.css"
+import { pageAgent } from "./agent.ts"
+import { AgentPanel } from "./agent-panel.gts"
 import { Filter } from "./filter.gts"
 import { groupOf, tiles } from "./registry.ts"
 import { Tile } from "./tile.gts"
@@ -18,6 +20,8 @@ const listParam = (params: URLSearchParams, key: string) =>
  * what each uses. `?only=forms` shows a group, `?uses=Dialog,Menu` filters.
  */
 export class Sink extends Component {
+  // Before the tiles render, so the bridge hears each component as it's made.
+  agent = pageAgent()
   params = new URLSearchParams(location.search)
   only = listParam(this.params, "only")
   @tracked selected = listParam(this.params, "uses")
@@ -111,6 +115,7 @@ export class Sink extends Component {
         @onModeChange={{this.setMode}}
         @shown={{this.shown}}
       />
+      <AgentPanel />
     </div>
   </template>
 }
