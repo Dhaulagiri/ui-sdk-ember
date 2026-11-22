@@ -78,8 +78,9 @@
     }
   }
 
-  /* A checkbox with its own content is a choice card. */
-  [data-slot="checkbox"]:not(:empty, :has(> [data-slot="checkbox-indicator"])) {
+  /* A checkbox with its own content is a choice card. Its indicator, and the
+     whitespace a template leaves around it while it's unchecked, aren't. */
+  [data-slot="checkbox"]:has(> :not([data-slot="checkbox-indicator"])) {
     display: inline-flex;
     align-items: center;
     gap: var(--space-3);
