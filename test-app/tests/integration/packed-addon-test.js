@@ -5,6 +5,7 @@ import {
   fillIn,
   focus,
   render,
+  settled,
   triggerKeyEvent,
   waitUntil,
 } from "@ember/test-helpers"
@@ -13,11 +14,14 @@ import { setComponentTemplate } from "@ember/component"
 import templateOnly from "@ember/component/template-only"
 import { hash } from "@ember/helper"
 import Component from "@glimmer/component"
+import { tracked } from "@glimmer/tracking"
 import { VERSION } from "@ember/version"
 import config from "test-app/config/environment"
 import { Tabs } from "ember-ui-sdk/tabs"
 import { Dialog } from "ember-ui-sdk/dialog"
 import { Combobox } from "ember-ui-sdk/combobox"
+import { DateInput } from "ember-ui-sdk/date-input"
+import { Field } from "ember-ui-sdk/field"
 import * as primitive from "ember-ui-sdk/primitive"
 
 // A tab of the app's own: it binds ui-sdk's tab part to the instance its
@@ -205,5 +209,33 @@ module("Integration | packed addon", function (hooks) {
     assert.dom('input[type="hidden"]').hasValue("fr")
     await click('[data-slot="combobox-chip-remove"]')
     assert.dom('input[type="hidden"][value="fr"]').doesNotExist()
+  })
+
+  test("a controlled date input takes a value set from outside", async function (assert) {
+    class State {
+      @tracked value = "2026-11-02"
+    }
+    const state = new State()
+    const update = (value) => {
+      state.value = value
+    }
+    await render(
+      precompileTemplate(
+        `<Field as |f|>
+          <f.Label>Due date</f.Label>
+          <DateInput @value={{state.value}} @onValueChange={{update}} @field={{f.field}} />
+        </Field>`,
+        { strictMode: true, scope: () => ({ DateInput, Field, state, update }) }
+      )
+    )
+    assert.dom('input[type="hidden"]').hasValue("2026-11-02")
+    // Each segment is a part, and a new value hands every one new data while
+    // the root renders it.
+    state.value = null
+    await settled()
+    assert.dom('input[type="hidden"]').hasValue("")
+    state.value = "2027-01-15"
+    await settled()
+    assert.dom('input[type="hidden"]').hasValue("2027-01-15")
   })
 })
