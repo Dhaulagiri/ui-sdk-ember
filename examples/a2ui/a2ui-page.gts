@@ -3,7 +3,11 @@ import { on } from "@ember/modifier"
 import Component from "@glimmer/component"
 import { tracked } from "@glimmer/tracking"
 import { A2uiSession, A2uiSurfaces } from "ember-a2ui"
-import { createAgent, type AgentComponent } from "ember-ui-sdk/agent"
+import {
+  createAgent,
+  registerTools,
+  type AgentComponent,
+} from "ember-ui-sdk/agent"
 import { elementOf } from "ember-ui-sdk/observe"
 import { onInsert } from "../sink/on-insert.ts"
 import { BASIC_CATALOG_ID, replaced, uiSdkCatalog } from "./catalog.ts"
@@ -67,7 +71,13 @@ export class A2uiPage extends Component {
     super(owner, args)
     // Inputs write the data model; the JSON beside each surface follows.
     const timer = setInterval(() => this.revision++, 400)
+    // A browser with WebMCP gets the same snapshot, act and query tools, so its
+    // own agent can fill the ui-sdk surface too. Elsewhere this does nothing.
+    const unregister = registerTools(this.agent, {
+      allow: (step) => !step.confirm,
+    })
     registerDestructor(this, () => {
+      unregister()
       clearInterval(timer)
       this.basic.dispose()
       this.uiSdk.dispose()
