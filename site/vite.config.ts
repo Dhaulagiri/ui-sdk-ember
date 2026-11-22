@@ -50,10 +50,30 @@ function docsNav(): Plugin {
   }
 }
 
+// ember-a2ui compiles like an app file, so Vite doesn't prebundle what's
+// under it. Of that, only validate-color is CommonJS: it's wrapped as a module
+// with a default export, the way @a2ui/web_core imports it.
+function commonJsUnderA2ui(): Plugin {
+  return {
+    name: "a2ui-commonjs",
+    transform(code, id) {
+      if (!/\/validate-color\/lib\/index\.js$/.test(id.split("?")[0]!)) {
+        return
+      }
+      return [
+        "const module = { exports: {} }",
+        code,
+        "const exported = module.exports",
+        "export default exported.__esModule ? exported.default : exported",
+      ].join("\n")
+    },
+  }
+}
+
 // The base path is set per deploy: BASE_PATH=/ui-sdk-ember/ for GitHub Pages.
 export default defineConfig({
   base: process.env.BASE_PATH ?? "/",
-  plugins: [docsNav(), ember()],
+  plugins: [docsNav(), ember(), commonJsUnderA2ui()],
   // App examples also use the decorator transform's runtime.
   resolve: {
     alias: {
@@ -63,7 +83,7 @@ export default defineConfig({
     },
   },
   optimizeDeps: {
-    exclude: ["ember-ui-sdk"],
+    exclude: ["ember-ui-sdk", "ember-a2ui"],
     include: ["decorator-transforms/runtime", "lucide"],
   },
   server: { fs: { allow: [resolve(import.meta.dirname, "..")] } },

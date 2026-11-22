@@ -1,0 +1,167 @@
+/* The page around the two surfaces. The ui-sdk parts inside take the docs'
+   example styles, from [data-example]. */
+.a2-page {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 32px 16px 80px;
+}
+
+.a2-intro h1 {
+  margin: 0 0 8px;
+  font-size: 28px;
+}
+
+.a2-intro p {
+  max-width: 70ch;
+  margin: 0;
+  color: var(--muted);
+}
+
+.a2-agent {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  padding: 16px;
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  background: var(--tint);
+}
+
+.a2-agent-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.a2-seen {
+  margin: 0;
+}
+
+.a2-log {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  margin: 0;
+  padding: 12px;
+  border-radius: 8px;
+  background: var(--bg);
+  font:
+    12px/1.5 ui-monospace,
+    monospace;
+  list-style: none;
+}
+
+.a2-log [data-kind="call"]::before {
+  content: "› ";
+}
+
+.a2-log [data-kind="seen"],
+.a2-log [data-kind="skip"] {
+  padding-left: 1.2em;
+  color: var(--muted);
+}
+
+.a2-log [data-kind="done"] {
+  color: light-dark(#13804b, #7bd3a0);
+}
+
+.a2-log [data-kind="error"] {
+  color: light-dark(#d60020, #ec7a72);
+}
+
+.a2-columns {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 420px), 1fr));
+  gap: 24px;
+  align-items: start;
+}
+
+.a2-column {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  min-width: 0;
+}
+
+.a2-column h2 {
+  margin: 0;
+  font-size: 15px;
+  font-weight: 600;
+}
+
+/* The basic catalog's date and time inputs in a Row don't wrap at phone
+   width, so a surface scrolls inside its column instead of the page. */
+.a2-surface {
+  min-width: 0;
+  overflow-x: auto;
+}
+
+.a2-model pre {
+  max-height: 320px;
+  margin: 8px 0 0;
+  padding: 12px;
+  overflow: auto;
+  border-radius: 8px;
+  background: var(--tint);
+  font:
+    12px/1.5 ui-monospace,
+    monospace;
+}
+
+/* The ui-sdk inputs inside the catalog's cards and rows. */
+.a2-field {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  min-width: 0;
+}
+
+.a2-choices {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px 16px;
+}
+
+.a2-choice {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.a2-control-row,
+.a2-number,
+.a2-slider-head,
+.a2-calendar-head {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.a2-slider-head {
+  justify-content: space-between;
+}
+
+.a2-control-row > input,
+.a2-number > input {
+  flex: 1;
+  min-width: 8ch;
+}
+
+.a2-control-row > button,
+.a2-number > button {
+  flex: none;
+  width: auto;
+}
+
+.a2-calendar-head {
+  justify-content: space-between;
+}
+
+.a2-dialog-x {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+}

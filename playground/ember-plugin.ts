@@ -5,11 +5,11 @@ import { readFileSync } from "node:fs"
 import { createRequire } from "node:module"
 import type { Plugin } from "vite"
 
-// Compiles app template tags and the addon's portable templates, and resolves the
+// Compiles app template tags and the addons' portable templates, and resolves the
 // modules ember-source ships under the names apps import. Only Ember's files
-// go through it.
+// go through it: this repo's addon, and ember-a2ui for the site's A2UI page.
 const emberFiles =
-  /\.gts$|\/(?:packages\/ember-ui-sdk|node_modules\/ember-ui-sdk)\/dist\/.*\.js$/
+  /\.gts$|\/(?:packages\/ember-ui-sdk|node_modules\/ember-ui-sdk|node_modules\/ember-a2ui)\/dist\/.*\.js$/
 
 const require = createRequire(import.meta.url)
 const emberRoot = require.resolve("ember-source/package.json").slice(0, -13)
