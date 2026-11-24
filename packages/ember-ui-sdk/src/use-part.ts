@@ -183,7 +183,12 @@ class Binding {
       this.#unsubscribe()
       this.#record = part
       this.#selected = selected
-      this.#unsubscribe = subscribe(part, (liveOnly) => this.#heard(liveOnly))
+      // A change heard while Ember renders, like a controlled value that
+      // `syncOptions` hands over, is read after the render: reading this
+      // part's arguments then would track them in the render that changes them.
+      this.#unsubscribe = subscribe(part, (liveOnly) =>
+        afterRender(() => this.#heard(liveOnly))
+      )
     }
     return part
   }
