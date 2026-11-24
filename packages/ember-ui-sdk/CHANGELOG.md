@@ -1,5 +1,12 @@
 # ember-ui-sdk
 
+## 0.3.1
+
+### Patch Changes
+
+- 2ba49cd: `ember-ui-sdk/primitive` exports `onInsert`, a modifier that calls back with its element once it is in the page. Tracked state the callback sets renders a microtask later, and a function it returns runs when the element leaves. The resizable docs now give panels `@id`, which a panel's saved layout and a controller look up, not an `id` attribute.
+- 2ba49cd: `TimeInput` takes `@min` and `@max`, like the time input in the other frameworks: a time outside them is invalid.
+
 ## 0.3.0
 
 ### Minor Changes
