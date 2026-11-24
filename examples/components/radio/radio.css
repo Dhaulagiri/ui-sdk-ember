@@ -169,8 +169,9 @@
     color: var(--line-disabled);
   }
 
-  /* A radio with its own content is a choice card. */
-  [data-slot="radio"]:not(:empty, :has(> [data-slot="radio-indicator"])) {
+  /* A radio with its own content is a choice card. Its indicator, and the
+     whitespace a template leaves around it while it's unchecked, aren't. */
+  [data-slot="radio"]:has(> :not([data-slot="radio-indicator"])) {
     display: inline-flex;
     align-items: center;
     gap: var(--space-3);
