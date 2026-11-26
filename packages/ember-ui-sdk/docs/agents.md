@@ -43,10 +43,10 @@ The [component skill](./agents.md#skills) gives the agent a workflow to follow. 
 
 Connect an agent to a UI built with ui-sdk and it can read component state and call component actions directly. For example, it can rename a project by calling the input's `setValue` action.
 
-Create the bridge before the page renders. Import it from the same package as your components; this example uses Ember:
+Create the bridge before the page renders. Import it from the same package as your components; this example uses React:
 
 ```ts
-import { createAgent } from "ember-ui-sdk/agent"
+import { createAgent } from "@ui-sdk/react/agent"
 
 const agent = createAgent()
 ```
@@ -77,16 +77,62 @@ You can give these tools to your own agent, or register them with a supported br
 
 ## Benchmark
 
-In a project-settings benchmark, agents renamed a project, updated members and notification settings, then saved. One used browser tools on a page built with another component library; the other used the agent bridge on the same screen built with ui-sdk.
+We gave an agent one task on a project settings screen: rename the project, change its visibility, update two members and the notification settings, then save. We built the same screen with ui-sdk and with other component libraries, in React, Vue and Svelte.
 
-|            | Browser tools | ui-sdk + agent bridge | Delta |
-| ---------- | ------------- | --------------------- | ----- |
-| Tool calls | 16            | **5**          | −69%  |
-| Text read  | 39.8k         | **6.8k**       | −83%  |
-| Time       | 41 s          | **16 s**       | −61%  |
-| Cost       | $0.073        | **$0.032**     | −56%  |
+On the other libraries, the agent used browser tools: it reads the page's accessibility tree, then clicks and types. On ui-sdk, it used the agent bridge.
 
-These are medians from three runs per approach. Both agents used Sonnet through Claude Code with the same task and system prompt, plus instructions for their available tools. Every run completed the task. Text read counts characters returned by the tools. Time and cost are what Claude Code reported for those runs.
+### React
+
+|            | Base UI + browser tools | Ark UI + browser tools | ui-sdk + agent bridge | Delta       |
+| ---------- | ----------------------- | ---------------------- | --------------------- | ----------- |
+| Tool calls | 17                      | 19                     | **2**          | 88% fewer   |
+| Tokens     | 291.1k                  | 330.3k                 | **21.8k**      | 92% fewer   |
+| Time       | 56 s                    | 58 s                   | **13 s**       | 77% faster  |
+| Cost       | $0.138                  | $0.143                 | **$0.021**     | 85% cheaper |
+
+### Vue
+
+|            | Reka UI + browser tools | ui-sdk + agent bridge | Delta       |
+| ---------- | ----------------------- | --------------------- | ----------- |
+| Tool calls | 17                      | **2**          | 88% fewer   |
+| Tokens     | 247.7k                  | **21.8k**      | 91% fewer   |
+| Time       | 54 s                    | **13 s**       | 76% faster  |
+| Cost       | $0.117                  | **$0.021**     | 82% cheaper |
+
+### Svelte
+
+|            | Bits UI + browser tools | ui-sdk + agent bridge | Delta       |
+| ---------- | ----------------------- | --------------------- | ----------- |
+| Tool calls | 17                      | **2**          | 88% fewer   |
+| Tokens     | 258.5k                  | **22.0k**      | 91% fewer   |
+| Time       | 53 s                    | **13 s**       | 75% faster  |
+| Cost       | $0.122                  | **$0.022**     | 82% cheaper |
+
+These are medians from three runs per column. Every agent used Sonnet through Claude Code with the same task and system prompt, plus instructions for its tools. Every run completed the task. Time runs from the agent's start to its last message. Tokens and cost are what Claude Code reported for the run. Delta compares ui-sdk with the best other result in the row.
+
+We also ran the ui-sdk screen with browser tools. It took about as much as the other libraries, so the difference comes from the tools.
+
+### Run It Yourself
+
+The benchmark is in the repo, in [`benchmarks/agent`](https://github.com/vercel-labs/ui/tree/main/benchmarks/agent). It runs its agents with [Claude Code](https://claude.com/claude-code), so install it and sign in first.
+
+```sh
+git clone https://github.com/vercel-labs/ui
+cd ui
+pnpm install
+pnpm exec playwright install chromium
+pnpm --filter agent-benchmark bench
+```
+
+This opens every version of the React screen in its own browser window and starts one agent in each. When they finish, it prints a table with each run's tool calls, text read, time, tokens and cost, and whether the agent saved the right settings.
+
+Pass `--framework vue` or `--framework svelte` for the other frameworks, and `--runs 3` for medians:
+
+```sh
+pnpm --filter agent-benchmark bench --framework vue --runs 3
+```
+
+The [README](https://github.com/vercel-labs/ui/tree/main/benchmarks/agent#readme) explains the task, what's measured, and how to add another library.
 
 ## Where to Start
 
@@ -180,7 +226,7 @@ The [Core guides](./core.md#build-a-component) walk through the code. [All Behav
 If your agent supports skills, install `ui-sdk`:
 
 ```bash
-npx skills add vercel-labs/ui --skill ui-sdk
+npx skills@latest add vercel-labs/ui --skill ui-sdk
 ```
 
 It gives the agent a workflow for choosing behaviors, defining a primitive, rendering it and testing it. The same skill ships with `@ui-sdk/core` in `node_modules/@ui-sdk/core/skills/`, so an agent without skills can read it there. [Skills](./agents.md#skills) shows how to use it. You can also work directly from the docs.
@@ -310,7 +356,7 @@ Help your agent build custom components with @ui-sdk/core.
 If your agent supports skills, install it with:
 
 ```bash
-npx skills add vercel-labs/ui --skill ui-sdk
+npx skills@latest add vercel-labs/ui --skill ui-sdk
 ```
 
 The skill also ships inside `@ui-sdk/core`, at `node_modules/@ui-sdk/core/skills/ui-sdk/SKILL.md`. That copy always matches the version you installed. If your agent doesn't support skills, point it there instead.
@@ -342,10 +388,10 @@ For a complete app you can run, follow the [Guide](./agents.md#guide). It takes 
 
 ## Create the Bridge
 
-Create the bridge once. These examples use Ember:
+Create the bridge once. These examples use React:
 
-```ts title="app/agent.ts"
-import { createAgent } from "ember-ui-sdk/agent"
+```ts title="agent.ts"
+import { createAgent } from "@ui-sdk/react/agent"
 
 const agent = createAgent()
 
@@ -369,18 +415,15 @@ Use the agent entry from the same package as your components:
 
 Render a ui-sdk input with an accessible name:
 
-```gts title="app/components/project-name.gts"
-import { Input } from "ember-ui-sdk/input"
-
-<template>
-  <Input aria-label="Project name" @defaultValue="Apollo" />
-</template>
-```
-
-Import the bridge once from `app/app.ts`, so it exists before the page renders:
-
-```ts title="app/app.ts"
+```tsx
+import { Input } from "@ui-sdk/react/input"
 import "./agent"
+
+function ProjectName() {
+  return <Input aria-label="Project name" defaultValue="Apollo" />
+}
+
+export { ProjectName }
 ```
 
 The name helps both people using a screen reader and agents identify the input. A [Field label](./components/field.md) works too.
@@ -436,10 +479,14 @@ Put several steps in one call to run them in order. If a step fails, `result.ok`
 For components with choices, such as a Select or Combobox, `query` with `within` lists the available values. For a Select labeled **Region**:
 
 ```ts
-const [region] = await agent.query({ within: "Region", text: "Europe" })
+const found = await agent.query({ within: "Region", text: "Europe" })
+if ("error" in found) {
+  throw new Error(found.error)
+}
+const [region] = found
 ```
 
-`region.items` holds up to 50 matching choices, each with a `value` and `label`, and `region.more` says how many matched beyond that. Leave out `text` to list the first 50, and pass `from: 50` for the next 50. `query()` opens nothing unless you pass `closed: true`. When a list's items only show while it's open, `items` is empty and `note` says so.
+`query` returns `{ error }` when nothing on the page is named **Region**. Otherwise `region.items` holds up to 50 matching choices, each with a `value` and `label`, and `region.more` says how many matched beyond that. Leave out `text` to list the first 50, and pass `from: 50` for the next 50. `query()` opens nothing unless you pass `closed: true`. When a list's items only show while it's open, `items` is empty and `note` says so.
 
 `query` also finds components without listing the page. `agent.query({ text: "Europe" })` returns the components whose label or row text has that word, and lists whose choices match, with those choices under them. `kind` keeps one kind, such as `"select"`.
 
@@ -448,7 +495,7 @@ const [region] = await agent.query({ within: "Region", text: "Europe" })
 `agentTools` describes `snapshot`, `act`, and `query` with names, descriptions, and JSON Schemas:
 
 ```ts
-import { agentTools } from "ember-ui-sdk/agent"
+import { agentTools } from "@ui-sdk/react/agent"
 ```
 
 Use these definitions when setting up your agent's tools. Route each tool call to the matching method on `agent` and return its result to the model. Your model SDK determines how you register and handle those calls.
@@ -478,8 +525,6 @@ The snapshot reads the primitive's `controlled` state keys. If none are declared
 Build a Vite app, try the agent bridge in the console, and let ChatGPT use it through WebMCP.
 
 We'll build a Select for choosing a region. First, you'll read and change it from the browser console. Then you'll give ChatGPT the same tools and ask it to choose a region for you.
-
-The Guide uses React. In an Ember app, the agent code is the same: import it from `ember-ui-sdk/agent` and `ember-ui-sdk/observe`, and the history helpers from `@ui-sdk/core/history`. The `import.meta.hot` cleanup works in an Embroider app on Vite too.
 
 ## Create a Vite App
 
@@ -1058,7 +1103,7 @@ The examples below use the **Region** Select from the [Guide](./agents.md#guide)
 Without an `allow` callback, the bridge accepts supported actions. Add one to the `createAgent` call in `src/agent.ts` to let the agent change only Region:
 
 ```ts
-import { createAgent } from "ember-ui-sdk/agent"
+import { createAgent } from "@ui-sdk/react/agent"
 
 const agent = createAgent({
   allow: ({ component, label, action }) =>
@@ -1077,7 +1122,7 @@ The callback runs before the step changes anything. A `press` that opens a close
 To ask the person before changing Region, return their answer from `allow`:
 
 ```ts
-import { createAgent } from "ember-ui-sdk/agent"
+import { createAgent } from "@ui-sdk/react/agent"
 
 const agent = createAgent({
   allow: ({ component, label, action, args }) => {
@@ -1200,7 +1245,7 @@ Reuse the bridge from the [Guide](./agents.md#guide). The examples below go in a
 This subscription collects changes made outside the bridge. That includes a person's interactions and changes made by your application:
 
 ```ts
-import type { ObservedChange } from "ember-ui-sdk/observe"
+import type { ObservedChange } from "@ui-sdk/react/observe"
 import { agent } from "./agent"
 
 const changes: ObservedChange[] = []
@@ -1343,7 +1388,7 @@ A Button whose handler awaits needs one more step. A change the handler makes af
 
 ```tsx
 import { Button } from "@ui-sdk/react/button"
-import { withSource } from "ember-ui-sdk/observe"
+import { withSource } from "@ui-sdk/react/observe"
 
 function SaveButton() {
   return (
@@ -1408,7 +1453,7 @@ Keep the model and its keys on your server while the agent works with the page.
 
 The bridge you created in [Get Started](./agents.md#get-started) reads and changes the components on the page, so it runs in the browser. The model can still run on your server, next to your API keys, usage limits, and other tools. Each time the model calls `snapshot`, `act`, or `query`, the call goes to the page, the bridge runs it, and the result goes back to the model.
 
-This page uses the [AI SDK](https://ai-sdk.dev), where a tool without `execute` on the server is run by the browser. The examples use React. In an Ember app, the server route is the same, with `agentTools` from `ember-ui-sdk/agent`, and your chat client runs each call on `agent` and sends back its result the same way.
+This page uses the [AI SDK](https://ai-sdk.dev), where a tool without `execute` on the server is run by the browser. The examples use React.
 
 ## Declare the Tools on the Server
 
@@ -1416,7 +1461,7 @@ Pass `agentTools` to `streamText` as tools without `execute`:
 
 ```ts title="app/api/chat/route.ts"
 import { convertToModelMessages, jsonSchema, streamText, tool } from "ai"
-import { agentTools } from "ember-ui-sdk/agent"
+import { agentTools } from "@ui-sdk/react/agent"
 
 const tools = Object.fromEntries(
   agentTools.map(({ name, description, inputSchema }) => [
@@ -1576,7 +1621,7 @@ For a complete example with ChatGPT prompts, follow the [Guide](./agents.md#guid
 Import `registerTools` from the same package as your bridge:
 
 ```ts
-import { registerTools } from "ember-ui-sdk/agent"
+import { registerTools } from "@ui-sdk/react/agent"
 import { agent } from "./agent"
 
 const unregister = registerTools(agent, {
@@ -1613,7 +1658,7 @@ These are hints for the tool consumer. `snapshot` and `query` never open a compo
 
 The bridge's methods, tool definitions, and the data they return.
 
-Import these APIs from your framework's agent entry, such as `ember-ui-sdk/agent`. React, Vue, Svelte, Solid, and Web Components use `@ui-sdk/react/agent`, `@ui-sdk/vue/agent`, `@ui-sdk/svelte/agent`, `@ui-sdk/solid/agent`, and `@ui-sdk/web/agent`.
+Import these APIs from your framework's agent entry, such as `@ui-sdk/react/agent`. Vue, Svelte, Solid, Web Components, and Ember use `@ui-sdk/vue/agent`, `@ui-sdk/svelte/agent`, `@ui-sdk/solid/agent`, `@ui-sdk/web/agent`, and `ember-ui-sdk/agent`.
 
 Start with [Get Started](./agents.md#get-started) for the basic calls, or follow the [Guide](./agents.md#guide) to try them in a Vite app and ChatGPT.
 
@@ -1622,7 +1667,7 @@ Start with [Get Started](./agents.md#get-started) for the basic calls, or follow
 Creates a bridge with `snapshot`, `act`, `query`, and `subscribe`:
 
 ```ts
-import { createAgent } from "ember-ui-sdk/agent"
+import { createAgent } from "@ui-sdk/react/agent"
 
 const agent = createAgent()
 ```
@@ -1874,7 +1919,7 @@ Call `unsubscribe()` when you're done. See [Observe Changes](./agents.md#observe
 The definitions of the three tools: `act`, `query`, and `snapshot`. `act` comes first, since a model can plan a whole task from its words and send it in one call.
 
 ```ts
-import { agentTools } from "ember-ui-sdk/agent"
+import { agentTools } from "@ui-sdk/react/agent"
 ```
 
 The bridge carries the same list as `agent.tools`, so an agent that finds the bridge on the page, such as `window.agent`, can read how to call it.
@@ -1886,7 +1931,7 @@ Each definition is `{ name, description, inputSchema }`. Adapt it to your model 
 Registers the three tools with `document.modelContext.registerTool` when the browser provides it:
 
 ```ts
-import { registerTools } from "ember-ui-sdk/agent"
+import { registerTools } from "@ui-sdk/react/agent"
 
 const unregister = registerTools(agent, {
   allow: (step) => step.action !== "press" || confirm(`Press ${step.args[0]}?`),
