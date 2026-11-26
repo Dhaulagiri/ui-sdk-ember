@@ -634,7 +634,7 @@ The `agent` key tells [the agent bridge](./agents.md#custom-primitives) which ap
 agent: { actions: ["setValue", "clear"], closed: true },
 ```
 
-Put it last, after `slots`, so TypeScript has read the api by then. Without it, the bridge picks methods named like changes, such as `setValue` or `toggle`. [Your Own Components](./agents.md#your-own-components) shows a rating an agent can use, and every part of the key.
+Put it last, after `slots`, so TypeScript has read the api by then. Without it, the bridge picks methods named like changes, such as `setValue` or `toggle`. [The Agent Key](./agents.md#the-agent-key) shows a rating an agent can use, and every part of the key.
 
 ## Naming
 

@@ -42,8 +42,8 @@ importers:
         specifier: ^1.1.2
         version: 1.1.2
       '@ui-sdk/core':
-        specifier: ^0.1.0-beta.13
-        version: 0.1.0-beta.13
+        specifier: ^0.1.0-beta.17
+        version: 0.1.0-beta.17
       decorator-transforms:
         specifier: ^2.4.0
         version: 2.4.0(@babel/core@7.29.13)
@@ -76,8 +76,8 @@ importers:
         specifier: ^1.11.0
         version: 1.11.0
       '@ui-sdk/core':
-        specifier: ^0.1.0-beta.13
-        version: 0.1.0-beta.13
+        specifier: ^0.1.0-beta.17
+        version: 0.1.0-beta.17
       decorator-transforms:
         specifier: ^2.4.0
         version: 2.4.0(@babel/core@7.29.13)
@@ -134,8 +134,8 @@ importers:
         specifier: ^0.33.0
         version: 0.33.0
       '@ui-sdk/core':
-        specifier: ^0.1.0-beta.13
-        version: 0.1.0-beta.13
+        specifier: ^0.1.0-beta.17
+        version: 0.1.0-beta.17
       ember-source:
         specifier: ~7.4.0
         version: 7.4.0(@glimmer/component@2.2.1)
@@ -1459,8 +1459,8 @@ packages:
   '@types/trusted-types@2.0.7':
     resolution: {integrity: sha512-ScaPdn1dQczgbl0QFTeTOmVHFULt394XJgOQNoyVhZ6r2vLnMLJfBPd53SB52T/3G36VI1/g2MZaX0cwDuXsfw==}
 
-  '@ui-sdk/core@0.1.0-beta.13':
-    resolution: {integrity: sha512-URjk9hqdc/cZKDtw6Gb9NqjY48U8l0EgoP4d5ghlooa3av+GrR0iSmsav133UU4oelcuKIO1ZPJ4j7gIPMr1Vg==}
+  '@ui-sdk/core@0.1.0-beta.17':
+    resolution: {integrity: sha512-wBWNqT0Qf1sE6fqD1XuBnSGBFcY6+cek1z7rKl/r4j2bsv2or9i7z44PLy0J9hmflm3IJ5MLW0P4ur2H9BCIvg==}
 
   '@volar/kit@2.4.31':
     resolution: {integrity: sha512-pQgvegC28dfdNcs/iDNZVHkMs+dG7rpD9Aj+sNU2hildv1QuH7/MIoff/cSJW/IR25AGOeHWbJXWWFKDXXWtVw==}
@@ -4800,7 +4800,7 @@ snapshots:
 
   '@types/trusted-types@2.0.7': {}
 
-  '@ui-sdk/core@0.1.0-beta.13': {}
+  '@ui-sdk/core@0.1.0-beta.17': {}
 
   '@volar/kit@2.4.31(typescript@5.9.3)':
     dependencies:

@@ -50,3 +50,59 @@ test("the A2UI page fits a phone without sideways scroll", async ({ page }) => {
   )
   expect(overflow).toBeLessThanOrEqual(0)
 })
+
+test("the A2UI page hands its agent to a browser with WebMCP, and takes it back on leaving", async ({
+  page,
+}) => {
+  // Stand in for a browser with WebMCP: keep what the page registers.
+  await page.addInitScript(() => {
+    const tools: Record<string, { execute: (input: unknown) => unknown }> = {}
+    const signals: AbortSignal[] = []
+    Object.assign(window, { webmcp: { tools, signals } })
+    Object.defineProperty(document, "modelContext", {
+      value: {
+        registerTool: async (
+          tool: { name: string; execute: (input: unknown) => unknown },
+          options: { signal: AbortSignal }
+        ) => {
+          tools[tool.name] = tool
+          signals.push(options.signal)
+        },
+      },
+    })
+  })
+  type WebMcp = {
+    tools: Record<string, { execute: (input: unknown) => Promise<unknown> }>
+    signals: AbortSignal[]
+  }
+  await page.goto("/#/a2ui")
+  const uiSdk = page.locator(".a2-uisdk")
+  await expect(uiSdk.getByText("Plan a trip")).toBeVisible()
+  expect(
+    await page.evaluate(() =>
+      Object.keys((window as unknown as { webmcp: WebMcp }).webmcp.tools).sort()
+    )
+  ).toEqual(["act", "query", "snapshot"])
+
+  // The browser's agent fills the ui-sdk surface through the act tool.
+  const result = await page.evaluate(() =>
+    (window as unknown as { webmcp: WebMcp }).webmcp.tools["act"]!.execute({
+      steps: [{ ref: "Traveler", action: "setValue", args: ["Ada Lovelace"] }],
+    })
+  )
+  expect(result).toMatchObject({ ok: true })
+  await expect(uiSdk.getByRole("textbox", { name: "Traveler" })).toHaveValue(
+    "Ada Lovelace"
+  )
+
+  await page.goto("/#/")
+  await expect
+    .poll(() =>
+      page.evaluate(() =>
+        (window as unknown as { webmcp: WebMcp }).webmcp.signals.every(
+          (signal) => signal.aborted
+        )
+      )
+    )
+    .toBe(true)
+})

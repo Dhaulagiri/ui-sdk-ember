@@ -26,8 +26,8 @@ Give each component an accessible name, from a `Field` label, a `<label>` or `ar
 The bridge has three methods. They're also its tools, with the same names and input:
 
 - `snapshot()` lists the components with their state and the actions they take now, like `setValue` or `press`.
-- `query({ text, within, kind })` finds components by label, or the items of one list, without listing the page.
-- `act({ steps })` runs steps in order and reports what changed. A step names a component by its ref or its label.
+- `query({ text, within, kind, closed, from })` finds components by label, or the items of one list, without listing the page. With `closed: true` it also reads what the other tabs and the closed sections hold.
+- `act({ steps })` runs steps in order and reports what changed. A step names a component by its ref or its label, and finds it behind a closed tab or section too.
 
 ```ts
 agent.snapshot()

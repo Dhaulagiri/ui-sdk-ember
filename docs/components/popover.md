@@ -50,7 +50,7 @@ import { Popover } from "ember-ui-sdk/popover"
 
 ## Forms
 
-An ordinary form can save a value and then close the popover. Focus starts on the first field and returns to the trigger when the task finishes. A form with `method="dialog"` closes on submission and returns its submit button's value; the [row editor](#triggers-outside-the-popover) shows that version.
+An ordinary form can save a value and then close the popover. Focus starts on the first field and returns to the trigger when the task finishes. A form with `method="dialog"` closes on submission and returns its submit button's value; the [row editor](#triggers-outside-the-popover) shows that version. Inside another form, pass `@container` so the popover's form doesn't nest in it.
 
 [popover/form](../../examples/components/popover/ember/form.gts)
 
